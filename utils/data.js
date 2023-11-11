@@ -43,6 +43,10 @@ export let data = new PogObject('TakeshiAddons', {
     reaper: {
         x: 600,
         y: 230
+    },
+    lastbreath: {
+        x: 600,
+        y: 210
     }
 }, 'data.json');
 

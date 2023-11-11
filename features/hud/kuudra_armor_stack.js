@@ -81,10 +81,14 @@ const getArmorStack = (armors) => {
         if (armor) {
             const lores = armor.getLore();
             lores.forEach((lore) => {
-                if (lore.removeFormatting().includes('Tiered Bonus: Dominus')) {
-                    crimsonTier = parseInt(lore.match(stackRegex)[0][0]);
-                } else if (lore.removeFormatting().includes('Tiered Bonus: Hydra Strike')) {
-                    terrorTier = parseInt(lore.match(stackRegex)[0][0]);
+                try {
+                    if (lore.removeFormatting().includes('Tiered Bonus: Dominus')) {
+                        crimsonTier = parseInt(lore.match(stackRegex)[0][0]);
+                    } else if (lore.removeFormatting().includes('Tiered Bonus: Hydra Strike')) {
+                        terrorTier = parseInt(lore.match(stackRegex)[0][0]);
+                    }
+                } catch (e) {
+                    // sometimes crash cuz lores are not immediately loaded when player moves to another dimension
                 }
             });
         }
@@ -139,7 +143,10 @@ registerWhen(register('renderOverlay', () => {
     let crimsonSecLeft = ((crimsonExpireSec * 1000 - (Date.now() - lastCrimsonHit)) / 1000.0).toFixed(1);
     if (crimsonSecLeft < 0) crimsonSecLeft = 0;
     if (crimsonStack > 0 && crimsonSecLeft >= 0) {
-        dominusRenderText.setString(`&6Dominus: ${dominusText} ${crimsonSecLeft}s`).setX(crimson_render_x).setY(crimson_render_y).draw();
+        dominusRenderText.setString(`&6Dominus: ${dominusText} &6${crimsonSecLeft}s`).setX(crimson_render_x).setY(crimson_render_y).draw();
+        if (crimsonSecLeft < 3) {
+            dominusRenderText.setString(`&6Dominus: ${dominusText} &c${crimsonSecLeft}s`).setX(crimson_render_x).setY(crimson_render_y).draw();
+        }
     } else if (crimsonExpireSec > 0 || dominus_hud_move_gui.isOpen()) {
         dominusRenderText.setString(`&6Dominus: 0ᝐ`).setX(crimson_render_x).setY(crimson_render_y).draw();
     }
@@ -150,7 +157,10 @@ registerWhen(register('renderOverlay', () => {
     let terrorSecLeft = ((terrorExpireSec * 1000 - (Date.now() - lastTerrorHit)) / 1000.0).toFixed(1);
     if (terrorSecLeft < 0) terrorSecLeft = 0;
     if (terrorStack > 0 && terrorSecLeft >= 0) {
-        hydraRenderText.setString(`&6Hydra Strike: ${hydraText} ${terrorSecLeft}s`).setX(terror_render_x).setY(terror_render_y).draw();
+        hydraRenderText.setString(`&6Hydra Strike: ${hydraText} &6${terrorSecLeft}s`).setX(terror_render_x).setY(terror_render_y).draw();
+        if (terrorSecLeft < 3) {
+            hydraRenderText.setString(`&6Hydra Strike: ${hydraText} &c${terrorSecLeft}s`).setX(terror_render_x).setY(terror_render_y).draw();
+        }
     } else if (terrorExpireSec > 0 || hydra_hud_move_gui.isOpen()) {
         hydraRenderText.setString(`&6Hydra Strike: 0⁑`).setX(terror_render_x).setY(terror_render_y).draw();
     }

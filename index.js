@@ -19,6 +19,8 @@ import "./features/hud/lifeline";
 import { ll_hud_move_gui } from "./features/hud/lifeline";
 import "./features/hud/reaper";
 import { reaper_hud_move_gui } from "./features/hud/reaper";
+import "./features/hud/last_breath";
+import { lb_hud_move_gui } from "./features/hud/last_breath";
 
 data.autosave();
 
@@ -46,6 +48,8 @@ register('command', (args) => {
         ll_hud_move_gui.open();
     } else if (args == 'reaperhud') {
         reaper_hud_move_gui.open();
+    } else if (args == 'lbhud') {
+        lb_hud_move_gui.open();
     }
 }).setCommandName('takeshi', true).setAliases('takeshiaddons');
 

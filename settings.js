@@ -184,6 +184,43 @@ class Settings {
         ChatLib.command('takeshi reaperhud', true);
     }
 
+    @SwitchProperty({
+        name: 'Last Breath Hit Count HUD',
+        description: 'Display how many times you hit with Last Breath (Shows when you have Last Breath in your inventory) (Sometimes inaccurate zzz)',
+        category: 'HUD',
+        subcategory: 'Last Breath HUD'
+    })
+    lbhud = true;
+
+    @SwitchProperty({
+        name: 'Only show when in hotbar',
+        description: 'Only show when Last Breath is in hotbar',
+        category: 'HUD',
+        subcategory: 'Last Breath HUD'
+    })
+    lbhotbar = true;
+
+    @SliderProperty({
+        name: 'Last Breath reset length',
+        description: 'Specify the number of seconds which resets the hit count of the Last Breath since the first hit',
+        min: 5,
+        max: 50,
+        category: 'HUD',
+        subcategory: 'Last Breath HUD'
+    })
+    lbreset = 10;
+
+    @ButtonProperty({
+        name: 'Move Last Breath HUD',
+        description: 'Click to edit Last Breath HUD location',
+        category: 'HUD',
+        placeholder: 'Click!',
+        subcategory: 'Last Breath HUD'
+    })
+    lbGui() {
+        ChatLib.command('takeshi lbhud', true);
+    }
+
     constructor() {
         this.initialize(this);
         this.setCategoryDescription('HUD', 'A lot of Overlays');
