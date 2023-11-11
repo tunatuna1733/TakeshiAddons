@@ -79,18 +79,18 @@ const getArmorStack = (armors) => {
     let terrorTier = 0;
     armors.forEach((armor) => {
         if (armor) {
-            const lores = armor.getLore();
-            lores.forEach((lore) => {
-                try {
+            try {
+                const lores = armor.getLore();
+                lores.forEach((lore) => {
                     if (lore.removeFormatting().includes('Tiered Bonus: Dominus')) {
                         crimsonTier = parseInt(lore.match(stackRegex)[0][0]);
                     } else if (lore.removeFormatting().includes('Tiered Bonus: Hydra Strike')) {
                         terrorTier = parseInt(lore.match(stackRegex)[0][0]);
                     }
-                } catch (e) {
-                    // sometimes crash cuz lores are not immediately loaded when player moves to another dimension
-                }
-            });
+                });
+            } catch (e) {
+                // sometimes crash cuz lores are not immediately loaded when player moves to another dimension
+            }
         }
     });
     return [crimsonTier, terrorTier];

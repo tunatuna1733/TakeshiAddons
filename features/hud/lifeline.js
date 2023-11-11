@@ -50,7 +50,7 @@ registerWhen(register('actionBar', (msg) => {
 
 registerWhen(register('renderOverlay', () => {
     const [ll_render_x, ll_render_y] = getLifelineHUDRenderCoords();
-    if (data.equipment.id1 == 'LAVA_SHELL_NECKLACE') {
+    if (data.equipment.id1 == 'LAVA_SHELL_NECKLACE' || ll_hud_move_gui.isOpen()) {
         if (settings.lifelinekuudra) {
             if (isInKuudraP5 || ll_hud_move_gui.isOpen()) {
                 if (currentHP / maxHP < 0.2) {
