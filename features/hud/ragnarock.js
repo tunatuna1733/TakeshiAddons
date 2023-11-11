@@ -69,14 +69,16 @@ registerWhen(register('renderOverlay', () => {
 
 registerWhen(register('step', () => {
     ragaxeIncluded = false;
-    for (let i = 0; i < 9; i++) {
-        const hotbarItem = Player.getInventory().getStackInSlot(i);
-        if (hotbarItem) {
-            try {
-                const itemID = hotbarItem.getNBT().getCompoundTag('tag').getCompoundTag('ExtraAttributes').getString('id');
-                if (itemID == 'RAGNAROCK_AXE') ragaxeIncluded = true;
-            } catch (e) {
-                // maybe not skyblock item ?
+    if (Player.getInventory() !== null) {
+        for (let i = 0; i < 9; i++) {
+            const hotbarItem = Player.getInventory().getStackInSlot(i);
+            if (hotbarItem) {
+                try {
+                    const itemID = hotbarItem.getNBT().getCompoundTag('tag').getCompoundTag('ExtraAttributes').getString('id');
+                    if (itemID == 'RAGNAROCK_AXE') ragaxeIncluded = true;
+                } catch (e) {
+                    // maybe not skyblock item ?
+                }
             }
         }
     }

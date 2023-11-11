@@ -157,12 +157,12 @@ registerWhen(register('renderOverlay', () => {
 }), () => (settings.terrorhud));
 
 register('worldUnload', () => {
-    let crimsonStack = 0;
-    let terrorStack = 0;
-    let crimsonExpireSec = 0;
-    let terrorExpireSec = 0;
-    let lastCrimsonHit = 0;
-    let lastTerrorHit = 0;
-    let dominusText = '';
-    let hydraText = '';
+    crimsonStack = 0;
+    terrorStack = 0;
+    crimsonExpireSec = 0;
+    terrorExpireSec = 0;
+    lastCrimsonHit = 0;
+    lastTerrorHit = 0;
+    dominusText = '';
+    hydraText = '';
 })

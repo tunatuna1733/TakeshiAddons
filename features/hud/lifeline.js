@@ -68,3 +68,7 @@ registerWhen(register('renderOverlay', () => {
         }
     }
 }), () => settings.lifelinehud);
+
+register('worldUnload', () => {
+    isInKuudraP5 = false;
+})

@@ -58,19 +58,21 @@ registerWhen(register("soundPlay", () => {
 registerWhen(register('step', () => {
     ragaxeIncluded = false;
     reaperIncluded = false;
-    try {
-        Player.getInventory().getItems().forEach((item) => {
-            if (item) {
-                try {
-                    const itemID = getItemId(item);
-                    if (itemID == 'RAGNAROCK_AXE') ragaxeIncluded = true;
-                    if (itemID == 'REAPER_CHESTPLATE') reaperIncluded = true;
-                } catch (e) {
-                    // maybe not skyblock item ?
+    if (Player.getInventory() !== null) {
+        try {
+            Player.getInventory().getItems().forEach((item) => {
+                if (item) {
+                    try {
+                        const itemID = getItemId(item);
+                        if (itemID == 'RAGNAROCK_AXE') ragaxeIncluded = true;
+                        if (itemID == 'REAPER_CHESTPLATE') reaperIncluded = true;
+                    } catch (e) {
+                        // maybe not skyblock item ?
+                    }
                 }
-            }
-        });
-    } catch (e) { }
+            });
+        } catch (e) { }
+    }
 }).setDelay(1), () => settings.raghud);
 
 registerWhen(register('renderOverlay', () => {
@@ -100,4 +102,5 @@ registerWhen(register('renderOverlay', () => {
 
 register('worldUnload', () => {
     reaperUsed = 0;
+    isActive = false;
 });
