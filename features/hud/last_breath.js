@@ -1,9 +1,11 @@
 import settings from "../../settings";
 import { data } from "../../utils/data";
+import { Hud } from "../../utils/hud";
+import hud_manager from "../../utils/hud_manager";
 import getItemId from "../../utils/item_id";
 import { registerWhen } from "../../utils/register";
 
-const lbRenderText = new Text('&6LastBreath: 0').setScale(1.7).setShadow(true);
+const lbHud = new Hud('lastbreath', '&6LastBreath: 0', hud_manager, data);
 
 let lbIncludedInHotbar = false;
 let lbIncludedInInventory = false;
@@ -16,34 +18,6 @@ let lbShotUnix = [];
 
 let lbRecordStart = 0;
 let isRecording = false;
-
-const getLastBreathHUDRenderCoords = () => {
-    const x = data.lastbreath.x;
-    const y = data.lastbreath.y;
-    return [x, y];
-}
-
-const setLastBreathHUDRenderCoords = (x, y) => {
-    data.lastbreath.x = x;
-    data.lastbreath.y = y;
-    data.save();
-    return;
-}
-
-export const lb_hud_move_gui = new Gui();
-const gui_string = 'Drag to move LastBreath HUD';
-const gui_text_component = new Text(gui_string, Renderer.screen.getWidth() / 2 - Renderer.getStringWidth(gui_string) * 2, Renderer.screen.getHeight() / 2 - 50).setColor(Renderer.color(255, 55, 55)).setScale(4);
-
-lb_hud_move_gui.registerDraw(() => {
-    gui_text_component.draw();
-});
-
-register('dragged', (dx, dy) => {
-    if (!lb_hud_move_gui.isOpen()) return;
-
-    const [current_x, current_y] = getLastBreathHUDRenderCoords();
-    setLastBreathHUDRenderCoords(current_x + dx, current_y + dy);
-});
 
 registerWhen(register('step', () => {
     lbIncludedInHotbar = false;
@@ -134,14 +108,13 @@ registerWhen(register('renderOverlay', () => {
         isRecording = false;
         lbHitCount = 0;
     }
-    const [lb_render_x, lb_render_y] = getLastBreathHUDRenderCoords();
     if (lbIncludedInInventory) {
         if (settings.lbhotbar) {
-            if (lbIncludedInHotbar || lb_hud_move_gui.isOpen()) {
-                lbRenderText.setString(`&6LastBreath: ${lbHitCount}`).setX(lb_render_x).setY(lb_render_y).draw();
+            if (lbIncludedInHotbar) {
+                lbHud.draw(`&6LastBreath: ${lbHitCount}`);
             }
         } else {
-            lbRenderText.setString(`&6LastBreath: ${lbHitCount}`).setX(lb_render_x).setY(lb_render_y).draw();
+            lbHud.draw(`&6LastBreath: ${lbHitCount}`);
         }
     }
 }), () => settings.lbhud);

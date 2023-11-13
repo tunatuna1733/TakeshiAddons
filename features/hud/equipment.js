@@ -1,32 +1,15 @@
 import settings from "../../settings";
 import { data } from "../../utils/data";
+import { Hud } from "../../utils/hud";
+import hud_manager from "../../utils/hud_manager";
 import { registerWhen } from "../../utils/register";
 
 let guiOpened = false;
 
-const getEquipmentHUDRenderCoords = () => {
-    const x = data.equipment.x;
-    const y = data.equipment.y;
-    return [x, y];
-}
-
-const setEquipmentHUDRenderCoords = (x, y) => {
-    data.equipment.x = x;
-    data.equipment.y = y;
-    data.save();
-    return;
-}
+const eqHud = new Hud('equipment', 'None\nNone\nNone\nNone', hud_manager, data);
 
 registerWhen(register('renderOverlay', () => {
-    const x = data.equipment.x;
-    const y1 = data.equipment.y;
-    const y2 = parseInt(y1) + 10;
-    const y3 = parseInt(y1) + 20;
-    const y4 = parseInt(y1) + 30;
-    Renderer.drawStringWithShadow(data.equipment.slot1, x, y1);
-    Renderer.drawStringWithShadow(data.equipment.slot2, x, y2);
-    Renderer.drawStringWithShadow(data.equipment.slot3, x, y3);
-    Renderer.drawStringWithShadow(data.equipment.slot4, x, y4);
+    eqHud.draw(`${data.equipment.slot1}\n${data.equipment.slot2}\n${data.equipment.slot3}\n${data.equipment.slot4}`);
 }), () => settings.equipmenthud);
 
 register('postGuiRender', () => {
@@ -95,19 +78,4 @@ register('postGuiRender', () => {
 
 register('guiClosed', () => {
     guiOpened = false;
-});
-
-export const equipment_hud_move_gui = new Gui();
-const gui_string = 'Drag to move Equipment HUD';
-const gui_text_component = new Text(gui_string, Renderer.screen.getWidth() / 2 - Renderer.getStringWidth(gui_string) * 2, Renderer.screen.getHeight() / 2 - 50).setColor(Renderer.color(255, 55, 55)).setScale(4);
-
-equipment_hud_move_gui.registerDraw(() => {
-    gui_text_component.draw();
-});
-
-register('dragged', (dx, dy) => {
-    if (!equipment_hud_move_gui.isOpen()) return;
-
-    const [current_x, current_y] = getEquipmentHUDRenderCoords();
-    setEquipmentHUDRenderCoords(current_x + dx, current_y + dy);
 });

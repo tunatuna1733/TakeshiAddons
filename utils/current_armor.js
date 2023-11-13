@@ -8,7 +8,7 @@ register('step', () => {
     chestplate = Player.armor.getChestplate();
     leggings = Player.armor.getLeggings();
     boots = Player.armor.getBoots();
-}).setDelay(1);
+}).setFps(3);
 
 const getCurrentArmor = () => {
     return [helmet, chestplate, leggings, boots];
