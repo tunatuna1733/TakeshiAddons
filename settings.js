@@ -68,7 +68,7 @@ class Settings {
     raghud = true;
 
     @SwitchProperty({
-        name: 'Only show when in hotbar',
+        name: 'Ragnarock Axe hotbar only',
         description: 'Only show when Ragnarock Axe is in hotbar',
         category: 'HUD',
         subcategory: 'RagAxe Cooldown'
@@ -116,7 +116,7 @@ class Settings {
     lbhud = true;
 
     @SwitchProperty({
-        name: 'Only show when in hotbar',
+        name: 'Last Breath hotbar only',
         description: 'Only show when Last Breath is in hotbar',
         category: 'HUD',
         subcategory: 'Last Breath HUD'
@@ -137,6 +137,12 @@ class Settings {
         this.initialize(this);
         this.setCategoryDescription('HUD', 'A lot of Overlays');
         this.setCategoryDescription('WIP', 'Takeshi is working on it');
+
+        this.addDependency('Ragnarock Axe hotbar only', 'Ragnarock Axe Cooldown HUD');
+        this.addDependency('Only show when in Kuudra\'s Hollow', 'Lifeline HUD');
+        this.addDependency('Only show with Ragnarock Axe', 'Reaper Armor Cooldown HUD');
+        this.addDependency('Last Breath hotbar only', 'Last Breath Hit Count HUD');
+        this.addDependency('Last Breath reset length', 'Last Breath Hit Count HUD');
     }
 }
 
