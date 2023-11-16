@@ -133,6 +133,14 @@ class Settings {
     })
     lbreset = 10;
 
+    @SwitchProperty({
+        name: 'Kuudra Profit Display',
+        description: 'Display estimated profit of Paid Chest in Kuudra considering attributes',
+        category: 'HUD',
+        subcategory: 'Kuudra Profit'
+    })
+    kuudraprofit = true;
+
     constructor() {
         this.initialize(this);
         this.setCategoryDescription('HUD', 'A lot of Overlays');

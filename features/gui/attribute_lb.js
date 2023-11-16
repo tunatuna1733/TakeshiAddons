@@ -5,6 +5,7 @@ import { CenterConstraint, ConstantColorConstraint, UIBlock, UIContainer, UIRoun
 import getItemId from '../../utils/item_id';
 import { SkyblockAttributes } from '../../utils/attributes';
 import getArmorType from '../../utils/armor_type';
+import formatNumToCoin from '../../utils/format_coin';
 const Color = Java.type('java.awt.Color');
 const UIItem = (item) => {
     return new JavaAdapter(UIBlock, {
@@ -12,10 +13,6 @@ const UIItem = (item) => {
             item.draw(this.getLeft(), this.getTop(), this.getHeight() / 16);
         }
     });
-}
-const formatNumToCoin = (n) => {
-    const integer_n = n.toFixed();
-    return integer_n.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 let guiOpen = false;
@@ -28,7 +25,7 @@ const cardY = 35;
 const gui = new Gui();
 const window = new Window();
 
-const createAuctionCard = (parentCard, auctionData, attributeName, attributeLevel, armorType, itemName) => {
+const createLowestBINCard = (parentCard, auctionData, attributeName, attributeLevel, armorType, itemName) => {
     if (!auctionData.original && !auctionData.type) {
         new UIText('No data :(')
             .setX(new CenterConstraint())
@@ -180,8 +177,8 @@ const createAuctionGui = (item) => {
                 .setColor(new ConstantColorConstraint(Color.RED))
                 .setChildOf(onlyFirstAuctionCard);
         } else {
-            createAuctionCard(onlyFirstAuctionCard, response.data.first, attributeName1, attributeLevel1, armorType, item.getName());
-            createAuctionCard(onlySecondAuctionCard, response.data.second, attributeName2, attributeLevel2, armorType, item.getName());
+            createLowestBINCard(onlyFirstAuctionCard, response.data.first, attributeName1, attributeLevel1, armorType, item.getName());
+            createLowestBINCard(onlySecondAuctionCard, response.data.second, attributeName2, attributeLevel2, armorType, item.getName());
 
             if (response.data.both) {
                 const price = formatNumToCoin(parseInt(response.data.both.price));

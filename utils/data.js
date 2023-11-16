@@ -54,6 +54,11 @@ export let data = new PogObject('TakeshiAddons', {
         x: 600,
         y: 210,
         scale: 1.5
+    },
+    kuudraprofit: {
+        x: 600,
+        y: 150,
+        scale: 1.2
     }
 }, 'data.json');
 
