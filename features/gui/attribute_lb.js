@@ -4,6 +4,7 @@ import { request } from 'axios';
 import { CenterConstraint, ConstantColorConstraint, UIBlock, UIContainer, UIRoundedRectangle, UIText, Window } from '../../../Elementa';
 import getItemId from '../../utils/item_id';
 import { SkyblockAttributes } from '../../utils/attributes';
+import getArmorType from '../../utils/armor_type';
 const Color = Java.type('java.awt.Color');
 const UIItem = (item) => {
     return new JavaAdapter(UIBlock, {
@@ -26,6 +27,55 @@ const cardY = 35;
 
 const gui = new Gui();
 const window = new Window();
+
+const createAuctionCard = (parentCard, auctionData, attributeName, attributeLevel, armorType, itemName) => {
+    if (!auctionData.original && !auctionData.type) {
+        new UIText('No data :(')
+            .setX(new CenterConstraint())
+            .setY(new CenterConstraint())
+            .setTextScale((2).pixels())
+            .setChildOf(parentCard);
+    } else {
+        if (auctionData.type) {
+            const price = formatNumToCoin(parseInt(auctionData.type.price));
+            new UIText(`${armorType} with ${attributeName} ${attributeLevel}`)
+                .setX((10).pixels())
+                .setY((10).pixels())
+                .setChildOf(parentCard);
+            new UIText(`Price: ${price} coins`)
+                .setX((10).pixels())
+                .setY((25).pixels())
+                .setChildOf(parentCard);
+            let currentY = 35;
+            auctionData.type.attributes.forEach((a) => {
+                new UIText(`${a.name} ${a.value}`)
+                    .setX((20).pixels())
+                    .setY(currentY.pixels())
+                    .setChildOf(parentCard);
+                currentY += 10;
+            });
+        }
+        if (auctionData.original) {
+            const price = formatNumToCoin(parseInt(auctionData.original.price));
+            new UIText(`${itemName} ${attributeName} ${attributeLevel}`)
+                .setX((10).pixels())
+                .setY((60).pixels())
+                .setChildOf(parentCard);
+            new UIText(`Price: ${price} coins`)
+                .setX((10).pixels())
+                .setY((75).pixels())
+                .setChildOf(parentCard);
+            let currentY = 85;
+            auctionData.original.attributes.forEach((a) => {
+                new UIText(`${a.name} ${a.value}`)
+                    .setX((20).pixels())
+                    .setY(currentY.pixels())
+                    .setChildOf(parentCard);
+                currentY += 10;
+            });
+        }
+    }
+}
 
 const createAuctionGui = (item) => {
     const itemId = getItemId(item);
@@ -104,6 +154,7 @@ const createAuctionGui = (item) => {
                 .setTextScale((2).pixels())
         );
 
+    const armorType = getArmorType(itemId);
     const [attributeId1, attributeId2] = Object.keys(attributes);
     const [attributeLevel1, attributeLevel2] = [attributes[attributeId1], attributes[attributeId2]];
     let attributeName1 = '', attributeName2 = '';
@@ -118,10 +169,10 @@ const createAuctionGui = (item) => {
         url: url
     }).then((res) => {
         const response = res.data;
+        onlyFirstAuctionCard.clearChildren();
+        onlySecondAuctionCard.clearChildren();
+        bothAuctionCard.clearChildren();
         if (response.success === false) {
-            onlyFirstAuctionCard.clearChildren();
-            onlySecondAuctionCard.clearChildren();
-            bothAuctionCard.clearChildren();
             new UIText('Error :(')
                 .setX(new CenterConstraint())
                 .setY(new CenterConstraint())
@@ -129,46 +180,10 @@ const createAuctionGui = (item) => {
                 .setColor(new ConstantColorConstraint(Color.RED))
                 .setChildOf(onlyFirstAuctionCard);
         } else {
-            if (response.data.first) {
-                onlyFirstAuctionCard.clearChildren();
-                const price = formatNumToCoin(parseInt(response.data.first.price));
-                new UIText(`${attributeName1} ${attributeLevel1}`)
-                    .setX((10).pixels())
-                    .setY((10).pixels())
-                    .setChildOf(onlyFirstAuctionCard);
-                new UIText(`Price: ${price} coins`)
-                    .setX((10).pixels())
-                    .setY((25).pixels())
-                    .setChildOf(onlyFirstAuctionCard);
-            } else {
-                onlyFirstAuctionCard.clearChildren();
-                new UIText('No data :(')
-                    .setX(new CenterConstraint())
-                    .setY(new CenterConstraint())
-                    .setTextScale((2).pixels())
-                    .setChildOf(onlyFirstAuctionCard);
-            }
-            if (response.data.second) {
-                onlySecondAuctionCard.clearChildren();
-                const price = formatNumToCoin(parseInt(response.data.second.price));
-                new UIText(`${attributeName2} ${attributeLevel2}`)
-                    .setX((10).pixels())
-                    .setY((10).pixels())
-                    .setChildOf(onlySecondAuctionCard);
-                new UIText(`Price: ${price} coins`)
-                    .setX((10).pixels())
-                    .setY((25).pixels())
-                    .setChildOf(onlySecondAuctionCard);
-            } else {
-                onlySecondAuctionCard.clearChildren();
-                new UIText('No data :(')
-                    .setX(new CenterConstraint())
-                    .setY(new CenterConstraint())
-                    .setTextScale((2).pixels())
-                    .setChildOf(onlySecondAuctionCard);
-            }
+            createAuctionCard(onlyFirstAuctionCard, response.data.first, attributeName1, attributeLevel1, armorType, item.getName());
+            createAuctionCard(onlySecondAuctionCard, response.data.second, attributeName2, attributeLevel2, armorType, item.getName());
+
             if (response.data.both) {
-                bothAuctionCard.clearChildren();
                 const price = formatNumToCoin(parseInt(response.data.both.price));
                 new UIText(`${attributeName1} 1 & ${attributeName2} 1`)
                     .setX((10).pixels())
@@ -179,7 +194,6 @@ const createAuctionGui = (item) => {
                     .setY((25).pixels())
                     .setChildOf(bothAuctionCard);
             } else {
-                bothAuctionCard.clearChildren();
                 new UIText('No data :(')
                     .setX(new CenterConstraint())
                     .setY(new CenterConstraint())
