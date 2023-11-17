@@ -3,9 +3,11 @@
     "description": "/takeshi for settings",
     "creator": "tunatuna1733",
     "entry": "index.js",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "requires": [
         "PogData",
-        "Vigilance"
+        "Vigilance",
+        "axios",
+        "Elementa"
     ]
 }
