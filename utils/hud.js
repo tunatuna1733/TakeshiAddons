@@ -47,6 +47,9 @@ export class Hud {
                     hudManager.unselectHud();
                 }
             }
+            if (!isDown) {
+                hudManager.unselectHud();
+            }
         });
     }
 

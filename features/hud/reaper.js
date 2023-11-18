@@ -47,7 +47,7 @@ registerWhen(register('step', () => {
             });
         } catch (e) { }
     }
-}).setDelay(1), () => settings.raghud);
+}).setDelay(1), () => settings.reaperhud);
 
 registerWhen(register('renderOverlay', () => {
     const cd = ((25 * 1000 - (Date.now() - reaperUsed)) / 1000).toFixed(1);
