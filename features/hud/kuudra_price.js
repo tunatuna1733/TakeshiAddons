@@ -60,18 +60,23 @@ registerWhen(register('postGuiRender', () => {
                     ChatLib.chat(`URL: ${url}`);
                     return;
                 }
+                const price1 = response.data.first.type.price ? formatNumToCoin(response.data.first.type.price) : 'Unknown';
+                const price2 = response.data.second.type.price ? formatNumToCoin(response.data.second.type.price) : 'Unknown';
+                const priceBoth = response.data.both.price ? formatNumToCoin(response.data.both.price) : 'Unknown';
+                display.clearLines();
                 display.addLines([
                     `${rewardItemName}\n`,
                     ` ${armorType} with ${attributeName1} ${attributeLevel1}\n`,
-                    `  ${formatNumToCoin(response.first.type.price)} coins\n`,
+                    `  ${price1} coins\n`,
                     ` ${armorType} with ${attributeName2} ${attributeLevel2}\n`,
-                    `  ${formatNumToCoin(response.second.type.price)} coins\n\n`,
+                    `  ${price2} coins\n\n`,
                     ` ${rewardItemName} with ${attributeName1} 1 & ${attributeName2} 1\n`,
-                    `  ${formatNumToCoin(response.both.price)} coins`
+                    `  ${priceBoth} coins`
                 ]);
             }).catch((e) => {
                 ChatLib.chat('Could not fetch lowest bin data.');
                 ChatLib.chat(`URL: ${url}`);
+                ChatLib.chat(e);
                 return;
             })
         })

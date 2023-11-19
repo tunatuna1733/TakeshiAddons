@@ -52,8 +52,18 @@ registerWhen(register('step', () => {
 registerWhen(register('renderOverlay', () => {
     const cd = ((25 * 1000 - (Date.now() - reaperUsed)) / 1000).toFixed(1);
     if (cd < 25 - 6) isActive = false;
-    if (settings.reaperrag === true) {
-        if (ragaxeIncluded) {
+    if (reaperIncluded) {
+        if (settings.reaperrag === true) {
+            if (ragaxeIncluded) {
+                if (reaperUsed === 0 || cd < 0) {
+                    reaperHud.draw(`&6Reaper: &aREADY`);
+                } else if (isActive) {
+                    reaperHud.draw(`&6Reaper: &c${cd}s &aACTIVE`);
+                } else {
+                    reaperHud.draw(`&6Reaper: &c${cd}s`);
+                }
+            }
+        } else {
             if (reaperUsed === 0 || cd < 0) {
                 reaperHud.draw(`&6Reaper: &aREADY`);
             } else if (isActive) {
@@ -62,16 +72,8 @@ registerWhen(register('renderOverlay', () => {
                 reaperHud.draw(`&6Reaper: &c${cd}s`);
             }
         }
-    } else {
-        if (reaperUsed === 0 || cd < 0) {
-            reaperHud.draw(`&6Reaper: &aREADY`);
-        } else if (isActive) {
-            reaperHud.draw(`&6Reaper: &c${cd}s &aACTIVE`);
-        } else {
-            reaperHud.draw(`&6Reaper: &c${cd}s`);
-        }
     }
-}), () => (settings.reaperhud && reaperIncluded));
+}), () => settings.reaperhud);
 
 register('worldUnload', () => {
     reaperUsed = 0;
