@@ -1,0 +1,46 @@
+
+[general]
+	terror_hydra_strike_hud = true
+	terror_hydra_hud = true
+	crimson_dominus_hud = true
+	equipment_hud = true
+	armor_hud = true
+
+[hud]
+
+	[hud.reaper_armor_cooldown]
+		reaper_armor_cooldown_hud = true
+		only_show_with_ragnarock_axe = true
+
+	[hud.item_cooldown]
+		ragnarock_axe_cooldown_hud = true
+
+	[hud.last_breath_hud]
+		last_breath_reset_length = 10
+		only_show_when_in_hotbar = true
+		last_breath_hotbar_only = true
+		last_breath_hit_count_hud = true
+		only_show_when_last_breath_is_in_hotbar = true
+
+	[hud.kuudra_profit]
+		kuudra_profit_display = true
+
+	[hud.general_hud]
+		reforge_hud = true
+		equipment_hud = true
+		armor_hud = true
+
+	[hud.kuudra_armor_hud]
+		terror_hydra_strike_hud = true
+		crimson_dominus_hud = true
+
+	[hud.lifeline_display]
+		lifeline_hud = true
+		"only_show_when_in_kuudra's_hollow" = false
+
+	[hud.ragaxe_cooldown]
+		only_show_when_ragnarock_axe_is_in_hotbar = true
+		ragnarock_axe_cooldown_hud = true
+		only_show_when_in_hotbar = true
+		ragnarock_axe_hotbar_only = true
+

@@ -33,6 +33,7 @@ registerWhen(register('postGuiRender', () => {
             }
             const rewardItemId = getItemId(rewardItem);
             if (rewardItemId === 'UNKNOWN_ITEM') return;
+            if (rewardItemId === 'HOLLOW_WAND') return;
             const rewardItemName = rewardItem.getName();
             const armorType = getArmorType(rewardItemId);
             const attributes = rewardItem.getNBT()?.get('tag')?.get('ExtraAttributes')?.get('attributes')?.toObject();
@@ -57,12 +58,20 @@ registerWhen(register('postGuiRender', () => {
                 const response = res.data;
                 if (response.success === false) {
                     ChatLib.chat('Could not fetch lowest bin data.');
-                    ChatLib.chat(`URL: ${url}`);
                     return;
                 }
-                const price1 = response.data.first.type.price ? formatNumToCoin(response.data.first.type.price) : 'Unknown';
-                const price2 = response.data.second.type.price ? formatNumToCoin(response.data.second.type.price) : 'Unknown';
-                const priceBoth = response.data.both.price ? formatNumToCoin(response.data.both.price) : 'Unknown';
+                let price1 = 'Unknown';
+                let price2 = 'Unknown';
+                let priceBoth = 'Unknown';
+                if (response.data.first.type) {
+                    price1 = response.data.first.type.price ? formatNumToCoin(response.data.first.type.price) : 'Unknown';
+                }
+                if (response.data.second.type) {
+                    price2 = response.data.second.type.price ? formatNumToCoin(response.data.second.type.price) : 'Unknown';
+                }
+                if (response.data.both) {
+                    priceBoth = response.data.both.price ? formatNumToCoin(response.data.both.price) : 'Unknown';
+                }
                 display.clearLines();
                 display.addLines([
                     `${rewardItemName}\n`,
@@ -75,10 +84,9 @@ registerWhen(register('postGuiRender', () => {
                 ]);
             }).catch((e) => {
                 ChatLib.chat('Could not fetch lowest bin data.');
-                ChatLib.chat(`URL: ${url}`);
                 ChatLib.chat(e);
                 return;
-            })
+            });
         })
     }
 }), () => settings.kuudraprofit);
