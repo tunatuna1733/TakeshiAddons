@@ -44,3 +44,9 @@
 		only_show_when_in_hotbar = true
 		ragnarock_axe_hotbar_only = true
 
+[dungeon]
+
+	[dungeon.m7_terminal]
+		waypoint_color = "255,255,0,0"
+		m7_terminal_waypoint = true
+

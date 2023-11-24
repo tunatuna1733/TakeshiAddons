@@ -1,5 +1,6 @@
 // @ts-ignore
 import { @Vigilant, @SwitchProperty, @TextProperty, @CheckboxProperty, @ButtonProperty, @SelectorProperty, @SliderProperty, @ColorProperty, @PercentSliderProperty, @DecimalSliderProperty, Color} from "../Vigilance/index";
+const Color = Java.type('java.awt.Color');
 
 @Vigilant("TakeshiAddons", "§d§lTakeshiAddons", {
     getCategoryComparetor: () => (a, b) => {
@@ -141,9 +142,26 @@ class Settings {
     })
     kuudraprofit = true;
 
+    @SwitchProperty({
+        name: 'M7 Terminal Waypoint',
+        description: 'Display your terminal waypoints according to your class',
+        category: 'Dungeon',
+        subcategory: 'M7 Terminal'
+    })
+    terminalwaypoint = true;
+
+    @ColorProperty({
+        name: 'Waypoint Color',
+        description: 'Change terminal waypoint color',
+        category: 'Dungeon',
+        subcategory: 'M7 Terminal'
+    })
+    terminalcolor = Color.RED;
+
     constructor() {
         this.initialize(this);
         this.setCategoryDescription('HUD', 'A lot of Overlays');
+        this.setCategoryDescription('Dungeon', 'Dungeon related things');
         this.setCategoryDescription('WIP', 'Takeshi is working on it');
 
         this.addDependency('Ragnarock Axe hotbar only', 'Ragnarock Axe Cooldown HUD');

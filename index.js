@@ -18,6 +18,8 @@ import "./features/hud/kuudra_price";
 
 import "./features/gui/attribute_lb";
 
+import "./features/dungeon/terminal";
+
 data.autosave();
 
 register('command', (args) => {
