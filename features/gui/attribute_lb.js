@@ -1,4 +1,4 @@
-const lbKey = Client.getKeyBindFromKey(Keyboard.KEY_K, 'View Lowest bin with attribute considered');
+const lbKey = Client.getKeyBindFromKey(Keyboard.KEY_NONE, 'View Lowest bin with attribute considered', 'TakeshiAddons');
 
 import { request } from 'axios';
 import { CenterConstraint, ConstantColorConstraint, UIBlock, UIContainer, UIRoundedRectangle, UIText, Window } from '../../../Elementa';
