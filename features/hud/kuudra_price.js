@@ -26,6 +26,8 @@ registerWhen(register('postGuiRender', () => {
             if (inventory.getStackInSlot(inventory.getSize() - 37) == null) return;
             guiLoaded.unregister();
             display.clearLines();
+            display.setRenderX(data.kuudraprofit.x);
+            display.setRenderY(data.kuudraprofit.y);
             const rewardItem = inventory.getStackInSlot(11);
             if (!rewardItem) {
                 ChatLib.chat('Could not find the primary reward item');
