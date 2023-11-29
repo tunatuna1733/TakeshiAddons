@@ -8,6 +8,9 @@
 
 [hud]
 
+	[hud.flare_timer]
+		flare_timer = true
+
 	[hud.reaper_armor_cooldown]
 		reaper_armor_cooldown_hud = true
 		only_show_with_ragnarock_axe = true

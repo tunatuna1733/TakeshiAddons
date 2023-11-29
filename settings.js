@@ -135,6 +135,14 @@ class Settings {
     lbreset = 10;
 
     @SwitchProperty({
+        name: 'Flare Timer',
+        description: 'Display active flare timer',
+        category: 'HUD',
+        subcategory: 'Flare Timer'
+    })
+    flaretimer = true;
+
+    @SwitchProperty({
         name: 'Kuudra Profit Display',
         description: 'Display estimated profit of Paid Chest in Kuudra considering attributes',
         category: 'HUD',

@@ -2,8 +2,8 @@ import PogObject from 'PogData';
 
 export let data = new PogObject('TakeshiAddons', {
     armor: {
-        x: 600,
-        y: 400,
+        x: 0.6,
+        y: 0.9,
         scale: 1.5
     },
     equipment: {
@@ -15,50 +15,55 @@ export let data = new PogObject('TakeshiAddons', {
         id2: '',
         id3: '',
         id4: '',
-        x: 650,
-        y: 400,
+        x: 0.7,
+        y: 0.8,
         scale: 1.5
     },
     terror: {
-        x: 600,
-        y: 300,
+        x: 0.6,
+        y: 0.5,
         scale: 1.5
     },
     crimson: {
-        x: 600,
-        y: 320,
+        x: 0.6,
+        y: 0.55,
         scale: 1.5
     },
     reforge: {
         power: '',
-        x: 20,
-        y: 480,
+        x: 0.1,
+        y: 0.9,
         scale: 1.5
     },
     ragnarock: {
-        x: 600,
-        y: 280,
+        x: 0.6,
+        y: 0.6,
         scale: 1.5
     },
     lifeline: {
-        x: 600,
-        y: 250,
+        x: 0.6,
+        y: 0.65,
         scale: 1.5
     },
     reaper: {
-        x: 600,
-        y: 230,
+        x: 0.6,
+        y: 0.7,
         scale: 1.5
     },
     lastbreath: {
-        x: 600,
-        y: 210,
+        x: 0.6,
+        y: 0.8,
         scale: 1.5
     },
     kuudraprofit: {
-        x: 600,
-        y: 150,
+        x: 0.3,
+        y: 0.4,
         scale: 1.2
+    },
+    flare: {
+        x: 0.3,
+        y: 0.9,
+        scale: 1.5
     }
 }, 'data.json');
 

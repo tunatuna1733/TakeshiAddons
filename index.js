@@ -15,6 +15,7 @@ import "./features/hud/lifeline";
 import "./features/hud/reaper";
 import "./features/hud/last_breath";
 import "./features/hud/kuudra_price";
+import "./features/hud/flare";
 
 import "./features/gui/attribute_lb";
 

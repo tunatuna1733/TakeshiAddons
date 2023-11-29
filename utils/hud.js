@@ -56,12 +56,16 @@ export class Hud {
     getCoords = () => {
         const x = this.data[this.name].x;
         const y = this.data[this.name].y;
-        return [x, y];
+        const width = Renderer.screen.getWidth();
+        const height = Renderer.screen.getHeight();
+        return [width * x, height * y];
     }
 
     setCoords = (x, y) => {
-        this.data[this.name].x = x;
-        this.data[this.name].y = y;
+        const width = Renderer.screen.getWidth();
+        const height = Renderer.screen.getHeight();
+        this.data[this.name].x = x / width;
+        this.data[this.name].y = y / height;
         this.data.save();
         return;
     }
