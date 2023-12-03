@@ -1,9 +1,10 @@
-export class ArmorHud {
+export class InventoryHud {
     constructor(name, hudManager, data) {
         this.name = name;
         this.hudManager = hudManager;
         this.data = data;
         this.editBox = new Rectangle(0x9696964d, 0, 0, 0, 0);
+        this.editText = new Text('Inventory HUD').setShadow(true);
         register('dragged', (dx, dy) => {
             if (!this.hudManager.isEditing) return;
             if (hudManager.selectedHudName === this.name) {
@@ -15,8 +16,8 @@ export class ArmorHud {
             if (!this.hudManager.isEditing) return;
             const [current_x, current_y] = this.getCoords();
             const scale = this.getScale();
-            const width = 16 * scale;
-            const height = 16 * 4 * scale;
+            const width = 298 * scale;
+            const height = 100 * scale;
             if (x >= current_x - 3 && x <= current_x + width + 3 && y >= current_y - 3 && y <= current_y + height + 3) {
                 if (d === 1 && scale < 10)
                     this.setScale(scale + 0.1);
@@ -28,16 +29,17 @@ export class ArmorHud {
             if (!this.hudManager.isEditing) return;
             const [current_x, current_y] = this.getCoords();
             const scale = this.getScale();
-            const width = 16 * scale;
-            const height = 16 * 4 * scale;
+            const width = 298 * scale;
+            const height = 100 * scale;
             this.editBox.setX(current_x - 3).setY(current_y - 3).setWidth(width + 3).setHeight(height + 3).draw();
+            this.editText.setX(current_x).setY(current_y).draw();
         });
         register('clicked', (x, y, b, isDown) => {
             if (!this.hudManager.isEditing) return;
             const [current_x, current_y] = this.getCoords();
             const scale = this.getScale();
-            const width = 16 * scale;
-            const height = 16 * 4 * scale;
+            const width = 298 * scale;
+            const height = 100 * scale;
             if (x >= current_x - 3 && x <= current_x + width + 3 && y >= current_y - 3 && y <= current_y + height + 3) {
                 if (isDown && hudManager.selectedHudName === '') {
                     hudManager.selectHud(this.name);
@@ -77,16 +79,5 @@ export class ArmorHud {
         this.data[this.name].scale = scale;
         this.data.save();
         return;
-    }
-
-    draw = (helmet, chestplate, leggings, boots) => {
-        if (!this.hudManager.isEditing) {
-            const [x, y] = this.getCoords();
-            const scale = this.getScale();
-            helmet?.draw(x, y, scale);
-            chestplate?.draw(x, y + 16 * scale, scale);
-            leggings?.draw(x, y + 16 * scale * 2, scale);
-            boots?.draw(x, y + 16 * scale * 3, scale);
-        }
     }
 }

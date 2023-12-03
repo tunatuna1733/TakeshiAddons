@@ -1,7 +1,7 @@
 /// <reference types="../CTAutocomplete" />
 /// <reference lib="es2015" />
 
-import { data } from "./utils/data";
+import { data, resetData } from "./utils/data";
 import settings from "./settings";
 import { setRegisters } from "./utils/register";
 import hud_manager from "./utils/hud_manager";
@@ -16,6 +16,7 @@ import "./features/hud/reaper";
 import "./features/hud/last_breath";
 import "./features/hud/kuudra_price";
 import "./features/hud/flare";
+import "./features/hud/inventory";
 
 import "./features/gui/attribute_lb";
 
@@ -28,11 +29,29 @@ register('command', (args) => {
         settings.openGUI();
     } else if (args == 'movehud') {
         hud_manager.openGui();
+    } else if (args == 'resetloc') {
+        resetData();
     }
 }).setCommandName('takeshi', true).setAliases('takeshiaddons');
 
+register('gameLoad', () => {
+    if (!data.first) {
+        ChatLib.command('takeshi resetloc', true);
+        data.first = true;
+        data.save();
+        ChatLib.chat('&a-------------------------------------');
+        ChatLib.chat('      &bWelcome to &dTakeshiAddons!');
+        ChatLib.chat('&a Type /takeshi to open settings');
+        ChatLib.chat('&a-------------------------------------');
+    }
+});
+
 register('guiClosed', (event) => {
     if (event.toString().includes("vigilance")) setRegisters();
+});
+
+register('gameUnload', () => {
+    data.save();
 });
 
 register('command', () => {

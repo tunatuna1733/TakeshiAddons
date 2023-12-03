@@ -1,10 +1,11 @@
 import PogObject from 'PogData';
 
-export let data = new PogObject('TakeshiAddons', {
+const defaultData = {
+    first: false,
     armor: {
         x: 0.6,
-        y: 0.9,
-        scale: 1.5
+        y: 0.75,
+        scale: 2.0
     },
     equipment: {
         slot1: '',
@@ -17,56 +18,66 @@ export let data = new PogObject('TakeshiAddons', {
         id4: '',
         x: 0.7,
         y: 0.8,
-        scale: 1.5
+        scale: 1.1
     },
     terror: {
         x: 0.6,
-        y: 0.5,
+        y: 0.33,
         scale: 1.5
     },
     crimson: {
         x: 0.6,
-        y: 0.55,
+        y: 0.37,
         scale: 1.5
     },
     reforge: {
         power: '',
-        x: 0.1,
-        y: 0.9,
+        x: 0.02,
+        y: 0.95,
         scale: 1.5
     },
     ragnarock: {
         x: 0.6,
-        y: 0.6,
+        y: 0.41,
         scale: 1.5
     },
     lifeline: {
         x: 0.6,
-        y: 0.65,
+        y: 0.45,
         scale: 1.5
     },
     reaper: {
         x: 0.6,
-        y: 0.7,
+        y: 0.49,
         scale: 1.5
     },
     lastbreath: {
         x: 0.6,
-        y: 0.8,
+        y: 0.53,
         scale: 1.5
     },
     kuudraprofit: {
-        x: 0.3,
-        y: 0.4,
+        x: 0.23,
+        y: 0.34,
         scale: 1.2
     },
     flare: {
         x: 0.3,
-        y: 0.9,
+        y: 0.93,
         scale: 1.5
+    },
+    inventory: {
+        x: 0.6,
+        y: 0.2,
+        scale: 1.0
     }
-}, 'data.json');
+};
 
-register('gameUnload', () => {
+export let data = new PogObject('TakeshiAddons', defaultData, 'data.json');
+
+export const resetData = () => {
+    Object.keys(defaultData).forEach((k) => {
+        data[k] = defaultData[k];
+    });
     data.save();
-});
+};
