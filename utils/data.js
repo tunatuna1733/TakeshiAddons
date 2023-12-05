@@ -1,10 +1,11 @@
 import PogObject from 'PogData';
 
-export let data = new PogObject('TakeshiAddons', {
+const defaultData = {
+    first: false,
     armor: {
-        x: 600,
-        y: 400,
-        scale: 1.5
+        x: 0.6,
+        y: 0.75,
+        scale: 2.0
     },
     equipment: {
         slot1: '',
@@ -15,53 +16,85 @@ export let data = new PogObject('TakeshiAddons', {
         id2: '',
         id3: '',
         id4: '',
-        x: 650,
-        y: 400,
-        scale: 1.5
+        x: 0.7,
+        y: 0.8,
+        scale: 1.1
     },
     terror: {
-        x: 600,
-        y: 300,
+        x: 0.6,
+        y: 0.33,
         scale: 1.5
     },
     crimson: {
-        x: 600,
-        y: 320,
+        x: 0.6,
+        y: 0.37,
         scale: 1.5
     },
     reforge: {
         power: '',
-        x: 20,
-        y: 480,
+        x: 0.02,
+        y: 0.95,
         scale: 1.5
     },
     ragnarock: {
-        x: 600,
-        y: 280,
+        x: 0.6,
+        y: 0.41,
         scale: 1.5
     },
     lifeline: {
-        x: 600,
-        y: 250,
+        x: 0.6,
+        y: 0.45,
         scale: 1.5
     },
     reaper: {
-        x: 600,
-        y: 230,
+        x: 0.6,
+        y: 0.49,
         scale: 1.5
     },
     lastbreath: {
-        x: 600,
-        y: 210,
+        x: 0.6,
+        y: 0.53,
         scale: 1.5
     },
     kuudraprofit: {
-        x: 600,
-        y: 150,
+        x: 0.23,
+        y: 0.34,
+        scale: 1.2
+    },
+    flare: {
+        x: 0.3,
+        y: 0.93,
+        scale: 1.5
+    },
+    inventory: {
+        x: 0.6,
+        y: 0.2,
+        scale: 1.0
+    },
+    composter: {
+        x: 0.9,
+        y: 0.1,
         scale: 1.2
     }
-}, 'data.json');
+};
 
-register('gameUnload', () => {
+const defaultGardenData = {
+    upgrades: {
+        speed: 1,
+        drop: 1,
+        fuel: 1,
+        organic: 1,
+        cost: 1
+    },
+    endTime: 0
+}
+
+export let data = new PogObject('TakeshiAddons', defaultData, 'data.json');
+export let gardenData = new PogObject('TakeshiAddons', defaultGardenData, 'garden.json');
+
+export const resetData = () => {
+    Object.keys(defaultData).forEach((k) => {
+        data[k] = defaultData[k];
+    });
     data.save();
-});
+};

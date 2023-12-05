@@ -26,7 +26,7 @@ class Settings {
         category: 'HUD',
         subcategory: 'General HUD'
     })
-    armorhud = true;
+    armorhud = false;
 
     @SwitchProperty({
         name: 'Equipment HUD',
@@ -34,7 +34,7 @@ class Settings {
         category: 'HUD',
         subcategory: 'General HUD'
     })
-    equipmenthud = true;
+    equipmenthud = false;
 
     @SwitchProperty({
         name: 'Reforge HUD',
@@ -42,7 +42,7 @@ class Settings {
         category: 'HUD',
         subcategory: 'General HUD'
     })
-    reforgehud = true;
+    reforgehud = false;
 
     @SwitchProperty({
         name: 'Crimson Dominus HUD',
@@ -50,7 +50,7 @@ class Settings {
         category: 'HUD',
         subcategory: 'Kuudra Armor HUD'
     })
-    crimsonhud = true;
+    crimsonhud = false;
 
     @SwitchProperty({
         name: 'Terror Hydra Strike HUD',
@@ -58,7 +58,7 @@ class Settings {
         category: 'HUD',
         subcategory: 'Kuudra Armor HUD'
     })
-    terrorhud = true;
+    terrorhud = false;
 
     @SwitchProperty({
         name: 'Ragnarock Axe Cooldown HUD',
@@ -66,7 +66,7 @@ class Settings {
         category: 'HUD',
         subcategory: 'RagAxe Cooldown'
     })
-    raghud = true;
+    raghud = false;
 
     @SwitchProperty({
         name: 'Ragnarock Axe hotbar only',
@@ -82,7 +82,7 @@ class Settings {
         category: 'HUD',
         subcategory: 'Lifeline Display'
     })
-    lifelinehud = true;
+    lifelinehud = false;
 
     @SwitchProperty({
         name: 'Only show when in Kuudra\'s Hollow',
@@ -98,7 +98,7 @@ class Settings {
         category: 'HUD',
         subcategory: 'Reaper Armor Cooldown'
     })
-    reaperhud = true;
+    reaperhud = false;
 
     @SwitchProperty({
         name: 'Only show with Ragnarock Axe',
@@ -114,7 +114,7 @@ class Settings {
         category: 'HUD',
         subcategory: 'Last Breath HUD'
     })
-    lbhud = true;
+    lbhud = false;
 
     @SwitchProperty({
         name: 'Last Breath hotbar only',
@@ -127,12 +127,20 @@ class Settings {
     @SliderProperty({
         name: 'Last Breath reset length',
         description: 'Specify the number of seconds which resets the hit count of the Last Breath since the first hit',
-        min: 5,
-        max: 50,
+        min: 1,
+        max: 30,
         category: 'HUD',
         subcategory: 'Last Breath HUD'
     })
-    lbreset = 10;
+    lbreset = 5;
+
+    @SwitchProperty({
+        name: 'Flare Timer',
+        description: 'Display active flare timer',
+        category: 'HUD',
+        subcategory: 'Flare Timer'
+    })
+    flaretimer = false;
 
     @SwitchProperty({
         name: 'Kuudra Profit Display',
@@ -140,7 +148,7 @@ class Settings {
         category: 'HUD',
         subcategory: 'Kuudra Profit'
     })
-    kuudraprofit = true;
+    kuudraprofit = false;
 
     @SwitchProperty({
         name: 'M7 Terminal Waypoint',
@@ -148,15 +156,39 @@ class Settings {
         category: 'Dungeon',
         subcategory: 'M7 Terminal'
     })
-    terminalwaypoint = true;
+    terminalwaypoint = false;
 
     @ColorProperty({
-        name: 'Waypoint Color',
+        name: 'Terminal Waypoint Color',
         description: 'Change terminal waypoint color',
         category: 'Dungeon',
         subcategory: 'M7 Terminal'
     })
     terminalcolor = Color.RED;
+
+    @SwitchProperty({
+        name: 'Inventory HUD',
+        description: 'Shows your current inventory(UAUOR)',
+        category: 'HUD',
+        subcategory: 'Inventory'
+    })
+    inventory = false;
+
+    @ColorProperty({
+        name: 'Inventory HUD Color',
+        description: 'Change inventory hud background color',
+        category: 'HUD',
+        subcategory: 'Inventory'
+    })
+    inventorycolor = new Color(0.9, 0.9, 0.9, 0.3);
+
+    @SwitchProperty({
+        name: 'Composter Time HUD',
+        description: 'Shows remaining time of composter',
+        category: 'HUD',
+        subcategory: 'Composter'
+    })
+    composter = false;
 
     constructor() {
         this.initialize(this);
@@ -169,6 +201,8 @@ class Settings {
         this.addDependency('Only show with Ragnarock Axe', 'Reaper Armor Cooldown HUD');
         this.addDependency('Last Breath hotbar only', 'Last Breath Hit Count HUD');
         this.addDependency('Last Breath reset length', 'Last Breath Hit Count HUD');
+        this.addDependency('Terminal Waypoint Color', 'M7 Terminal Waypoint');
+        this.addDependency('Inventory HUD Color', 'Inventory HUD');
     }
 }
 
