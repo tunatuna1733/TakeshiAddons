@@ -9,6 +9,7 @@
         "Vigilance",
         "axios",
         "Elementa",
-        "BeaconBeam"
+        "BeaconBeam",
+        "numeraljs"
     ]
 }

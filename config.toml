@@ -51,6 +51,9 @@
 		only_show_when_in_hotbar = true
 		ragnarock_axe_hotbar_only = true
 
+	[hud.composter]
+		composter_time_hud = true
+
 [dungeon]
 
 	[dungeon.m7_terminal]

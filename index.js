@@ -1,7 +1,7 @@
 /// <reference types="../CTAutocomplete" />
 /// <reference lib="es2015" />
 
-import { data, resetData } from "./utils/data";
+import { data, gardenData, resetData } from "./utils/data";
 import settings from "./settings";
 import { setRegisters } from "./utils/register";
 import hud_manager from "./utils/hud_manager";
@@ -17,12 +17,14 @@ import "./features/hud/last_breath";
 import "./features/hud/kuudra_price";
 import "./features/hud/flare";
 import "./features/hud/inventory";
+import "./features/hud/composter";
 
 import "./features/gui/attribute_lb";
 
 import "./features/dungeon/terminal";
 
 data.autosave();
+gardenData.autosave();
 
 register('command', (args) => {
     if (!args) {
@@ -52,6 +54,7 @@ register('guiClosed', (event) => {
 
 register('gameUnload', () => {
     data.save();
+    gardenData.save();
 });
 
 register('command', () => {
