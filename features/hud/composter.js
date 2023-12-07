@@ -112,8 +112,12 @@ register('postGuiRender', () => {
 
 registerWhen(register('renderOverlay', () => {
     const remainingTime = gardenData.endTime - Date.now() / 1000;
-    const formattedTime = numeral(remainingTime).format('00:00:00');
-    composterHud.draw(`&6${formattedTime}`);
+    if (remainingTime > 0) {
+        const formattedTime = numeral(remainingTime).format('00:00:00');
+        composterHud.draw(`&6${formattedTime}`);
+    } else {
+        composterHud.draw(`&6Organic or Fuel empty!`);
+    }
 }), () => settings.composter);
 
 register('guiClosed', () => {
