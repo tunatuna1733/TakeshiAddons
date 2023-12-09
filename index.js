@@ -20,6 +20,7 @@ import "./features/hud/inventory";
 import "./features/hud/composter";
 
 import "./features/gui/attribute_lb";
+import "./features/gui/auctions";
 
 import "./features/dungeon/terminal";
 
