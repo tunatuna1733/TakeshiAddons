@@ -18,6 +18,7 @@ import "./features/hud/kuudra_price";
 import "./features/hud/flare";
 import "./features/hud/inventory";
 import "./features/hud/composter";
+import "./features/hud/dropship";
 
 import "./features/gui/attribute_lb";
 import "./features/gui/auctions";

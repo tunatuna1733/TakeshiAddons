@@ -11,6 +11,9 @@
 	[hud.flare_timer]
 		flare_timer = true
 
+	[hud.dropship_warning]
+		dropship_warning = true
+
 	[hud.reaper_armor_cooldown]
 		reaper_armor_cooldown_hud = true
 		only_show_with_ragnarock_axe = true
@@ -52,7 +55,7 @@
 		ragnarock_axe_hotbar_only = true
 
 	[hud.composter]
-		composter_time_hud = true
+		composter_time_hud = false
 
 [dungeon]
 

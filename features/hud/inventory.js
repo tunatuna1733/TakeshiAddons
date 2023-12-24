@@ -31,7 +31,10 @@ registerWhen(register('renderOverlay', () => {
                 item.draw(x + (1 + 33 * j) * scale, y + (1 + 33 * i) * scale, scale * 2);
                 GlStateManager.func_179097_i();
                 if (item.getItemStack().func_77985_e() && item.getStackSize() !== 1) {
-                    Renderer.drawStringWithShadow(item.getStackSize(), x + (1 + 33 * j + 15) * scale, y + (1 + 33 * i + 15) * scale);
+                    if (item.getStackSize().toString().length > 1)
+                        Renderer.drawStringWithShadow(item.getStackSize(), x + (1 + 33 * j + 15) * scale, y + (1 + 33 * i + 15) * scale);
+                    else
+                        Renderer.drawStringWithShadow(item.getStackSize(), x + (1 + 33 * j + 20) * scale, y + (1 + 33 * i + 15) * scale);
                 }
                 GlStateManager.func_179126_j();
             };

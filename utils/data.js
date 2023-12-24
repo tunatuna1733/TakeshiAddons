@@ -75,6 +75,11 @@ const defaultData = {
         x: 0.9,
         y: 0.1,
         scale: 1.2
+    },
+    dropship: {
+        x: 0.6,
+        y: 0.57,
+        scale: 1.5
     }
 };
 

@@ -86,7 +86,7 @@ registerWhen(register('soundPlay', (position, name) => {
             }
         }
     }
-    if (name === 'random.successful_hit') {
+    if (name === 'random.successful_hit' || name === 'tile.piston.in') {
         if (lbShotCount > 0) {
             lbShotCount--;
             lbHitCount++;

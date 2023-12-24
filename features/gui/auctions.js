@@ -6,6 +6,7 @@ import {
     ChildBasedMaxSizeConstraint,
     ChildBasedSizeConstraint,
     ConstantColorConstraint,
+    FillConstraint,
     ScrollComponent,
     SiblingConstraint,
     SubtractiveConstraint,
@@ -13,7 +14,7 @@ import {
     UIContainer,
     UIRoundedRectangle,
     UIText,
-    Window,
+    WindowScreen,
     animate
 } from '../../../Elementa';
 import { getHour } from "../../utils/time";
@@ -24,9 +25,11 @@ const StringSelection = Java.type('java.awt.datatransfer.StringSelection');
 const EssentialAPI = Java.type('gg.essential.api.EssentialAPI');
 const EssentialNotifications = EssentialAPI.getNotifications();
 
-let guiOpen = false;
-const gui = new Gui();
-const window = new Window();
+let itemId = '';
+let attributeId1 = '';
+let attributeLevel1 = '';
+let attributeId2 = '';
+let attributeLevel2 = '';
 
 const createAuctionCard = (auctionData) => {
     const uuid = auctionData.uuid;
@@ -39,12 +42,15 @@ const createAuctionCard = (auctionData) => {
     const cardWidth = 200;
     const cardHeight = 150;
 
-    const card = UIRoundedRectangle(10.0)
+    const card = new UIRoundedRectangle(2.0)
         .setWidth(cardWidth.pixels())
         .setHeight(cardHeight.pixels())
-        .setColor(Color.GRAY);
+        .setColor(Color.GRAY)
+        .onMouseClick(() => {
+            copyButton.grabWindowFocus();
+        });
 
-    const textContainer = UIContainer()
+    const textContainer = new UIContainer()
         .setX((2).pixels())
         .setY((2).pixels())
         .setWidth(new SubtractiveConstraint((100).percent(), (4).pixels()))
@@ -57,25 +63,25 @@ const createAuctionCard = (auctionData) => {
         .setTextScale((1.5).pixels())
         .setChildOf(textContainer);
 
-    new UIText(`Price: &6${price}`, false)
+    new UIText(`Price: ${price} coins`, false)
         .setX((2).pixels())
-        .setY(new SiblingConstraint() + (1).pixels())
+        .setY(new AdditiveConstraint(new SiblingConstraint(), (1).pixels()))
         .setChildOf(textContainer);
 
-    new UIText(`Ends in: ${getHour(endUnix - Date.now())}`, false)
+    new UIText(`Ends in: ${getHour(endUnix - Date.now())} hours`, false)
         .setX((2).pixels())
-        .setY(new SiblingConstraint() + (1).pixels())
+        .setY(new AdditiveConstraint(new SiblingConstraint(), (1).pixels()))
         .setChildOf(textContainer);
 
     if (attributes) {
         new UIText('Attributes: ', false)
             .setX((2).pixels())
-            .setY(new SiblingConstraint() + (1).pixels())
+            .setY(new AdditiveConstraint(new SiblingConstraint(), (1).pixels()))
             .setChildOf(textContainer);
         attributes.forEach((attribute) => {
             new UIText(`${attribute.name} ${attribute.value}`, false)
                 .setX((4).pixels())
-                .setY(new SiblingConstraint() + (1).pixels())
+                .setY(new AdditiveConstraint(new SiblingConstraint(), (1).pixels()))
                 .setChildOf(textContainer);
         });
     }
@@ -88,7 +94,7 @@ const createAuctionCard = (auctionData) => {
         .onMouseClick(() => {
             const selection = new StringSelection(`/viewauction ${uuid}`);
             Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, null);
-            EssentialNotifications.push('Copied viewauction command!', 3);
+            EssentialNotifications.push('Command copied!', 'Viewauction command was copied to your clipboard', 3);
         })
         .onMouseEnter((comp) => {
             animate(comp, (animation) => {
@@ -119,74 +125,67 @@ const createAuctionCard = (auctionData) => {
     return card;
 }
 
-const createAuctionView = ({
-    itemId,
-    attributeId1,
-    attributeLevel1,
-    attributeId2,
-    attributeLevel2,
-}) => {
-    const container = new UIContainer()
-        .setX((0).pixels())
-        .setY((0).pixels())
-        .setWidth(Renderer.screen.getWidth())
-        .setHeight(Renderer.screen.getHeight())
-        .setChildOf(window);
-    let url = `https://skyblock-hono-production.up.railway.app/lb?itemId=${itemId}`;
-    if (attributeId1) url += `&attributeId1=${attributeId1}&attributeLevel1=${attributeLevel1}`;
-    if (attributeId2) url += `&attributeId2=${attributeId2}&attributeLevel2=${attributeLevel2}`;
-    request({
-        url: url
-    }).then((res) => {
-        const response = res.data;
-        if (response.success === false) {
-            console.log(response);
-            new UIText('Error :(')
-                .setX(new CenterConstraint())
-                .setY(new CenterConstraint())
-                .setTextScale((2).pixels())
-                .setColor(new ConstantColorConstraint(Color.RED))
-                .setChildOf(container);
-
-        } else {
-            const scroll = new ScrollComponent().setChildOf(container);
-            const rows = [];
-            response.data.forEach((auctionData, i) => {
-                if (i % 4 == 0) rows.push(
-                    new UIContainer()
-                        .setX(new CenterConstraint())
-                        .setY(new SiblingConstraint() + (5).pixels())
-                        .setWidth(new ChildBasedMaxSizeConstraint() + (10).pixels())
-                        .setHeight(new ChildBasedMaxSizeConstraint() + (10).pixels())
-                        .setChildOf(scroll)
-                );
-                createAuctionCard(auctionData)
-                    .setX(new SiblingConstraint() + (5).pixels())
-                    .setY((5).pixels())
-                    .setChildOf(rows[(i - i % 4) / 4]);
-            });
-        }
-    })
-}
-
-register('renderOverlay', () => {
-    if (guiOpen) {
-        gui.open();
-        window.draw();
+const AuctionView = new JavaAdapter(WindowScreen, {
+    init() {
+        this.getWindow().clearChildren();
+        const container = new UIBlock()
+            .setColor(new Color(30 / 255, 30 / 255, 30 / 255, 0.8))
+            .setX((0).pixels())
+            .setY((0).pixels())
+            .setWidth(Renderer.screen.getWidth().pixels())
+            .setHeight(Renderer.screen.getHeight().pixels())
+            .setChildOf(this.getWindow());
+        let url = `https://skyblock-hono-production.up.railway.app/auctions?itemId=${itemId}`;
+        if (attributeId1) url += `&attributeId1=${attributeId1}&attributeLevel1=${attributeLevel1}`;
+        if (attributeId2) url += `&attributeId2=${attributeId2}&attributeLevel2=${attributeLevel2}`;
+        request({
+            url: url
+        }).then((res) => {
+            const response = res.data;
+            if (response.success === false) {
+                console.log(url);
+                console.dir(response, { depth: null });
+                new UIText('Error :(')
+                    .setX(new CenterConstraint())
+                    .setY(new CenterConstraint())
+                    .setTextScale((2).pixels())
+                    .setColor(new ConstantColorConstraint(Color.RED))
+                    .setChildOf(container);
+            } else {
+                console.log(`got ${response.data.length} auctions`);
+                const scroll = new ScrollComponent()
+                    .setX((0).pixels())
+                    .setY((0).pixels())
+                    .setWidth(new FillConstraint())
+                    .setHeight(new FillConstraint())
+                    .setChildOf(container);
+                const rows = []
+                response.data.forEach((auctionData, i) => {
+                    if (i % 4 === 0) {
+                        rows.push(new UIContainer()
+                            .setX((50).pixels())
+                            .setY(new AdditiveConstraint(new SiblingConstraint(), (5).pixels()))
+                            .setWidth(new AdditiveConstraint(new ChildBasedMaxSizeConstraint(), (10).pixels()))
+                            .setHeight(new AdditiveConstraint(new ChildBasedMaxSizeConstraint(), (10).pixels()))
+                            .setChildOf(scroll));
+                        console.log(i);
+                    }
+                    createAuctionCard(auctionData)
+                        .setX(new AdditiveConstraint(new SiblingConstraint(), (5).pixels()))
+                        .setY((5).pixels())
+                        .setChildOf(rows[(i - i % 4) / 4]);
+                });
+            }
+        });
     }
-}).setPriority(Priority.LOWEST);
-
-register('guiClosed', (e) => {
-    if (guiOpen && e.class.isInstance(gui)) guiOpen = false;
-});
+})
 
 register('command', (...args) => {
-    createAuctionView({
-        itemId: args[0],
-        attributeId1: args[1],
-        attributeLevel1: args[2],
-        attributeId2: args[3],
-        attributeLevel2: args[4],
-    })
-    guiOpen = true;
+    itemId = args[0];
+    attributeId1 = args[1];
+    attributeLevel1 = args[2];
+    attributeId2 = args[3];
+    attributeLevel2 = args[4];
+    AuctionView.init();
+    GuiHandler.openGui(AuctionView);
 }).setCommandName('openaucview');

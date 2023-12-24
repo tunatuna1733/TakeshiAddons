@@ -213,6 +213,14 @@ class Settings {
     })
     composter = false;
 
+    @SwitchProperty({
+        name: 'Dropship Warning',
+        description: 'Warns you 5 seconds before bomb will be dropped. Works even if the dropship is not rendered.',
+        category: 'HUD',
+        subcategory: 'Dropship Warning'
+    })
+    dropship = false;
+
     constructor() {
         this.initialize(this);
         this.setCategoryDescription('HUD', 'A lot of Overlays');
