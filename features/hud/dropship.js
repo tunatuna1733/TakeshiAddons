@@ -7,11 +7,11 @@ import { registerWhen } from "../../utils/register";
 const dropshipHud = new Hud('dropship', '&aBomb drop in &60s', hud_manager, data);
 let isDropshipApproaching = false;
 let dropshipTimer = 0;
-const warnTime = 43 * 1000;    //ms
 let warned = false;
 const explosionTime = 48 * 1000;
 
 registerWhen(register('renderOverlay', () => {
+    let warnTime = settings.dropshiptime * 1000;
     if (isDropshipApproaching) {
         if (Date.now() - dropshipTimer > explosionTime) {
             isDropshipApproaching = false;
@@ -20,7 +20,7 @@ registerWhen(register('renderOverlay', () => {
         dropshipHud.draw(`&aBomb drop in &6${((explosionTime - (Date.now() - dropshipTimer)) / 1000).toFixed(1)}s`);
         if (Date.now() - dropshipTimer > warnTime && !warned) {
             World.playSound('note.pling', 4, 1.5);
-            Client.showTitle('&cBomb Drop in 5 secs!', '', 0, 3 * 20, 0);
+            Client.showTitle(`&cBomb Drop in ${settings.dropshiptime} secs!`, '', 0, 3 * 20, 0);
             warned = true;
         }
     }

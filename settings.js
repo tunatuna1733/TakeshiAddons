@@ -27,7 +27,6 @@ class Settings {
         subcategory: 'General HUD'
     })
     armorhud = false;
-    armorhud = false;
 
     @SwitchProperty({
         name: 'Equipment HUD',
@@ -35,7 +34,6 @@ class Settings {
         category: 'HUD',
         subcategory: 'General HUD'
     })
-    equipmenthud = false;
     equipmenthud = false;
 
     @SwitchProperty({
@@ -45,7 +43,6 @@ class Settings {
         subcategory: 'General HUD'
     })
     reforgehud = false;
-    reforgehud = false;
 
     @SwitchProperty({
         name: 'Crimson Dominus HUD',
@@ -53,7 +50,6 @@ class Settings {
         category: 'HUD',
         subcategory: 'Kuudra Armor HUD'
     })
-    crimsonhud = false;
     crimsonhud = false;
 
     @SwitchProperty({
@@ -63,7 +59,6 @@ class Settings {
         subcategory: 'Kuudra Armor HUD'
     })
     terrorhud = false;
-    terrorhud = false;
 
     @SwitchProperty({
         name: 'Ragnarock Axe Cooldown HUD',
@@ -71,7 +66,6 @@ class Settings {
         category: 'HUD',
         subcategory: 'RagAxe Cooldown'
     })
-    raghud = false;
     raghud = false;
 
     @SwitchProperty({
@@ -89,7 +83,6 @@ class Settings {
         subcategory: 'Lifeline Display'
     })
     lifelinehud = false;
-    lifelinehud = false;
 
     @SwitchProperty({
         name: 'Only show when in Kuudra\'s Hollow',
@@ -105,7 +98,6 @@ class Settings {
         category: 'HUD',
         subcategory: 'Reaper Armor Cooldown'
     })
-    reaperhud = false;
     reaperhud = false;
 
     @SwitchProperty({
@@ -123,7 +115,6 @@ class Settings {
         subcategory: 'Last Breath HUD'
     })
     lbhud = false;
-    lbhud = false;
 
     @SwitchProperty({
         name: 'Last Breath hotbar only',
@@ -138,20 +129,9 @@ class Settings {
         description: 'Specify the number of seconds which resets the hit count of the Last Breath since the first hit',
         min: 1,
         max: 30,
-        min: 1,
-        max: 30,
         category: 'HUD',
         subcategory: 'Last Breath HUD'
     })
-    lbreset = 5;
-
-    @SwitchProperty({
-        name: 'Flare Timer',
-        description: 'Display active flare timer',
-        category: 'HUD',
-        subcategory: 'Flare Timer'
-    })
-    flaretimer = false;
     lbreset = 5;
 
     @SwitchProperty({
@@ -169,7 +149,6 @@ class Settings {
         subcategory: 'Kuudra Profit'
     })
     kuudraprofit = false;
-    kuudraprofit = false;
 
     @SwitchProperty({
         name: 'M7 Terminal Waypoint',
@@ -178,10 +157,8 @@ class Settings {
         subcategory: 'M7 Terminal'
     })
     terminalwaypoint = false;
-    terminalwaypoint = false;
 
     @ColorProperty({
-        name: 'Terminal Waypoint Color',
         name: 'Terminal Waypoint Color',
         description: 'Change terminal waypoint color',
         category: 'Dungeon',
@@ -215,11 +192,21 @@ class Settings {
 
     @SwitchProperty({
         name: 'Dropship Warning',
-        description: 'Warns you 5 seconds before bomb will be dropped. Works even if the dropship is not rendered.',
+        description: 'Warns you specified seconds before bomb will be dropped. Works even if the dropship is not rendered.',
         category: 'HUD',
         subcategory: 'Dropship Warning'
     })
     dropship = false;
+
+    @SliderProperty({
+        name: 'Warning time',
+        description: 'Specify the number of seconds for warning before dropship explosion',
+        min: 3,
+        max: 10,
+        category: 'HUD',
+        subcategory: 'Dropship Warning'
+    })
+    dropshiptime = 5;
 
     constructor() {
         this.initialize(this);
@@ -236,6 +223,7 @@ class Settings {
         this.addDependency('Inventory HUD Color', 'Inventory HUD');
         this.addDependency('Terminal Waypoint Color', 'M7 Terminal Waypoint');
         this.addDependency('Inventory HUD Color', 'Inventory HUD');
+        this.addDependency('Warning time', 'Dropship Warning');
     }
 }
 

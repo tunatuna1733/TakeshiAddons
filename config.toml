@@ -13,6 +13,7 @@
 
 	[hud.dropship_warning]
 		dropship_warning = true
+		warning_time = 5
 
 	[hud.reaper_armor_cooldown]
 		reaper_armor_cooldown_hud = true
