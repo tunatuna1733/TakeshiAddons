@@ -208,6 +208,14 @@ class Settings {
     })
     dropshiptime = 5;
 
+    @SwitchProperty({
+        name: 'Relic Waypoint',
+        description: 'Display Wither King relic waypoint based on your class.',
+        category: 'Dungeon',
+        subcategory: 'Relic Waypoint'
+    })
+    relicwaypoint = false;
+
     constructor() {
         this.initialize(this);
         this.setCategoryDescription('HUD', 'A lot of Overlays');

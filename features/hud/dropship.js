@@ -4,7 +4,7 @@ import { Hud } from "../../utils/hud";
 import hud_manager from "../../utils/hud_manager";
 import { registerWhen } from "../../utils/register";
 
-const dropshipHud = new Hud('dropship', '&aBomb drop in &60s', hud_manager, data);
+const dropshipHud = new Hud('dropship', '&aBomb drops in &60s', hud_manager, data);
 let isDropshipApproaching = false;
 let dropshipTimer = 0;
 let warned = false;
@@ -12,13 +12,13 @@ const explosionTime = 48 * 1000;
 
 registerWhen(register('renderOverlay', () => {
     let warnTime = settings.dropshiptime * 1000;
-    if (isDropshipApproaching) {
+    if (isDropshipApproaching && Player.getX() > 20) {
         if (Date.now() - dropshipTimer > explosionTime) {
             isDropshipApproaching = false;
             warned = false;
         }
-        dropshipHud.draw(`&aBomb drop in &6${((explosionTime - (Date.now() - dropshipTimer)) / 1000).toFixed(1)}s`);
-        if (Date.now() - dropshipTimer > warnTime && !warned) {
+        dropshipHud.draw(`&aBomb drops in &6${((explosionTime - (Date.now() - dropshipTimer)) / 1000).toFixed(1)}s`);
+        if (Date.now() - dropshipTimer > (explosionTime - warnTime) && !warned) {
             World.playSound('note.pling', 4, 1.5);
             Client.showTitle(`&cBomb Drop in ${settings.dropshiptime} secs!`, '', 0, 3 * 20, 0);
             warned = true;

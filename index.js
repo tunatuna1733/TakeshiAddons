@@ -24,6 +24,7 @@ import "./features/gui/attribute_lb";
 import "./features/gui/auctions";
 
 import "./features/dungeon/terminal";
+import "./features/dungeon/relic";
 
 data.autosave();
 gardenData.autosave();
