@@ -1,7 +1,7 @@
 import { request } from 'axios';
 import settings from '../../settings';
 import getArmorType from '../../utils/armor_type';
-import { SkyblockAttributes } from "../../utils/attributes";
+import { SkyblockAttributes } from "../../data/attributes";
 import { data } from '../../utils/data';
 import formatNumToCoin from '../../utils/format_coin';
 import { Hud } from '../../utils/hud';

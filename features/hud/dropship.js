@@ -16,12 +16,13 @@ registerWhen(register('renderOverlay', () => {
         if (Date.now() - dropshipTimer > explosionTime) {
             isDropshipApproaching = false;
             warned = false;
-        }
-        dropshipHud.draw(`&aBomb drops in &6${((explosionTime - (Date.now() - dropshipTimer)) / 1000).toFixed(1)}s`);
-        if (Date.now() - dropshipTimer > (explosionTime - warnTime) && !warned) {
-            World.playSound('note.pling', 4, 1.5);
-            Client.showTitle(`&cBomb Drop in ${settings.dropshiptime} secs!`, '', 0, 3 * 20, 0);
-            warned = true;
+        } else {
+            dropshipHud.draw(`&aBomb drops in &6${((explosionTime - (Date.now() - dropshipTimer)) / 1000).toFixed(1)}s`);
+            if (Date.now() - dropshipTimer > (explosionTime - warnTime) && !warned) {
+                World.playSound('note.pling', 4, 1.5);
+                Client.showTitle(`&cBomb Drop in ${settings.dropshiptime} secs!`, '', 0, 3 * 20, 0);
+                warned = true;
+            }
         }
     }
 }), () => settings.dropship);

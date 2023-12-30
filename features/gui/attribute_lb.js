@@ -3,7 +3,7 @@ const lbKey = new KeyBind('View Lowest bin with attribute considered', Keyboard.
 import { request } from 'axios';
 import { CenterConstraint, ConstantColorConstraint, UIBlock, UIContainer, UIRoundedRectangle, UIText, Window } from '../../../Elementa';
 import getItemId from '../../utils/item_id';
-import { SkyblockAttributes } from '../../utils/attributes';
+import { SkyblockAttributes } from '../../data/attributes';
 import getArmorType from '../../utils/armor_type';
 import formatNumToCoin from '../../utils/format_coin';
 const Color = Java.type('java.awt.Color');

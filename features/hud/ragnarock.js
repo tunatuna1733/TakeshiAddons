@@ -2,6 +2,7 @@ import settings from "../../settings";
 import { data } from "../../utils/data";
 import { Hud } from "../../utils/hud";
 import hud_manager from "../../utils/hud_manager";
+import getItemId from "../../utils/item_id";
 import { registerWhen } from "../../utils/register";
 
 const ragHud = new Hud('ragnarock', '&6Ragnarock: &aREADY', hud_manager, data);
@@ -25,6 +26,8 @@ registerWhen(register('renderOverlay', () => {
             if (lastUsed === 0 || cd < 0) {
                 ragHud.draw(`&6Ragnarock: &aREADY`);
                 isUsed = false;
+            } else if (cd > 10) {
+                ragHud.draw(`&6Ragnarock: &c${cd}s &aACTIVE`);
             } else {
                 ragHud.draw(`&6Ragnarock: &c${cd}s`);
             }
@@ -34,6 +37,8 @@ registerWhen(register('renderOverlay', () => {
         if (lastUsed === 0 || cd < 0) {
             ragHud.draw(`&6Ragnarock: &aREADY`);
             isUsed = false;
+        } else if (cd > 10) {
+            ragHud.draw(`&6Ragnarock: &c${cd}s &aACTIVE`);
         } else {
             ragHud.draw(`&6Ragnarock: &c${cd}s`);
         }
@@ -47,7 +52,8 @@ registerWhen(register('step', () => {
             const hotbarItem = Player.getInventory().getStackInSlot(i);
             if (hotbarItem) {
                 try {
-                    const itemID = hotbarItem.getNBT().getCompoundTag('tag').getCompoundTag('ExtraAttributes').getString('id');
+                    const itemID = getItemId(hotbarItem);
+                    // const itemID = hotbarItem.getNBT().getCompoundTag('tag').getCompoundTag('ExtraAttributes').getString('id');
                     if (itemID == 'RAGNAROCK_AXE') ragaxeIncluded = true;
                 } catch (e) {
                     // maybe not skyblock item ?
