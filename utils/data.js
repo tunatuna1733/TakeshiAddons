@@ -2,6 +2,7 @@ import PogObject from 'PogData';
 
 const defaultData = {
     first: false,
+    helpPrinted: false,
     armor: {
         x: 0.6,
         y: 0.75,
@@ -79,6 +80,11 @@ const defaultData = {
     dropship: {
         x: 0.6,
         y: 0.57,
+        scale: 1.5
+    },
+    soulflow: {
+        x: 0.8,
+        y: 0.6,
         scale: 1.5
     }
 };

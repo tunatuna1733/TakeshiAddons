@@ -216,6 +216,14 @@ class Settings {
     })
     relicwaypoint = false;
 
+    @SwitchProperty({
+        name: 'Soulflow HUD',
+        description: 'Shows your remaining soulflow.',
+        category: 'HUD',
+        subcategory: 'Soulflow'
+    })
+    soulflow = false;
+
     constructor() {
         this.initialize(this);
         this.setCategoryDescription('HUD', 'A lot of Overlays');
