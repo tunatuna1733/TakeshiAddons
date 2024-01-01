@@ -1,0 +1,17 @@
+{
+    "0.2.0": [
+        "Fixed Dropship Timer warns specified seconds after launch instead of before explosion.",
+        "",
+        "Added 'Active' display to Ragnarock Axe HUD like Reaper Armor HUD.",
+        "Added Soulflow HUD.",
+        "Added Energized Chunk Warning in Kuudra T5."
+    ],
+    "0.1.9": [
+        "Added Terminal Beacons that are showed based on your class.",
+        "Added Flare timer.",
+        "Added Inventory HUD.",
+        "Added Composter timer HUD.",
+        "Added Dropship Warning HUD based on timer.",
+        "(WIP) Added auction viewer with attribute search function."
+    ]
+}

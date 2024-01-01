@@ -6,7 +6,7 @@ import { registerWhen } from "../../utils/register";
 
 const flareHud = new Hud('flare', '&aWarning 0s', hud_manager, data);
 
-// ref: ct module GriffinOwO
+// Credit: ct module GriffinOwO
 const ArmorStand = Java.type('net.minecraft.entity.item.EntityArmorStand');
 let flare = {
     type: 0,    // 0: none, 1: warning, 2: alert, 3: sos
