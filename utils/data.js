@@ -3,6 +3,7 @@ import PogObject from 'PogData';
 const defaultData = {
     first: false,
     helpPrinted: false,
+    version: '0.1.9',
     armor: {
         x: 0.6,
         y: 0.75,

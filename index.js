@@ -1,6 +1,7 @@
 /// <reference types="../CTAutocomplete" />
 /// <reference lib="es2015" />
 
+import { request } from 'axios';
 import { data, gardenData, resetData } from "./utils/data";
 import settings from "./settings";
 import { setRegisters } from "./utils/register";
@@ -38,6 +39,16 @@ import { CHAT_PREFIX } from "./data/chat";
 data.autosave();
 gardenData.autosave();
 
+const getVersion = () => {
+    const metadata = FileLib.read('./config/ChatTriggers/modules/TakeshiAddons/metadata.json');
+    if (metadata === '') {
+        console.log('[Takeshi] Failed to read metadata file.');
+        return '0.0.0';
+    }
+    const metadataJson = JSON.parse(metadata);
+    return metadataJson.version;
+}
+
 const printHelp = () => {
     ChatLib.chat('&dTakeshiAddons Help');
     ChatLib.chat('&7|  &eRun &c"/takeshi" &eto open settings.');
@@ -46,6 +57,26 @@ const printHelp = () => {
     ChatLib.chat('&7|  &c"/cpp"&7: &aCopy your purse text on your scoreboard');
     ChatLib.chat('&7| &bKeybind');
     ChatLib.chat('&7|  &aYou can bind a key for opening kuudra item price gui.');
+}
+
+const printChangelog = (version) => {
+    request({
+        url: 'https://raw.githubusercontent.com/tunatuna1733/TakeshiAddons/master/changelog.json'
+    }).then((res) => {
+        const response = res.data;
+        const changelogs = response[version];
+        if (!changelogs) {
+            console.log(`[Takeshi] Failed to fetch changelog for version ${version}`);
+            return;
+        }
+        ChatLib.chat(`&dTakeshiAddons Changelog &av${version}`);
+        changelogs.forEach((changelog) => {
+            ChatLib.chat(`&7- &e${changelog}`);
+        });
+    }).catch((e) => {
+        console.log(`[Takeshi] Failed to fetch changelog for version ${version}`);
+        console.dir(e, { depth: null });
+    })
 }
 
 register('command', (args) => {
@@ -74,6 +105,12 @@ register('gameLoad', () => {
         ChatLib.command('takeshi help', true);
         data.helpPrinted = true;
         data.save();
+    }
+    const currentVersion = getVersion();
+    if (currentVersion !== data.version) {
+        data.version = currentVersion;
+        data.save();
+        printChangelog();
     }
 });
 
