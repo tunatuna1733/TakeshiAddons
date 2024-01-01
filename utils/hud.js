@@ -1,4 +1,11 @@
 export class Hud {
+    /**
+     * Class for text hud.
+     * @param {string} name 
+     * @param {string} defaultText 
+     * @param {HudManager} hudManager 
+     * @param {any} data 
+     */
     constructor(name, defaultText, hudManager, data) {
         this.name = name;
         this.defaultText = defaultText;
@@ -53,6 +60,10 @@ export class Hud {
         });
     }
 
+    /**
+     * Get hud coords.
+     * @returns 
+     */
     getCoords = () => {
         const x = this.data[this.name].x;
         const y = this.data[this.name].y;
@@ -61,6 +72,12 @@ export class Hud {
         return [width * x, height * y];
     }
 
+    /**
+     * Set hud coords.
+     * @param {number} x 
+     * @param {number} y 
+     * @returns 
+     */
     setCoords = (x, y) => {
         const width = Renderer.screen.getWidth();
         const height = Renderer.screen.getHeight();
@@ -70,17 +87,30 @@ export class Hud {
         return;
     }
 
+    /**
+     * Set hud scale.
+     * @returns {number} scale
+     */
     getScale = () => {
         const scale = this.data[this.name].scale;
         return scale;
     }
 
+    /**
+     * Get hud scale.
+     * @param {number} scale 
+     * @returns 
+     */
     setScale = (scale) => {
         this.data[this.name].scale = scale;
         this.data.save();
         return;
     }
 
+    /**
+     * Draw hud.
+     * @param {string} text 
+     */
     draw = (text) => {
         if (!this.hudManager.isEditing) {
             const [x, y] = this.getCoords();

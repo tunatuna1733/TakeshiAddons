@@ -224,6 +224,14 @@ class Settings {
     })
     soulflow = false;
 
+    @SwitchProperty({
+        name: 'Energized Chunk Warning',
+        description: 'Display warning when any energized chunks are near you.',
+        category: 'Kuudra',
+        subcategory: 'Energized Chunk'
+    })
+    energizedchunk = false;
+
     constructor() {
         this.initialize(this);
         this.setCategoryDescription('HUD', 'A lot of Overlays');

@@ -30,6 +30,9 @@ import "./features/gui/auctions";
 
 import "./features/dungeon/terminal";
 import "./features/dungeon/relic";
+
+import "./features/kuudra/energized_chunk";
+
 import { CHAT_PREFIX } from "./data/chat";
 
 data.autosave();

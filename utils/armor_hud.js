@@ -1,4 +1,10 @@
 export class ArmorHud {
+    /**
+     * Class for Armor hud.
+     * @param {string} name 
+     * @param {HudManager} hudManager 
+     * @param {any} data 
+     */
     constructor(name, hudManager, data) {
         this.name = name;
         this.hudManager = hudManager;
@@ -51,6 +57,10 @@ export class ArmorHud {
         });
     }
 
+    /**
+     * Get hud coords.
+     * @returns 
+     */
     getCoords = () => {
         const x = this.data[this.name].x;
         const y = this.data[this.name].y;
@@ -59,6 +69,12 @@ export class ArmorHud {
         return [width * x, height * y];
     }
 
+    /**
+     * Set hud coords.
+     * @param {number} x 
+     * @param {number} y 
+     * @returns 
+     */
     setCoords = (x, y) => {
         const width = Renderer.screen.getWidth();
         const height = Renderer.screen.getHeight();
@@ -68,17 +84,33 @@ export class ArmorHud {
         return;
     }
 
+    /**
+     * Get hud scale.
+     * @returns {number} scale
+     */
     getScale = () => {
         const scale = this.data[this.name].scale;
         return scale;
     }
 
+    /**
+     * Set hud scale.
+     * @param {number} scale 
+     * @returns 
+     */
     setScale = (scale) => {
         this.data[this.name].scale = scale;
         this.data.save();
         return;
     }
 
+    /**
+     * 
+     * @param {Item} helmet 
+     * @param {Item} chestplate 
+     * @param {Item} leggings 
+     * @param {Item} boots 
+     */
     draw = (helmet, chestplate, leggings, boots) => {
         if (!this.hudManager.isEditing) {
             const [x, y] = this.getCoords();

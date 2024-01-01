@@ -1,4 +1,10 @@
 export class InventoryHud {
+    /**
+     * Class for inventory hud.
+     * @param {string} name 
+     * @param {HudManager} hudManager 
+     * @param {any} data 
+     */
     constructor(name, hudManager, data) {
         this.name = name;
         this.hudManager = hudManager;
@@ -53,6 +59,10 @@ export class InventoryHud {
         });
     }
 
+    /**
+     * Get hud coords.
+     * @returns 
+     */
     getCoords = () => {
         const x = this.data[this.name].x;
         const y = this.data[this.name].y;
@@ -61,6 +71,12 @@ export class InventoryHud {
         return [width * x, height * y];
     }
 
+    /**
+     * Set hud coords.
+     * @param {number} x 
+     * @param {number} y 
+     * @returns 
+     */
     setCoords = (x, y) => {
         const width = Renderer.screen.getWidth();
         const height = Renderer.screen.getHeight();
@@ -70,11 +86,20 @@ export class InventoryHud {
         return;
     }
 
+    /**
+     * Get hud scale.
+     * @returns {number} scale
+     */
     getScale = () => {
         const scale = this.data[this.name].scale;
         return scale;
     }
 
+    /**
+     * Set hud scale.
+     * @param {number} scale 
+     * @returns 
+     */
     setScale = (scale) => {
         this.data[this.name].scale = scale;
         this.data.save();

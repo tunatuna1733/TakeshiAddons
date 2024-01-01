@@ -1,3 +1,8 @@
+/**
+ * Get the formatted armor part name from item ID. 
+ * @param {string} itemId 
+ * @returns 
+ */
 const getArmorType = (itemId) => {
     if (itemId.endsWith('HELMET')) return 'Helmet';
     else if (itemId.endsWith('CHESTPLATE')) return 'Chestplate';
