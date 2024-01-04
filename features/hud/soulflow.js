@@ -14,7 +14,6 @@ let soulflow = 0;
 const updateSoulflow = () => {
     lastChecked = Date.now();
     const url = `https://soulflow-api.tunatuna1733.workers.dev/soulflow?mcid=${Player.getName()}`;
-    console.log(url);
     request({
         url: url
     }).then((res) => {
