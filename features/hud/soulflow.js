@@ -5,7 +5,7 @@ import { Hud } from "../../utils/hud";
 import hud_manager from "../../utils/hud_manager";
 import { registerWhen } from "../../utils/register";
 
-const soulflowHud = new Hud('soulflow', '00000⸎', hud_manager, data);
+const soulflowHud = new Hud('soulflow', '&300000⸎', hud_manager, data);
 
 const soulflowImage = new Image('Soulflow', 'https://wiki.hypixel.net/images/a/af/SkyBlock_items_soulflow.png');
 let lastChecked = 0;
@@ -13,13 +13,16 @@ let soulflow = 0;
 
 const updateSoulflow = () => {
     lastChecked = Date.now();
+    const url = `https://soulflow-api.tunatuna1733.workers.dev/soulflow?mcid=${Player.getName()}`;
+    console.log(url);
     request({
-        url: `https://soulflow-api.tunatuna1733.workers.dev/soulflow?mcid=${Player.getName()}`
+        url: url
     }).then((res) => {
         const response = res.data;
         if (response.success === false) {
             console.log('[Takeshi] Could not get soulflow.');
             console.log(response.error);
+            console.dir(response.detail, { depth: null });
             return;
         }
         soulflow = response.soulflow;
@@ -40,8 +43,8 @@ registerWhen(register('worldLoad', () => {
 }), () => settings.soulflow);
 
 registerWhen(register('renderOverlay', () => {
-    soulflowHud.draw(`${soulflow}⸎`);
+    soulflowHud.draw(`&3${soulflow}⸎`);
     const coords = soulflowHud.getCoords();
-    const size = 16 * soulflowHud.getScale();
-    soulflowImage.draw(coords[0] - size, coords[1], size, size);
+    const size = 8 * soulflowHud.getScale();
+    soulflowImage.draw(coords[0] - size - 2, coords[1], size, size);
 }), () => settings.soulflow);

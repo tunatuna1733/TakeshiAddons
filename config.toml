@@ -6,6 +6,11 @@
 	equipment_hud = true
 	armor_hud = true
 
+[kuudra]
+
+	[kuudra.energized_chunk]
+		energized_chunk_warning = false
+
 [hud]
 
 	[hud.flare_timer]
@@ -19,15 +24,11 @@
 		reaper_armor_cooldown_hud = true
 		only_show_with_ragnarock_axe = true
 
+	[hud.soulflow]
+		soulflow_hud = true
+
 	[hud.item_cooldown]
 		ragnarock_axe_cooldown_hud = true
-
-	[hud.last_breath_hud]
-		last_breath_reset_length = 10
-		only_show_when_in_hotbar = true
-		last_breath_hotbar_only = true
-		last_breath_hit_count_hud = true
-		only_show_when_last_breath_is_in_hotbar = true
 
 	[hud.kuudra_profit]
 		kuudra_profit_display = true
@@ -49,6 +50,13 @@
 		inventory_hud_color = "76,224,201,201"
 		inventory_hud = true
 
+	[hud.last_breath_hud]
+		last_breath_reset_length = 10
+		only_show_when_in_hotbar = true
+		last_breath_hotbar_only = true
+		last_breath_hit_count_hud = true
+		only_show_when_last_breath_is_in_hotbar = true
+
 	[hud.ragaxe_cooldown]
 		only_show_when_ragnarock_axe_is_in_hotbar = true
 		ragnarock_axe_cooldown_hud = true
@@ -64,4 +72,7 @@
 		waypoint_color = "255,255,0,0"
 		terminal_waypoint_color = "255,255,0,0"
 		m7_terminal_waypoint = true
+
+	[dungeon.relic_waypoint]
+		relic_waypoint = false
 
