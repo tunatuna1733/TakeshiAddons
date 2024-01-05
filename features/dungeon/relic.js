@@ -1,27 +1,28 @@
 import settings from "../../settings";
-import { getCurrentClass, isInM7 } from "../../utils/dungeon";
+import { getCurrentClass, inM7 } from "../../utils/dungeon";
 import { registerWhen } from "../../utils/register";
 import renderBeaconBeam from "../../../BeaconBeam";
+import { CHAT_PREFIX } from "../../data/chat";
 const Color = Java.type('java.awt.Color');
 
 let isRelicPhase = false;
 let isRelicPicked = false;
 
 const relicCoords = {
-    'Tank': { x: 27, y: 0, z: 94 },
-    'Mage': { x: 84, y: 0, z: 94 },
-    'Berserk': { x: 27, y: 0, z: 59 },
-    'Archer': { x: 85, y: 0, z: 56 },
-    'Healer': { x: 56, y: 0, z: 125 }
+    'Tank': { x: 19, y: 0, z: 94 },
+    'Mage': { x: 92, y: 0, z: 94 },
+    'Berserk': { x: 93, y: 0, z: 56 },
+    'Archer': { x: 19, y: 0, z: 59 },
+    'Healer': { x: 56, y: 0, z: 133 }
 }
 
 // TODO
 const relicPlaceCoords = {
-    'Tank': { x: 27, y: 0, z: 94 },
-    'Mage': { x: 84, y: 0, z: 94 },
-    'Berserk': { x: 27, y: 0, z: 59 },
-    'Archer': { x: 85, y: 0, z: 56 },
-    'Healer': { x: 56, y: 0, z: 125 }
+    'Tank': { x: 49, y: 0, z: 43 },
+    'Mage': { x: 59, y: 0, z: 43 },
+    'Berserk': { x: 57, y: 0, z: 41 },
+    'Archer': { x: 51, y: 0, z: 41 },
+    'Healer': { x: 54, y: 0, z: 40 }
 }
 
 const relicColor = {
@@ -33,8 +34,9 @@ const relicColor = {
 }
 
 registerWhen(register('renderWorld', () => {
-    if (isInM7() && isRelicPhase && !isRelicPicked) {
-        const currentClass = getCurrentClass();
+    const currentClass = getCurrentClass();
+    if (currentClass === '') return;
+    if (inM7() && isRelicPhase && !isRelicPicked) {
         renderBeaconBeam(
             relicCoords[currentClass].x,
             relicCoords[currentClass].y,
@@ -46,8 +48,7 @@ registerWhen(register('renderWorld', () => {
             false
         );
     }
-    else if (isInM7() && isRelicPhase && isRelicPicked) {
-        const currentClass = getCurrentClass();
+    else if (inM7() && isRelicPhase && isRelicPicked) {
         renderBeaconBeam(
             relicPlaceCoords[currentClass].x,
             relicPlaceCoords[currentClass].y,
@@ -74,3 +75,7 @@ registerWhen(register('chat', (player, color) => {
         isRelicPicked = true;
     }
 }).setChatCriteria('${player} picked the Corrupted ${color} Relic!'), () => settings.relicwaypoint);
+
+register('command', () => {
+    ChatLib.chat(`${CHAT_PREFIX} isRelicPhase: ${isRelicPhase}, isRelicPicked: ${isRelicPicked}`);
+}).setCommandName('getrelicstate', true);

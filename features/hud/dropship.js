@@ -12,7 +12,7 @@ const explosionTime = 48 * 1000;
 
 registerWhen(register('renderOverlay', () => {
     let warnTime = settings.dropshiptime * 1000;
-    if (isDropshipApproaching && Player.getX() > 20) {
+    if (isDropshipApproaching && Player.getY() > 20) {
         if (Date.now() - dropshipTimer > explosionTime) {
             isDropshipApproaching = false;
             warned = false;

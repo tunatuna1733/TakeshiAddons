@@ -1,24 +1,26 @@
-import { CHAT_PREFIX } from "../data/chat";
-
 const BossStatus = Java.type('net.minecraft.entity.boss.BossStatus');
 
 export const getCurrentClass = () => {
     const tabNames = TabList.getNames();
     const partyNumLine = tabNames.find((name) => name.includes('§r§b§lParty §r§f('));
     let currentClass = 'Unknown';
-    if (partyNumLine) {
-        const partyNum = partyNumLine.match('/\d+/g');
-        for (let i = 0; i < partyNum; i++) {
-            if (partyNumLine.removeFormatting().includes(Player.getName())) {
-                currentClass = tabNames[i * 4 + 1].removeFormatting().match('/\((\S+)\s+(\S+)\)/');
+    try {
+        if (partyNumLine) {
+            const partyNum = partyNumLine.match(/\d+/g)[0];
+            for (let i = 0; i < partyNum; i++) {
+                if (tabNames[i * 4 + 1].removeFormatting().includes(Player.getName())) {
+                    currentClass = tabNames[i * 4 + 1].removeFormatting().match(/\((\S+)\s+(\S+)\)/)[1];
+                }
             }
         }
+    } catch (e) {
+        // maybe not loaded
     }
     return currentClass;
 }
 
 // M7
-export const isInM7 = () => {
+export const inM7 = () => {
     let inM7 = false;
     const lines = Scoreboard.getLines();
     lines.forEach((line) => {
@@ -27,7 +29,7 @@ export const isInM7 = () => {
     return inM7;
 };
 
-export const isInGoldor = () => {
+export const inGoldor = () => {
     const bossName = BossStatus.field_82827_c;
     if (!bossName) return false;
     if (bossName.removeFormatting().includes('Goldor')) return true;
@@ -38,8 +40,3 @@ export const isInWitherKing = () => {
     // TODO
     return false;
 }
-
-// debug------------------------------------
-register('command', () => {
-    ChatLib.chat(`${CHAT_PREFIX} Current Class: ${getCurrentClass()}`);
-}).setCommandName('getcurrentclass', true);

@@ -166,6 +166,42 @@ class Settings {
     })
     terminalcolor = Color.RED;
 
+    @SelectorProperty({
+        name: 'First Terminal Class',
+        description: 'Select which class should do the first terminals',
+        category: 'Dungeon',
+        subcategory: 'M7 Terminal',
+        options: ['Tank', 'Mage', 'Berserk', 'Archer']
+    })
+    firstterminal = 0;
+
+    @SelectorProperty({
+        name: 'Second Terminal Class',
+        description: 'Select which class should do the second terminals',
+        category: 'Dungeon',
+        subcategory: 'M7 Terminal',
+        options: ['Tank', 'Mage', 'Berserk', 'Archer']
+    })
+    secondterminal = 1;
+
+    @SelectorProperty({
+        name: 'Third Terminal Class',
+        description: 'Select which class should do the third terminals',
+        category: 'Dungeon',
+        subcategory: 'M7 Terminal',
+        options: ['Tank', 'Mage', 'Berserk', 'Archer']
+    })
+    thirdterminal = 2;
+
+    @SelectorProperty({
+        name: 'Fourth Terminal Class',
+        description: 'Select which class should do the fourth terminals',
+        category: 'Dungeon',
+        subcategory: 'M7 Terminal',
+        options: ['Tank', 'Mage', 'Berserk', 'Archer']
+    })
+    fourthterminal = 3;
+
     @SwitchProperty({
         name: 'Inventory HUD',
         description: 'Shows your current inventory(UAUOR)',
@@ -193,7 +229,7 @@ class Settings {
     @SwitchProperty({
         name: 'Dropship Warning',
         description: 'Warns you specified seconds before bomb will be dropped. Works even if the dropship is not rendered.',
-        category: 'HUD',
+        category: 'Kuudra',
         subcategory: 'Dropship Warning'
     })
     dropship = false;
@@ -203,7 +239,7 @@ class Settings {
         description: 'Specify the number of seconds for warning before dropship explosion',
         min: 3,
         max: 10,
-        category: 'HUD',
+        category: 'Kuudra',
         subcategory: 'Dropship Warning'
     })
     dropshiptime = 5;

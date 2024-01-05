@@ -8,8 +8,12 @@
 
 [kuudra]
 
+	[kuudra.dropship_warning]
+		dropship_warning = true
+		warning_time = 5
+
 	[kuudra.energized_chunk]
-		energized_chunk_warning = false
+		energized_chunk_warning = true
 
 [hud]
 
@@ -71,8 +75,12 @@
 	[dungeon.m7_terminal]
 		waypoint_color = "255,255,0,0"
 		terminal_waypoint_color = "255,255,0,0"
+		second_terminal_class = 1
 		m7_terminal_waypoint = true
+		first_terminal_class = 0
+		fourth_terminal_class = 3
+		third_terminal_class = 2
 
 	[dungeon.relic_waypoint]
-		relic_waypoint = false
+		relic_waypoint = true
 

@@ -1,5 +1,5 @@
 /// <reference types="../CTAutocomplete" />
-/// <reference lib="es2015" />
+/// <reference lib="es2022" />
 
 import { request } from 'axios';
 import { data, gardenData, resetData } from "./utils/data";
