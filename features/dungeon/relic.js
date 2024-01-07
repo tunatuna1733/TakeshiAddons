@@ -76,6 +76,11 @@ registerWhen(register('chat', (player, color) => {
     }
 }).setChatCriteria('${player} picked the Corrupted ${color} Relic!'), () => settings.relicwaypoint);
 
+registerWhen(register('worldUnload', () => {
+    isRelicPhase = false;
+    isRelicPicked = false;
+}), () => settings.relicwaypoint);
+
 register('command', () => {
     ChatLib.chat(`${CHAT_PREFIX} isRelicPhase: ${isRelicPhase}, isRelicPicked: ${isRelicPicked}`);
 }).setCommandName('getrelicstate', true);
