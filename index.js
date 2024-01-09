@@ -135,7 +135,7 @@ register('command', () => {
     const lines = Scoreboard.getLines(false);
     lines.map((line) => {
         if (line.getName().includes('Piggy') || line.getName().includes('Purse')) {
-            const selection = new StringSelection(line.getName());
+            const selection = new StringSelection(ChatLib.removeFormatting(line.getName()));
             Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, null);
             EssentialNotifications.push('Purse copied!', 'Copied your purse to your clipboard.', 3);
             copied = true;

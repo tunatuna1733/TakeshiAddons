@@ -3,7 +3,7 @@ const BossStatus = Java.type('net.minecraft.entity.boss.BossStatus');
 export const getCurrentClass = () => {
     const tabNames = TabList.getNames();
     const partyNumLine = tabNames.find((name) => name.includes('§r§b§lParty §r§f('));
-    let currentClass = 'Unknown';
+    let currentClass = '';
     try {
         if (partyNumLine) {
             const partyNum = partyNumLine.match(/\d+/g)[0];

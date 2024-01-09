@@ -28,17 +28,23 @@ registerWhen(register('step', () => {
     isInM7 = inM7();
     if (isInM7)
         currentClass = getCurrentClass();
-    if (currentClass !== '' && beaconList.length === 0) {
+    if (currentClass !== '' && currentClass !== 'Healer' && beaconList.length === 0) {
         const classNumber = getClassNumber(currentClass);
+        const beacons = [];
         if (settings.firstterminal === classNumber)
-            beaconList.push(TerminalCoords.First);
+            beacons.push(TerminalCoords.First);
         if (settings.secondterminal === classNumber)
-            beaconList.push(TerminalCoords.Second);
+            beacons.push(TerminalCoords.Second);
         if (settings.thirdterminal === classNumber)
-            beaconList.push(TerminalCoords.Third);
+            beacons.push(TerminalCoords.Third);
         if (settings.fourthterminal === classNumber)
-            beaconList.push(TerminalCoords.Fourth);
-        // beaconList.flat();
+            beacons.push(TerminalCoords.Fourth);
+        beacons.forEach((beacon) => {
+            beacon.forEach((b) => {
+                beaconList.push(b);
+            });
+        });
+        console.dir(beaconList, { depth: null });
     }
 }).setDelay(1), () => settings.terminalwaypoint);
 
@@ -57,11 +63,10 @@ registerWhen(register('renderWorld', () => {
 }), () => settings.terminalwaypoint);
 
 registerWhen(register('chat', (player) => {
-    if (player === Player.getName()) {
+    if (player === Player.getName() && currentClass !== 'Healer') {
         beaconList.splice(0, 1);
     }
-}).setChatCriteria('${player} completed a device! (${num}/${maxnum})'), () => settings.terminalwaypoint);
-
+}).setChatCriteria('${player} activated a terminal! (${num}/${maxnum})').setContains(), () => settings.terminalwaypoint);
 registerWhen(register('worldUnload', () => {
     beaconList = [];
 }), () => settings.terminalwaypoint);
