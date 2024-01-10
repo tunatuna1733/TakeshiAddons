@@ -8,6 +8,7 @@ let isInGoldor = false;
 let isInM7 = false;
 let currentClass = '';
 let beaconList = [];
+let isBeaconProcessed = false;
 
 const getClassNumber = (className) => {
     let classNumber = -1;
@@ -28,7 +29,8 @@ registerWhen(register('step', () => {
     isInM7 = inM7();
     if (isInM7)
         currentClass = getCurrentClass();
-    if (currentClass !== '' && currentClass !== 'Healer' && beaconList.length === 0) {
+    if (currentClass !== '' && currentClass !== 'Healer' && beaconList.length === 0 && !isBeaconProcessed) {
+        isBeaconProcessed = true;
         const classNumber = getClassNumber(currentClass);
         const beacons = [];
         if (settings.firstterminal === classNumber)
@@ -67,8 +69,13 @@ registerWhen(register('chat', (player) => {
         beaconList.splice(0, 1);
     }
 }).setChatCriteria('${player} activated a terminal! (${num}/${maxnum})').setContains(), () => settings.terminalwaypoint);
+
 registerWhen(register('worldUnload', () => {
     beaconList = [];
+    isBeaconProcessed = false;
+    isInGoldor = false;
+    isInM7 = false;
+    currentClass = '';
 }), () => settings.terminalwaypoint);
 
 register('command', () => {

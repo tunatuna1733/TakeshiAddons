@@ -111,7 +111,7 @@ register('gameLoad', () => {
     if (currentVersion !== data.version) {
         data.version = currentVersion;
         data.save();
-        printChangelog();
+        printChangelog(currentVersion);
     }
 });
 
