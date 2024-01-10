@@ -12,6 +12,9 @@
 		dropship_warning = true
 		warning_time = 5
 
+	[kuudra.kuudra_profit]
+		kuudra_profit_display = true
+
 	[kuudra.energized_chunk]
 		energized_chunk_warning = true
 

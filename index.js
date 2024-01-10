@@ -1,7 +1,8 @@
 /// <reference types="../CTAutocomplete" />
 /// <reference lib="es2022" />
 
-import { request } from 'axios';
+// import { request } from 'axios';
+import { request } from '../axios';
 import { data, gardenData, resetData } from "./utils/data";
 import settings from "./settings";
 import { setRegisters } from "./utils/register";
@@ -19,11 +20,9 @@ import "./features/hud/ragnarock";
 import "./features/hud/lifeline";
 import "./features/hud/reaper";
 import "./features/hud/last_breath";
-import "./features/hud/kuudra_price";
 import "./features/hud/flare";
 import "./features/hud/inventory";
 import "./features/hud/composter";
-import "./features/hud/dropship";
 import "./features/hud/soulflow";
 
 import "./features/gui/attribute_lb";
@@ -32,7 +31,9 @@ import "./features/gui/auctions";
 import "./features/dungeon/terminal";
 import "./features/dungeon/relic";
 
+import "./features/kuudra/dropship";
 import "./features/kuudra/energized_chunk";
+import "./features/kuudra/kuudra_price";
 
 import { CHAT_PREFIX } from "./data/chat";
 

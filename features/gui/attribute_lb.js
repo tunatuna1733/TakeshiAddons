@@ -1,6 +1,6 @@
 const lbKey = new KeyBind('View Lowest bin with attribute considered', Keyboard.KEY_NONE, 'TakeshiAddons');
 
-import { request } from 'axios';
+import { request } from '../../../axios';
 import { CenterConstraint, ConstantColorConstraint, UIBlock, UIContainer, UIRoundedRectangle, UIText, Window } from '../../../Elementa';
 import getItemId from '../../utils/item_id';
 import { SkyblockAttributes } from '../../data/attributes';

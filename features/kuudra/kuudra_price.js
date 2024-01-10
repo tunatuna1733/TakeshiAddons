@@ -1,4 +1,4 @@
-import { request } from 'axios';
+import { request } from '../../../axios';
 import settings from '../../settings';
 import getArmorType from '../../utils/armor_type';
 import { SkyblockAttributes } from "../../data/attributes";

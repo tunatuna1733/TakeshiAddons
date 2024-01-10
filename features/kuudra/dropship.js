@@ -41,3 +41,9 @@ registerWhen(register('chat', () => {
     isDropshipApproaching = false;
     warned = false;
 }).setCriteria('The Dropship Bomb hit you for ${dmg} true damage.'), () => settings.dropship);
+
+registerWhen(register('worldUnload', () => {
+    isDropshipApproaching = false;
+    dropshipTimer = 0;
+    warned = false;
+}), () => settings.dropship);

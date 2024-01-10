@@ -145,7 +145,7 @@ class Settings {
     @SwitchProperty({
         name: 'Kuudra Profit Display',
         description: 'Display estimated profit of Paid Chest in Kuudra considering attributes',
-        category: 'HUD',
+        category: 'Kuudra',
         subcategory: 'Kuudra Profit'
     })
     kuudraprofit = false;

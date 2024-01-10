@@ -1,4 +1,4 @@
-import { request } from 'axios';
+import { request } from "../../../axios";
 import settings from "../../settings";
 import { data } from "../../utils/data";
 import { Hud } from "../../utils/hud";
