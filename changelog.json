@@ -2,6 +2,7 @@
     "0.2.1": [
         "Fixed terminal waypoints shown after completed them all.",
         "Fixed changelogs not showing correctly.",
+        "Fixed relic waypoint not showing.",
         "",
         "Added Fishing Timer with external window.",
         "  You can use it by running /fishingtimer or /fst."
