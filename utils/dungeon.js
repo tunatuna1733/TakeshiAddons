@@ -36,7 +36,9 @@ export const inGoldor = () => {
     else return false;
 }
 
-export const isInWitherKing = () => {
-    // TODO
+export const inWitherKing = () => {
+    const bossName = BossStatus.field_82827_c;
+    if (!bossName) return false;
+    if (bossName.removeFormatting().includes('Wither King')) return true;
     return false;
 }

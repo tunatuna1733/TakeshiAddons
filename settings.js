@@ -245,6 +245,14 @@ class Settings {
     dropshiptime = 5;
 
     @SwitchProperty({
+        name: 'Send warning chat',
+        description: 'Send party chat right before bomb drops.',
+        category: 'Kuudra',
+        subcategory: 'Dropship Warning'
+    })
+    senddropshipwarning = false;
+
+    @SwitchProperty({
         name: 'Relic Waypoint',
         description: 'Display Wither King relic waypoint based on your class.',
         category: 'Dungeon',

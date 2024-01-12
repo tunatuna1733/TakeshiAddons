@@ -10,6 +10,7 @@
 
 	[kuudra.dropship_warning]
 		dropship_warning = true
+		send_warning_chat = false
 		warning_time = 5
 
 	[kuudra.kuudra_profit]

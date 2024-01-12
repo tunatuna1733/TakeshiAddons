@@ -27,6 +27,7 @@ import "./features/hud/soulflow";
 
 import "./features/gui/attribute_lb";
 import "./features/gui/auctions";
+import "./features/gui/fishing_timer";
 
 import "./features/dungeon/terminal";
 import "./features/dungeon/relic";
@@ -55,7 +56,8 @@ const printHelp = () => {
     ChatLib.chat('&7|  &eRun &c"/takeshi" &eto open settings.');
     ChatLib.chat('&7| &bCommands');
     ChatLib.chat('&7|  &c"/scc"&7: &aPrint your scoreboard to chat so that you can copy it.');
-    ChatLib.chat('&7|  &c"/cpp"&7: &aCopy your purse text on your scoreboard');
+    ChatLib.chat('&7|  &c"/cpp"&7: &aCopy your purse text on your scoreboard.');
+    ChatLib.chat('&7|  &c"/fst"&7: &aOpen fishing timer in external window.');
     ChatLib.chat('&7| &bKeybind');
     ChatLib.chat('&7|  &aYou can bind a key for opening kuudra item price gui.');
 }
@@ -72,7 +74,9 @@ const printChangelog = (version) => {
         }
         ChatLib.chat(`&dTakeshiAddons Changelog &av${version}`);
         changelogs.forEach((changelog) => {
-            ChatLib.chat(`&7- &e${changelog}`);
+            if (changelog === '') ChatLib.chat('');
+            else
+                ChatLib.chat(`&7- &e${changelog}`);
         });
     }).catch((e) => {
         console.log(`[Takeshi] Failed to fetch changelog for version ${version}`);

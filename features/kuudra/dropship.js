@@ -21,6 +21,7 @@ registerWhen(register('renderOverlay', () => {
             if (Date.now() - dropshipTimer > (explosionTime - warnTime) && !warned) {
                 World.playSound('note.pling', 4, 1.5);
                 Client.showTitle(`&cBomb Drop in ${settings.dropshiptime} secs!`, '', 0, 3 * 20, 0);
+                if (settings.senddropshipwarning) ChatLib.command(`pc Bomb drops in ${settings.dropshiptime} secs!`);
                 warned = true;
             }
         }

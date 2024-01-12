@@ -1,4 +1,11 @@
 {
+    "0.2.1": [
+        "Fixed terminal waypoints shown after completed them all.",
+        "Fixed changelogs not showing correctly.",
+        "",
+        "Added Fishing Timer with external window.",
+        "  You can use it by running /fishingtimer or /fst."
+    ],
     "0.2.0": [
         "Fixed Dropship Timer warns specified seconds after launch instead of before explosion.",
         "",

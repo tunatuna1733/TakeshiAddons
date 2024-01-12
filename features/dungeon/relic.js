@@ -1,12 +1,12 @@
 import settings from "../../settings";
-import { getCurrentClass, inM7 } from "../../utils/dungeon";
+import { getCurrentClass, inM7, inWitherKing } from "../../utils/dungeon";
 import { registerWhen } from "../../utils/register";
 import renderBeaconBeam from "../../../BeaconBeam";
 import { CHAT_PREFIX } from "../../data/chat";
 const Color = Java.type('java.awt.Color');
 
-let isRelicPhase = false;
 let isRelicPicked = false;
+let isInWitherKing = false;
 
 const relicCoords = {
     'Tank': { x: 19, y: 0, z: 94 },
@@ -33,10 +33,14 @@ const relicColor = {
     'Healer': Color.MAGENTA
 }
 
+registerWhen(register('step', () => {
+    isInWitherKing = inWitherKing();
+}).setDelay(1), () => settings.relicwaypoint);
+
 registerWhen(register('renderWorld', () => {
     const currentClass = getCurrentClass();
     if (currentClass === '') return;
-    if (inM7() && isRelicPhase && !isRelicPicked) {
+    if (inM7() && !isRelicPicked && isInWitherKing) {
         renderBeaconBeam(
             relicCoords[currentClass].x,
             relicCoords[currentClass].y,
@@ -48,7 +52,7 @@ registerWhen(register('renderWorld', () => {
             false
         );
     }
-    else if (inM7() && isRelicPhase && isRelicPicked) {
+    else if (inM7() && isRelicPicked && isInWitherKing) {
         renderBeaconBeam(
             relicPlaceCoords[currentClass].x,
             relicPlaceCoords[currentClass].y,
@@ -62,14 +66,6 @@ registerWhen(register('renderWorld', () => {
     }
 }), () => settings.relicwaypoint);
 
-registerWhen(register('chat', () => {
-    isRelicPhase = true;
-}).setChatCriteria('[BOSS] Necron: All this, for nothing...'), () => settings.relicwaypoint);
-
-registerWhen(register('chat', () => {
-    isRelicPhase = false;
-}).setChatCriteria('You... again?').setContains(), () => settings.relicwaypoint);
-
 registerWhen(register('chat', (player, color) => {
     if (player === Player.getName()) {
         isRelicPicked = true;
@@ -77,10 +73,10 @@ registerWhen(register('chat', (player, color) => {
 }).setChatCriteria('${player} picked the Corrupted ${color} Relic!'), () => settings.relicwaypoint);
 
 registerWhen(register('worldUnload', () => {
-    isRelicPhase = false;
     isRelicPicked = false;
+    isInWitherKing = false;
 }), () => settings.relicwaypoint);
 
 register('command', () => {
-    ChatLib.chat(`${CHAT_PREFIX} isRelicPhase: ${isRelicPhase}, isRelicPicked: ${isRelicPicked}`);
+    ChatLib.chat(`${CHAT_PREFIX} isInWitherKing: ${isInWitherKing}, isRelicPicked: ${isRelicPicked}`);
 }).setCommandName('getrelicstate', true);
