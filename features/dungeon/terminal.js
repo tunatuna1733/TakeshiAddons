@@ -9,6 +9,7 @@ let isInM7 = false;
 let currentClass = '';
 let beaconList = [];
 let isBeaconProcessed = false;
+let zoneEnded = true;
 
 const getClassNumber = (className) => {
     let classNumber = -1;
@@ -48,7 +49,7 @@ registerWhen(register('step', () => {
         });
         console.dir(beaconList, { depth: null });
     }
-}).setDelay(1), () => settings.terminalwaypoint);
+}).setDelay(1), () => settings.terminalwaypoint && getCurrentArea() === 'The Catacombs (M7)');
 
 registerWhen(register('renderWorld', () => {
     if (isInGoldor && isInM7) {
@@ -62,13 +63,19 @@ registerWhen(register('renderWorld', () => {
             );
         });
     }
-}), () => settings.terminalwaypoint);
+}), () => settings.terminalwaypoint && getCurrentArea() === 'The Catacombs (M7)');
 
-registerWhen(register('chat', (player) => {
-    if (player === Player.getName() && currentClass !== 'Healer') {
+registerWhen(register('chat', (player, num, maxnum) => {
+    if (num == maxnum) zoneEnded = true;
+    if (zoneEnded === true && player === Player.getName() && currentClass !== 'Healer') {
         beaconList.splice(0, 1);
+        zoneEnded = false;
     }
-}).setChatCriteria('${player} activated a terminal! (${num}/${maxnum})').setContains(), () => settings.terminalwaypoint);
+}).setChatCriteria('${player} activated a terminal! (${num}/${maxnum})').setContains(), () => settings.terminalwaypoint && getCurrentArea() === 'The Catacombs (M7)');
+
+registerWhen(register('chat', (player, num, maxnum) => {
+    if (num == maxnum) zoneEnded = true;
+}).setChatCriteria('${player} completed a device! (${num}/${maxnum})').setContains(), () => settings.terminalwaypoint && getCurrentArea() === 'The Catacombs (M7)');
 
 registerWhen(register('worldUnload', () => {
     beaconList = [];
@@ -76,7 +83,8 @@ registerWhen(register('worldUnload', () => {
     isInGoldor = false;
     isInM7 = false;
     currentClass = '';
-}), () => settings.terminalwaypoint);
+    zoneEnded = true;
+}), () => settings.terminalwaypoint && getCurrentArea() === 'The Catacombs (M7)');
 
 register('command', () => {
     ChatLib.chat(`m7: ${isInM7} goldor: ${isInGoldor} class: ${currentClass}`);

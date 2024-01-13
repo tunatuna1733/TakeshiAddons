@@ -17,16 +17,8 @@ registerWhen(register('renderWorld', () => {
             }
         })
     }
-}), () => settings.energizedchunk);
+}), () => settings.energizedchunk && getCurrentArea().includes('Kuudra'));
 
 registerWhen(register('worldUnload', () => {
     lastWarned = 0;
-}), () => settings.energizedchunk);
-
-register('command', () => {
-    World.getAllEntitiesOfType(Java.type('net.minecraft.entity.item.EntityArmorStand').class).forEach((armorStand) => {
-        const name = ChatLib.removeFormatting(armorStand.getName());
-        const dist = Math.sqrt(Math.pow(Player.getX() - armorStand.getX(), 2) + Math.pow(Player.getZ() - armorStand.getZ(), 2));
-        console.log(name, dist);
-    });
-}).setCommandName('getarmorstandnames');
+}), () => settings.energizedchunk && getCurrentArea().includes('Kuudra'));

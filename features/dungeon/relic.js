@@ -1,12 +1,13 @@
 import settings from "../../settings";
-import { getCurrentClass, inM7, inWitherKing } from "../../utils/dungeon";
+import { getBossHealthPercent, getCurrentClass, inM7, inNecron } from "../../utils/dungeon";
 import { registerWhen } from "../../utils/register";
 import renderBeaconBeam from "../../../BeaconBeam";
 import { CHAT_PREFIX } from "../../data/chat";
+import { getCurrentArea } from "../../utils/area";
 const Color = Java.type('java.awt.Color');
 
 let isRelicPicked = false;
-let isInWitherKing = false;
+let isNecronLow = false;
 
 const relicCoords = {
     'Tank': { x: 19, y: 0, z: 94 },
@@ -34,13 +35,14 @@ const relicColor = {
 }
 
 registerWhen(register('step', () => {
-    isInWitherKing = inWitherKing();
-}).setDelay(1), () => settings.relicwaypoint);
+    if (!isNecronLow)
+        isNecronLow = inNecron() && getBossHealthPercent() < 0.5;
+}).setDelay(1), () => settings.relicwaypoint && getCurrentArea() === 'The Catacombs (M7)');
 
 registerWhen(register('renderWorld', () => {
     const currentClass = getCurrentClass();
     if (currentClass === '') return;
-    if (inM7() && !isRelicPicked && isInWitherKing) {
+    if (inM7() && !isRelicPicked && isNecronLow) {
         renderBeaconBeam(
             relicCoords[currentClass].x,
             relicCoords[currentClass].y,
@@ -52,7 +54,7 @@ registerWhen(register('renderWorld', () => {
             false
         );
     }
-    else if (inM7() && isRelicPicked && isInWitherKing) {
+    else if (inM7() && isRelicPicked && isNecronLow) {
         renderBeaconBeam(
             relicPlaceCoords[currentClass].x,
             relicPlaceCoords[currentClass].y,
@@ -64,19 +66,19 @@ registerWhen(register('renderWorld', () => {
             false
         );
     }
-}), () => settings.relicwaypoint);
+}), () => settings.relicwaypoint && getCurrentArea() === 'The Catacombs (M7)');
 
 registerWhen(register('chat', (player, color) => {
     if (player === Player.getName()) {
         isRelicPicked = true;
     }
-}).setChatCriteria('${player} picked the Corrupted ${color} Relic!'), () => settings.relicwaypoint);
+}).setChatCriteria('${player} picked the Corrupted ${color} Relic!'), () => settings.relicwaypoint && getCurrentArea() === 'The Catacombs (M7)');
 
 registerWhen(register('worldUnload', () => {
     isRelicPicked = false;
-    isInWitherKing = false;
-}), () => settings.relicwaypoint);
+    isNecronLow = false;
+}), () => settings.relicwaypoint && getCurrentArea() === 'The Catacombs (M7)');
 
 register('command', () => {
-    ChatLib.chat(`${CHAT_PREFIX} isInWitherKing: ${isInWitherKing}, isRelicPicked: ${isRelicPicked}`);
+    ChatLib.chat(`${CHAT_PREFIX} isNecronLow: ${isNecronLow}, isRelicPicked: ${isRelicPicked}`);
 }).setCommandName('getrelicstate', true);

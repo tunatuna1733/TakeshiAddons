@@ -36,6 +36,8 @@ import "./features/kuudra/dropship";
 import "./features/kuudra/energized_chunk";
 import "./features/kuudra/kuudra_price";
 
+import "./utils/area";
+
 import { CHAT_PREFIX } from "./data/chat";
 
 data.autosave();

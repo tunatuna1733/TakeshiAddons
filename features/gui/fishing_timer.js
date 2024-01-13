@@ -20,24 +20,26 @@ jLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
 const fishingTimerRegex = /^\d\.\d$/
 
 register('renderWorld', () => {
-    let found = false;
-    World.getAllEntitiesOfType(Java.type('net.minecraft.entity.item.EntityArmorStand').class).forEach((armorStands) => {
-        const name = armorStands.getName().removeFormatting();
-        if (name.match(fishingTimerRegex)) {
-            jLabel.setForeground(Color.YELLOW);
-            jLabel.setText(name);
-            found = true;
-        } else if (name === '!!!') {
-            jLabel.setForeground(Color.RED);
-            jLabel.setText('!!!');
-            found = true;
+    if (jFrame.isVisible()) {
+        let found = false;
+        World.getAllEntitiesOfType(Java.type('net.minecraft.entity.item.EntityArmorStand').class).forEach((armorStands) => {
+            const name = armorStands.getName().removeFormatting();
+            if (name.match(fishingTimerRegex)) {
+                jLabel.setForeground(Color.YELLOW);
+                jLabel.setText(name);
+                found = true;
+            } else if (name === '!!!') {
+                jLabel.setForeground(Color.RED);
+                jLabel.setText('!!!');
+                found = true;
+            }
+        });
+        if (!found) {
+            jLabel.setText("");
         }
-    });
-    if (!found) {
-        jLabel.setText("");
     }
 });
 
 register('command', (args) => {
     jFrame.setVisible(true);
-}).setCommandName('debugfishingtimer');
+}).setCommandName('fishingtimer').setAliases(['fst']);

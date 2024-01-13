@@ -36,9 +36,24 @@ export const inGoldor = () => {
     else return false;
 }
 
+export const inNecron = () => {
+    const bossName = BossStatus.field_82827_c;
+    if (!bossName) return false;
+    if (bossName.removeFormatting().includes('Necron')) return true;
+    else return false;
+}
+
 export const inWitherKing = () => {
     const bossName = BossStatus.field_82827_c;
     if (!bossName) return false;
     if (bossName.removeFormatting().includes('Wither King')) return true;
     return false;
 }
+
+export const getBossHealthPercent = () => {
+    return BossStatus.field_82828_a;
+}
+
+register('command', () => {
+    ChatLib.chat(BossStatus.field_82828_a);
+}).setCommandName('debugbosshealthscale', true);

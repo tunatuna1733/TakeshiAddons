@@ -1,4 +1,5 @@
 import settings from "../../settings";
+import { getCurrentArea } from "../../utils/area";
 import { data } from "../../utils/data";
 import { Hud } from "../../utils/hud";
 import hud_manager from "../../utils/hud_manager";
@@ -26,25 +27,25 @@ registerWhen(register('renderOverlay', () => {
             }
         }
     }
-}), () => settings.dropship);
+}), () => settings.dropship && getCurrentArea().includes('Kuudra'));
 
 registerWhen(register('chat', () => {
     isDropshipApproaching = true;
     dropshipTimer = Date.now();
-}).setCriteria("[NPC] Elle: A Dropship is approaching! Take it down before it's too late!"), () => settings.dropship);
+}).setCriteria("[NPC] Elle: A Dropship is approaching! Take it down before it's too late!"), () => settings.dropship && getCurrentArea().includes('Kuudra'));
 
 registerWhen(register('chat', () => {
     isDropshipApproaching = true;
     dropshipTimer = Date.now();
-}).setCriteria("[NPC] Elle: A fleet of Dropships are approaching! Take them down before it's too late!"), () => settings.dropship);
+}).setCriteria("[NPC] Elle: A fleet of Dropships are approaching! Take them down before it's too late!"), () => settings.dropship && getCurrentArea().includes('Kuudra'));
 
 registerWhen(register('chat', () => {
     isDropshipApproaching = false;
     warned = false;
-}).setCriteria('The Dropship Bomb hit you for ${dmg} true damage.'), () => settings.dropship);
+}).setCriteria('The Dropship Bomb hit you for ${dmg} true damage.'), () => settings.dropship && getCurrentArea().includes('Kuudra'));
 
 registerWhen(register('worldUnload', () => {
     isDropshipApproaching = false;
     dropshipTimer = 0;
     warned = false;
-}), () => settings.dropship);
+}), () => settings.dropship && getCurrentArea().includes('Kuudra'));
