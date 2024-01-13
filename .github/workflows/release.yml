@@ -24,7 +24,7 @@ jobs:
 
             - name: Make TakeshiAddons directory and copy files
               run: |
-                rsync -ahv . ./TakeshiAddons --exclude '.github' --exclude '.gitignore' --exclude 'changelog.json'
+                rsync -ahv . ./TakeshiAddons --exclude '.git' --exclude '.github' --exclude '.gitignore' --exclude 'changelog.json'
 
             - name: Create zip file for release
               run: |
