@@ -38,7 +38,7 @@ const relicColor = {
 
 registerWhen(register('step', () => {
     if (!isNecronLow)
-        isNecronLow = inNecron() && getBossHealthPercent() < 0.5;
+        isNecronLow = inNecron() && getBossHealthPercent() < 0.5 && getBossHealthPercent() > 0;
 }).setDelay(1), () => settings.relicwaypoint && getCurrentArea() === 'The Catacombs (M7)', { type: 'step', name: moduleName });
 
 registerWhen(register('renderWorld', () => {

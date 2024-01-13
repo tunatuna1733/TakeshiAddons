@@ -68,11 +68,11 @@ registerWhen(register('renderWorld', () => {
 }), () => settings.terminalwaypoint && getCurrentArea() === 'The Catacombs (M7)', { type: 'renderWorld', name: moduleName });
 
 registerWhen(register('chat', (player, num, maxnum) => {
-    if (num == maxnum) zoneEnded = true;
     if (zoneEnded === true && player === Player.getName() && currentClass !== 'Healer') {
         beaconList.splice(0, 1);
         zoneEnded = false;
     }
+    if (num == maxnum) zoneEnded = true;
 }).setChatCriteria('${player} activated a terminal! (${num}/${maxnum})').setContains(), () => settings.terminalwaypoint && getCurrentArea() === 'The Catacombs (M7)', { type: 'chat', name: moduleName });
 
 registerWhen(register('chat', (player, num, maxnum) => {
