@@ -1,10 +1,10 @@
 {
     "0.2.2": [
-        "Fixed terminal waypoints incorrectly removed when the player does additional terminals.",
-        "Made relic waypoint shown when the Necron's health is below half, instead of Wither King's spawn.",
-        "Refactored some codes for some performance improvements.",
-        "Fixed incorrect command name for fishing timer window.",
-        ""
+        "# Bug Fixes & Improvements",
+        "- Fixed terminal waypoints incorrectly removed when the player does additional terminals.",
+        "- Made relic waypoint shown when the Necron's health is below half, instead of Wither King's spawn.",
+        "- Refactored some codes for some performance improvements.",
+        "- Fixed incorrect command name for fishing timer window."
     ],
     "0.2.1": [
         "Fixed terminal waypoints shown after completed them all.",

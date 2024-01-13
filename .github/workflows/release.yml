@@ -1,0 +1,42 @@
+name: release
+
+on:
+    push: 
+        branches: 
+            - 'master'
+        paths: 
+            - 'metadata.json'
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Set version to GITHUB_ENV
+              run: |
+                version=$(cat ./metadata.json | jq -r .version)
+                echo "VERSION=${version}" >> $GITHUB_ENV
+
+            - name: Make TakeshiAddons directory and copy files
+              run: |
+                rsync -ahv . ./TakeshiAddons --exclude '.github' --exclude '.gitignore' --exclude 'changelog.json'
+
+            - name: Create zip file for release
+              run: |
+                zip -r TakeshiAddons ./TakeshiAddons/
+
+            - name: Create changelog markdown file
+              run: |
+                cat ./changelog.json | jq -r '.[\"${{env.VERSION}}\"].[]' > changelog.md
+
+            - name: Create release
+              uses: softprops/action-gh-release@v1
+              with:
+                tag_name: ${{env.VERSION}}
+                name: ${{env.VERSION}}
+                body_path: ./changelog.md
+                draft: false
+                prerelease: false
+                files: TakeshiAddons.zip
