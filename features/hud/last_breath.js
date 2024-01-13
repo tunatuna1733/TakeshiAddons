@@ -7,6 +7,8 @@ import { registerWhen } from "../../utils/register";
 
 const lbHud = new Hud('lastbreath', '&6LastBreath: 0', hud_manager, data);
 
+const moduleName = 'LastBreath HUD';
+
 let lbIncludedInHotbar = false;
 let lbIncludedInInventory = false;
 
@@ -47,7 +49,7 @@ registerWhen(register('step', () => {
             });
         } catch (e) { }
     }
-}).setDelay(1), () => settings.lbhud);
+}).setDelay(1), () => settings.lbhud, { type: 'step', name: moduleName });
 
 registerWhen(register(Java.type('net.minecraftforge.event.entity.player.ArrowNockEvent'), (e) => {
     if (Player.getHeldItem()) {
@@ -59,7 +61,7 @@ registerWhen(register(Java.type('net.minecraftforge.event.entity.player.ArrowNoc
             });
         }
     }
-}), () => settings.lbhud);
+}), () => settings.lbhud, { type: 'ArrowNockEvent', name: moduleName });
 
 registerWhen(register(Java.type('net.minecraftforge.event.entity.player.ArrowLooseEvent'), (e) => {
     if (Player.getHeldItem()) {
@@ -68,7 +70,7 @@ registerWhen(register(Java.type('net.minecraftforge.event.entity.player.ArrowLoo
             lbShooting = true;
         }
     }
-}), () => settings.lbhud);
+}), () => settings.lbhud, { type: 'ArrowLooseEvent', name: moduleName });
 
 registerWhen(register('soundPlay', (position, name) => {
     if (name === 'random.bow') {
@@ -97,7 +99,7 @@ registerWhen(register('soundPlay', (position, name) => {
             }
         }
     }
-}), () => settings.lbhud);
+}), () => settings.lbhud, { type: 'soundPlay', name: moduleName });
 
 registerWhen(register('renderOverlay', () => {
     const current = Date.now();
@@ -117,7 +119,7 @@ registerWhen(register('renderOverlay', () => {
             lbHud.draw(`&6LastBreath: ${lbHitCount}`);
         }
     }
-}), () => settings.lbhud);
+}), () => settings.lbhud, { type: 'renderOverlay', name: moduleName });
 
 register('worldUnload', () => {
     lbShooting = false;

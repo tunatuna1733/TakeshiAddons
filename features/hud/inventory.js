@@ -7,6 +7,8 @@ import { registerWhen } from "../../utils/register";
 
 const inventoryHud = new InventoryHud('inventory', hud_manager, data);
 
+const moduleName = 'Inventory HUD';
+
 let inventoryRects = [];
 
 register('gameLoad', () => {
@@ -41,4 +43,4 @@ registerWhen(register('renderOverlay', () => {
         }
     }
     GlStateManager.func_179121_F();
-}), () => settings.inventory);
+}), () => settings.inventory, { type: 'renderOverlay', name: moduleName });

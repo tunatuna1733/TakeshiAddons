@@ -10,9 +10,11 @@ let currentHP = 0;
 let maxHP = 0;
 const lifelineHud = new Hud('lifeline', `&6Lifeline: &cNOT ACTIVE`, hud_manager, data);
 
+const moduleName = 'Lifeline HUD';
+
 registerWhen(register('chat', () => {
     isInKuudraP5 = true;
-}).setChatCriteria("[NPC] Elle: POW! SURELY THAT'S IT! I don't think he has any more in him!"), () => settings.lifelinehud);
+}).setChatCriteria("[NPC] Elle: POW! SURELY THAT'S IT! I don't think he has any more in him!"), () => settings.lifelinehud, { type: 'chat', name: moduleName });
 
 registerWhen(register('actionBar', (msg) => {
     const text = ChatLib.getChatMessage(msg);
@@ -20,7 +22,7 @@ registerWhen(register('actionBar', (msg) => {
     if (healthResult) {
         [currentHP, maxHP] = healthResult[0].replace('❤', '').split('/');
     }
-}), () => settings.lifelinehud);
+}), () => settings.lifelinehud, { type: 'actionBar', name: moduleName });
 
 registerWhen(register('renderOverlay', () => {
     if (data.equipment.id1 == 'LAVA_SHELL_NECKLACE') {
@@ -40,7 +42,7 @@ registerWhen(register('renderOverlay', () => {
             }
         }
     }
-}), () => settings.lifelinehud);
+}), () => settings.lifelinehud, { type: 'renderOverlay', name: moduleName });
 
 register('worldUnload', () => {
     isInKuudraP5 = false;

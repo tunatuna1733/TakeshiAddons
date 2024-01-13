@@ -7,7 +7,9 @@ import getCurrentArmor from "../../utils/current_armor";
 
 const armorHud = new ArmorHud('armor', hud_manager, data);
 
+const moduleName = 'Armor HUD';
+
 registerWhen(register("renderOverlay", () => {
     const [helmet, chestplate, leggings, boots] = getCurrentArmor();
     armorHud.draw(helmet, chestplate, leggings, boots);
-}), () => settings.armorhud);
+}), () => settings.armorhud, { type: 'renderOverlay', name: moduleName });

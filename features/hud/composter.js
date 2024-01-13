@@ -10,6 +10,8 @@ import { registerWhen } from "../../utils/register";
 
 const composterHud = new Hud('composter', '&600:00:00', hud_manager, data);
 
+const moduleName = 'Composter HUD';
+
 let guiOpen = false;
 
 let previousOrganicMatter = 0;
@@ -118,7 +120,7 @@ registerWhen(register('renderOverlay', () => {
     } else {
         composterHud.draw(`&6Organic or Fuel empty!`);
     }
-}), () => settings.composter);
+}), () => settings.composter, { type: 'renderOverlay', name: moduleName });
 
 register('guiClosed', () => {
     guiOpen = false;

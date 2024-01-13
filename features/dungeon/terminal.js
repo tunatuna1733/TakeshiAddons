@@ -3,6 +3,7 @@ import settings from "../../settings";
 import { registerWhen } from "../../utils/register";
 import TerminalCoords from "../../data/terminalcoords";
 import { getCurrentClass, inGoldor, inM7 } from "../../utils/dungeon";
+import { getCurrentArea } from "../../utils/area";
 
 let isInGoldor = false;
 let isInM7 = false;
@@ -10,6 +11,8 @@ let currentClass = '';
 let beaconList = [];
 let isBeaconProcessed = false;
 let zoneEnded = true;
+
+const moduleName = 'Terminal Waypoint';
 
 const getClassNumber = (className) => {
     let classNumber = -1;
@@ -49,7 +52,7 @@ registerWhen(register('step', () => {
         });
         console.dir(beaconList, { depth: null });
     }
-}).setDelay(1), () => settings.terminalwaypoint && getCurrentArea() === 'The Catacombs (M7)');
+}).setDelay(1), () => settings.terminalwaypoint && getCurrentArea() === 'The Catacombs (M7)', { type: 'step', name: moduleName });
 
 registerWhen(register('renderWorld', () => {
     if (isInGoldor && isInM7) {
@@ -63,7 +66,7 @@ registerWhen(register('renderWorld', () => {
             );
         });
     }
-}), () => settings.terminalwaypoint && getCurrentArea() === 'The Catacombs (M7)');
+}), () => settings.terminalwaypoint && getCurrentArea() === 'The Catacombs (M7)', { type: 'renderWorld', name: moduleName });
 
 registerWhen(register('chat', (player, num, maxnum) => {
     if (num == maxnum) zoneEnded = true;
@@ -71,11 +74,11 @@ registerWhen(register('chat', (player, num, maxnum) => {
         beaconList.splice(0, 1);
         zoneEnded = false;
     }
-}).setChatCriteria('${player} activated a terminal! (${num}/${maxnum})').setContains(), () => settings.terminalwaypoint && getCurrentArea() === 'The Catacombs (M7)');
+}).setChatCriteria('${player} activated a terminal! (${num}/${maxnum})').setContains(), () => settings.terminalwaypoint && getCurrentArea() === 'The Catacombs (M7)', { type: 'chat', name: moduleName });
 
 registerWhen(register('chat', (player, num, maxnum) => {
     if (num == maxnum) zoneEnded = true;
-}).setChatCriteria('${player} completed a device! (${num}/${maxnum})').setContains(), () => settings.terminalwaypoint && getCurrentArea() === 'The Catacombs (M7)');
+}).setChatCriteria('${player} completed a device! (${num}/${maxnum})').setContains(), () => settings.terminalwaypoint && getCurrentArea() === 'The Catacombs (M7)', { type: 'chat', name: moduleName });
 
 registerWhen(register('worldUnload', () => {
     beaconList = [];
@@ -84,7 +87,7 @@ registerWhen(register('worldUnload', () => {
     isInM7 = false;
     currentClass = '';
     zoneEnded = true;
-}), () => settings.terminalwaypoint && getCurrentArea() === 'The Catacombs (M7)');
+}), () => settings.terminalwaypoint && getCurrentArea() === 'The Catacombs (M7)', { type: 'worldUnload', name: moduleName });
 
 register('command', () => {
     ChatLib.chat(`m7: ${isInM7} goldor: ${isInGoldor} class: ${currentClass}`);

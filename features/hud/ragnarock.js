@@ -7,6 +7,8 @@ import { registerWhen } from "../../utils/register";
 
 const ragHud = new Hud('ragnarock', '&6Ragnarock: &aREADY', hud_manager, data);
 
+const moduleName = 'Ragnarock HUD';
+
 let lastUsed = 0;
 let isUsed = false;
 let ragaxeIncluded = false;
@@ -24,7 +26,7 @@ registerWhen(register('actionBar', (msg) => {
     ) {
         isActive = true;
     }
-}), () => settings.raghud);
+}), () => settings.raghud, { type: 'actionBar', name: moduleName });
 
 registerWhen(register('renderOverlay', () => {
     let cd = ((20 * 1000 - (Date.now() - lastUsed)) / 1000).toFixed(1);
@@ -52,7 +54,7 @@ registerWhen(register('renderOverlay', () => {
             ragHud.draw(`&6Ragnarock: &c${cd}s`);
         }
     }
-}), () => settings.raghud);
+}), () => settings.raghud, { type: 'renderOverlay', name: moduleName });
 
 registerWhen(register('step', () => {
     ragaxeIncluded = false;
@@ -69,7 +71,7 @@ registerWhen(register('step', () => {
             }
         }
     }
-}).setDelay(1), () => settings.raghud);
+}).setDelay(1), () => settings.raghud, { type: 'step', name: moduleName });
 
 register('worldUnload', () => {
     lastUsed = 0;

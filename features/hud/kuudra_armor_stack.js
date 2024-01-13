@@ -20,6 +20,8 @@ let hydraText = '';
 const dominusHud = new Hud('crimson', '&6Dominus: 0ᝐ', hud_manager, data);
 const hydraHud = new Hud('terror', '&6Hydra Strike: 0⁑', hud_manager, data);
 
+const moduleName = 'Kuudra Armor Stack';
+
 const getArmorStack = (armors) => {
     let crimsonTier = 0;
     let terrorTier = 0;
@@ -47,7 +49,7 @@ registerWhen(register('step', () => {
     const [crimsonTier, terrorTier] = getArmorStack(armors);
     crimsonExpireSec = stackExpireSec[crimsonTier];
     terrorExpireSec = stackExpireSec[terrorTier];
-}).setDelay(1), () => (settings.crimsonhud || settings.terrorhud));
+}).setDelay(1), () => (settings.crimsonhud || settings.terrorhud), { type: 'step', name: moduleName });
 
 registerWhen(register('actionBar', (msg) => {
     const text = ChatLib.getChatMessage(msg);
@@ -73,7 +75,7 @@ registerWhen(register('actionBar', (msg) => {
     } else {
         terrorStack = 0;
     }
-}), () => (settings.crimsonhud || settings.terrorhud));
+}), () => (settings.crimsonhud || settings.terrorhud), { type: 'actionBar', name: moduleName });
 
 registerWhen(register('soundPlay', (pos, name, vol, pitch, category, e) => {
     if (name === 'tile.piston.out' && crimsonExpireSec > 0 && crimsonStack === 10) {
@@ -82,7 +84,7 @@ registerWhen(register('soundPlay', (pos, name, vol, pitch, category, e) => {
     if (name === 'tile.piston.out' && terrorExpireSec > 0 && terrorStack === 10) {
         lastTerrorHit = Date.now();
     }
-}), () => (settings.crimsonhud || settings.terrorhud));
+}), () => (settings.crimsonhud || settings.terrorhud), { type: 'soundPlay', name: moduleName });
 
 registerWhen(register('renderOverlay', () => {
     let crimsonSecLeft = ((crimsonExpireSec * 1000 - (Date.now() - lastCrimsonHit)) / 1000.0).toFixed(1);
@@ -95,7 +97,7 @@ registerWhen(register('renderOverlay', () => {
     } else if (crimsonExpireSec > 0) {
         dominusHud.draw(`&6Dominus: 0ᝐ`);
     }
-}), () => (settings.crimsonhud));
+}), () => (settings.crimsonhud), { type: 'renderOverlay', name: moduleName });
 
 registerWhen(register('renderOverlay', () => {
     let terrorSecLeft = ((terrorExpireSec * 1000 - (Date.now() - lastTerrorHit)) / 1000.0).toFixed(1);
@@ -108,7 +110,7 @@ registerWhen(register('renderOverlay', () => {
     } else if (terrorExpireSec > 0) {
         hydraHud.draw(`&6Hydra Strike: 0⁑`);
     }
-}), () => (settings.terrorhud));
+}), () => (settings.terrorhud), { type: 'renderOverlay', name: moduleName });
 
 register('worldUnload', () => {
     crimsonStack = 0;

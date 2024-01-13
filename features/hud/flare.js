@@ -6,6 +6,8 @@ import { registerWhen } from "../../utils/register";
 
 const flareHud = new Hud('flare', '&aWarning 0s', hud_manager, data);
 
+const moduleName = 'Flare HUD';
+
 // Credit: ct module GriffinOwO
 const ArmorStand = Java.type('net.minecraft.entity.item.EntityArmorStand');
 let flare = {
@@ -47,7 +49,7 @@ registerWhen(register('step', () => {
             flare.time = currentFlareTime;
         }
     })
-}), () => settings.flaretimer);
+}), () => settings.flaretimer, { type: 'step', name: moduleName });
 
 registerWhen(register('renderOverlay', () => {
     if (isFlareActive) {
@@ -62,7 +64,7 @@ registerWhen(register('renderOverlay', () => {
             flareHud.draw(`&5SOS&f: &6${flare.time}`);
         }
     }
-}), () => settings.flaretimer);
+}), () => settings.flaretimer, { type: 'renderOverlay', name: moduleName });
 
 register('worldUnload', () => {
     flare = {

@@ -14,7 +14,9 @@ const updateCurrentArea = () => {
                     const zone = zoneLine.getName().replace("⏣ ", "").replace("ф ", "").removeFormatting().replace(/[^\x00-\x7F]/g, "").replace(/^\s+/, '');
                     if (currentArea !== zone) {
                         currentArea = zone;
-                        setRegisters();
+                        setTimeout(() => {
+                            setRegisters();
+                        }, 1000);
                     }
                 } else {
                     retryCount++;
@@ -28,7 +30,9 @@ const updateCurrentArea = () => {
             const area = areaLine.replace('Area: ', '').removeFormatting();
             if (currentArea !== area) {
                 currentArea = area;
-                setRegisters();
+                setTimeout(() => {
+                    setRegisters();
+                }, 1000);
             }
         }
     } else {

@@ -1,4 +1,4 @@
-import { request } from '../axios';
+import { request } from '../../axios';
 
 export const getVersion = () => {
     const metadata = FileLib.read('./config/ChatTriggers/modules/TakeshiAddons/metadata.json');

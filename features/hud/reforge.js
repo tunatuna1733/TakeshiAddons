@@ -6,11 +6,13 @@ import { registerWhen } from "../../utils/register";
 
 const reforgeHud = new Hud('reforge', 'Power: None', hud_manager, data);
 
-registerWhen(register('chat', (power) => {
+const moduleName = 'Reforge HUD';
+
+register('chat', (power) => {
     data.reforge.power = power;
     data.save();
-}).setChatCriteria('You selected the ${reforge} power for your Accessory Bag!'), () => true);
+}).setChatCriteria('You selected the ${reforge} power for your Accessory Bag!');
 
 registerWhen(register("renderOverlay", () => {
     reforgeHud.draw(`Power: ${data.reforge.power}`);
-}), () => settings.reforgehud);
+}), () => settings.reforgehud, { type: 'renderOverlay', name: moduleName });

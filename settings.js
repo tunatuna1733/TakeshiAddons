@@ -276,6 +276,14 @@ class Settings {
     })
     energizedchunk = false;
 
+    @SwitchProperty({
+        name: 'Debug Mode',
+        description: 'Toggle debug mode.',
+        category: 'Others',
+        subcategory: 'Debug'
+    })
+    debugmode = false;
+
     constructor() {
         this.initialize(this);
         this.setCategoryDescription('HUD', 'A lot of Overlays');

@@ -9,6 +9,8 @@ const Color = Java.type('java.awt.Color');
 let isRelicPicked = false;
 let isNecronLow = false;
 
+const moduleName = 'Relic Waypoint';
+
 const relicCoords = {
     'Tank': { x: 19, y: 0, z: 94 },
     'Mage': { x: 92, y: 0, z: 94 },
@@ -37,7 +39,7 @@ const relicColor = {
 registerWhen(register('step', () => {
     if (!isNecronLow)
         isNecronLow = inNecron() && getBossHealthPercent() < 0.5;
-}).setDelay(1), () => settings.relicwaypoint && getCurrentArea() === 'The Catacombs (M7)');
+}).setDelay(1), () => settings.relicwaypoint && getCurrentArea() === 'The Catacombs (M7)', { type: 'step', name: moduleName });
 
 registerWhen(register('renderWorld', () => {
     const currentClass = getCurrentClass();
@@ -66,18 +68,18 @@ registerWhen(register('renderWorld', () => {
             false
         );
     }
-}), () => settings.relicwaypoint && getCurrentArea() === 'The Catacombs (M7)');
+}), () => settings.relicwaypoint && getCurrentArea() === 'The Catacombs (M7)', { type: 'renderWorld', name: moduleName });
 
 registerWhen(register('chat', (player, color) => {
     if (player === Player.getName()) {
         isRelicPicked = true;
     }
-}).setChatCriteria('${player} picked the Corrupted ${color} Relic!'), () => settings.relicwaypoint && getCurrentArea() === 'The Catacombs (M7)');
+}).setChatCriteria('${player} picked the Corrupted ${color} Relic!'), () => settings.relicwaypoint && getCurrentArea() === 'The Catacombs (M7)', { type: 'chat', name: moduleName });
 
 registerWhen(register('worldUnload', () => {
     isRelicPicked = false;
     isNecronLow = false;
-}), () => settings.relicwaypoint && getCurrentArea() === 'The Catacombs (M7)');
+}), () => settings.relicwaypoint && getCurrentArea() === 'The Catacombs (M7)', { type: 'worldUnload', name: moduleName });
 
 register('command', () => {
     ChatLib.chat(`${CHAT_PREFIX} isNecronLow: ${isNecronLow}, isRelicPicked: ${isRelicPicked}`);

@@ -18,6 +18,8 @@ let guiOpen = false;
 
 const kuudraProfitHud = new Hud('kuudraprofit', 'Kuudra Profit Display', hud_manager, data);    // for editing location
 
+const moduleName = 'Kuudra Profit';
+
 registerWhen(register('postGuiRender', () => {
     const inventory = Player.getContainer();
     if (!guiOpen && inventory && inventory.getName() === 'Paid Chest') {
@@ -91,13 +93,13 @@ registerWhen(register('postGuiRender', () => {
             });
         })
     }
-}), () => settings.kuudraprofit);
+}), () => settings.kuudraprofit, { type: 'postGuiRender', name: moduleName });
 
 registerWhen(register('guiClosed', () => {
     guiOpen = false;
     display.clearLines();
-}), () => settings.kuudraprofit);
+}), () => settings.kuudraprofit, { type: 'guiClosed', name: moduleName });
 
 registerWhen(register('worldUnload', () => {
     display.clearLines();
-}), () => settings.kuudraprofit);
+}), () => settings.kuudraprofit, { type: 'worldUnload', name: moduleName });

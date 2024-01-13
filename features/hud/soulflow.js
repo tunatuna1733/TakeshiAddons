@@ -7,6 +7,8 @@ import { registerWhen } from "../../utils/register";
 
 const soulflowHud = new Hud('soulflow', '&300000⸎', hud_manager, data);
 
+const moduleName = 'Soulflow HUD';
+
 const soulflowImage = new Image('Soulflow', 'https://wiki.hypixel.net/images/a/af/SkyBlock_items_soulflow.png');
 let lastChecked = 0;
 let soulflow = 0;
@@ -34,16 +36,16 @@ const updateSoulflow = () => {
 registerWhen(register('step', () => {
     if (Date.now() - lastChecked < 55 * 1000) return;
     updateSoulflow();
-}).setDelay(60), () => settings.soulflow);
+}).setDelay(60), () => settings.soulflow, { type: 'step', name: moduleName });
 
 registerWhen(register('worldLoad', () => {
     if (Date.now() - lastChecked < 30 * 1000) return;
     updateSoulflow();
-}), () => settings.soulflow);
+}), () => settings.soulflow, { type: 'worldLoad', name: moduleName });
 
 registerWhen(register('renderOverlay', () => {
     soulflowHud.draw(`&3${soulflow}⸎`);
     const coords = soulflowHud.getCoords();
     const size = 8 * soulflowHud.getScale();
     soulflowImage.draw(coords[0] - size - 2, coords[1], size, size);
-}), () => settings.soulflow);
+}), () => settings.soulflow, { type: 'renderOverlay', name: moduleName });

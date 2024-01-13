@@ -1,7 +1,10 @@
 import settings from "../../settings";
 import { registerWhen } from "../../utils/register";
+import { getCurrentArea } from "../../utils/area";
 
 let lastWarned = 0;
+
+const moduleName = 'Energized Chunk';
 
 registerWhen(register('renderWorld', () => {
     if (Player.getY() < 20) {
@@ -17,8 +20,8 @@ registerWhen(register('renderWorld', () => {
             }
         })
     }
-}), () => settings.energizedchunk && getCurrentArea().includes('Kuudra'));
+}), () => settings.energizedchunk && getCurrentArea().includes('Kuudra'), { type: 'renderWorld', name: moduleName });
 
 registerWhen(register('worldUnload', () => {
     lastWarned = 0;
-}), () => settings.energizedchunk && getCurrentArea().includes('Kuudra'));
+}), () => settings.energizedchunk && getCurrentArea().includes('Kuudra'), { type: 'worldUnload', name: moduleName });

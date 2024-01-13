@@ -8,9 +8,11 @@ let guiOpened = false;
 
 const eqHud = new Hud('equipment', 'None\nNone\nNone\nNone', hud_manager, data);
 
+const moduleName = 'Equipment HUD';
+
 registerWhen(register('renderOverlay', () => {
     eqHud.draw(`${data.equipment.slot1}\n${data.equipment.slot2}\n${data.equipment.slot3}\n${data.equipment.slot4}`);
-}), () => settings.equipmenthud);
+}), () => settings.equipmenthud, { type: 'renderOverlay', name: moduleName });
 
 register('postGuiRender', () => {
     const inventory = Player.getContainer();

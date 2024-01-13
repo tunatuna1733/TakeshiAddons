@@ -11,6 +11,8 @@ let ragaxeIncluded = false;
 let reaperIncluded = false;
 const reaperHud = new Hud('reaper', '&6Reaper: &aREADY', hud_manager, data);
 
+const moduleName = 'Reaper Armor HUD';
+
 const isReaperChestplate = (cp) => {
     let isReaper = false;
     cp.getLore().forEach((lore) => {
@@ -27,7 +29,7 @@ registerWhen(register("soundPlay", () => {
             isActive = true;
         }
     }, 100);
-}).setCriteria("mob.zombie.remedy"), () => settings.reaperhud);
+}).setCriteria("mob.zombie.remedy"), () => settings.reaperhud, { type: 'soundPlay', name: moduleName });
 
 registerWhen(register('step', () => {
     ragaxeIncluded = false;
@@ -47,7 +49,7 @@ registerWhen(register('step', () => {
             });
         } catch (e) { }
     }
-}).setDelay(1), () => settings.reaperhud);
+}).setDelay(1), () => settings.reaperhud, { type: 'step', name: moduleName });
 
 registerWhen(register('renderOverlay', () => {
     const cd = ((25 * 1000 - (Date.now() - reaperUsed)) / 1000).toFixed(1);
@@ -73,7 +75,7 @@ registerWhen(register('renderOverlay', () => {
             }
         }
     }
-}), () => settings.reaperhud);
+}), () => settings.reaperhud, { type: 'renderOverlay', name: moduleName });
 
 register('worldUnload', () => {
     reaperUsed = 0;
