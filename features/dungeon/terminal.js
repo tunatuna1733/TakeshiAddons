@@ -50,7 +50,6 @@ registerWhen(register('step', () => {
                 beaconList.push(b);
             });
         });
-        console.dir(beaconList, { depth: null });
     }
 }).setDelay(1), () => settings.terminalwaypoint && getCurrentArea() === 'The Catacombs (M7)', { type: 'step', name: moduleName });
 
