@@ -1,4 +1,8 @@
 {
+    "0.2.3": [
+        "# New Features",
+        "- Added Chest Glitch HUD that shows whether you can glitch through the floor with your current location."
+    ],
     "0.2.2": [
         "# Bug Fixes & Improvements",
         "- Fixed terminal waypoints incorrectly removed when the player does additional terminals.",

@@ -277,6 +277,14 @@ class Settings {
     energizedchunk = false;
 
     @SwitchProperty({
+        name: 'Chest Glitch Coords Checker',
+        description: 'Display if your coordinates are correct to glitch through the floor with chest.',
+        category: 'Dungeon',
+        subcategory: 'Chest Glitch'
+    })
+    chestglitch = false;
+
+    @SwitchProperty({
         name: 'Debug Mode',
         description: 'Toggle debug mode.',
         category: 'Others',

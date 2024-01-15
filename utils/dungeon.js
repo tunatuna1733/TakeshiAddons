@@ -1,3 +1,5 @@
+import { getCurrentArea } from "./area";
+
 const BossStatus = Java.type('net.minecraft.entity.boss.BossStatus');
 
 export const getCurrentClass = () => {
@@ -21,13 +23,24 @@ export const getCurrentClass = () => {
 
 // M7
 export const inM7 = () => {
+    if (getCurrentArea().includes('The Catacombs (M7)')) return true;
+    else return false;
+    /*
     let inM7 = false;
     const lines = Scoreboard.getLines();
     lines.forEach((line) => {
         if (line.getName().removeFormatting().includes('M7')) inM7 = true;
     });
     return inM7;
+    */
 };
+
+export const inMaxor = () => {
+    const bossName = BossStatus.field_82827_c;
+    if (!bossName) return false;
+    if (bossName.removeFormatting().includes('Maxor')) return true;
+    else return false;
+}
 
 export const inGoldor = () => {
     const bossName = BossStatus.field_82827_c;

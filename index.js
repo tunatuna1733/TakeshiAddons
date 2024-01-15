@@ -30,6 +30,7 @@ import "./features/gui/fishing_timer";
 
 import "./features/dungeon/terminal";
 import "./features/dungeon/relic";
+import "./features/dungeon/chest_glitch";
 
 import "./features/kuudra/dropship";
 import "./features/kuudra/energized_chunk";

@@ -87,6 +87,11 @@ const defaultData = {
         x: 0.8,
         y: 0.6,
         scale: 1.5
+    },
+    chestglitch: {
+        x: 0.4,
+        y: 0.6,
+        scale: 2.0
     }
 };
 
