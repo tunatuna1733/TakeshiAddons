@@ -1,7 +1,10 @@
 {
     "0.2.3": [
         "# New Features",
-        "- Added Chest Glitch HUD that shows whether you can glitch through the floor with your current location."
+        "- Added Chest Glitch HUD that shows whether you can glitch through the floor with your current location.",
+        "- Added Kick Timer that shows how long have you been kicked.",
+        "# Bug Fixes & Improvements",
+        "- Fixed huds shown outside skyblock."
     ],
     "0.2.2": [
         "# Bug Fixes & Improvements",
