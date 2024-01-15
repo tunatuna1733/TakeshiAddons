@@ -92,6 +92,11 @@ const defaultData = {
         x: 0.4,
         y: 0.6,
         scale: 2.0
+    },
+    kicktimer: {
+        x: 0.4,
+        y: 0.65,
+        scale: 1.5
     }
 };
 

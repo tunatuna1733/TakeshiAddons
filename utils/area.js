@@ -1,4 +1,5 @@
 import { CHAT_PREFIX } from "../data/chat";
+import { isInSkyblock } from "./hypixel";
 import { setRegisters } from "./register";
 
 let currentArea = '';
@@ -42,7 +43,8 @@ const updateCurrentArea = () => {
                 updateCurrentArea();
             }, 1000);
         } else {
-            ChatLib.chat(`${CHAT_PREFIX} &c[ERROR] Failed to get current area :(`);
+            if (isInSkyblock())
+                ChatLib.chat(`${CHAT_PREFIX} &c[ERROR] Failed to get current area :(`);
         }
     }
 }

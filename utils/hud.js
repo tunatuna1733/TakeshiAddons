@@ -110,12 +110,21 @@ export class Hud {
     /**
      * Draw hud.
      * @param {string} text 
+     * @param {boolean} skyblockOnly
      */
-    draw = (text) => {
+    draw = (text, skyblockOnly = true) => {
         if (!this.hudManager.isEditing) {
-            const [x, y] = this.getCoords();
-            const scale = this.getScale();
-            this.currentText.setString(text).setX(x).setY(y).setScale(scale).draw();
+            if (skyblockOnly) {
+                if (Server.getIP().includes('hypixel') && ChatLib.removeFormatting(Scoreboard.getTitle()).includes('SKYBLOCK')) {
+                    const [x, y] = this.getCoords();
+                    const scale = this.getScale();
+                    this.currentText.setString(text).setX(x).setY(y).setScale(scale).draw();
+                }
+            } else {
+                const [x, y] = this.getCoords();
+                const scale = this.getScale();
+                this.currentText.setString(text).setX(x).setY(y).setScale(scale).draw();
+            }
         }
     }
 }

@@ -6,7 +6,7 @@ import { Hud } from "../../utils/hud";
 import hud_manager from "../../utils/hud_manager";
 import { registerWhen } from "../../utils/register";
 
-const chestGlitchHud = new Hud('chestglitch', 'Chest: OK!', hud_manager, data);
+const chestGlitchHud = new Hud('chestglitch', '&6Chest: &aOK!', hud_manager, data);
 
 const moduleName = 'Chest Glitch';
 
@@ -46,8 +46,8 @@ registerWhen(register('renderWorld', () => {
 
 registerWhen(register('renderOverlay', () => {
     if (isGlitching()) {
-        if (validCoord) chestGlitchHud.draw('Chest: OK!');
-        else chestGlitchHud.draw('Chest: NO!');
+        if (validCoord) chestGlitchHud.draw('&6Chest: &aOK!');
+        else chestGlitchHud.draw('&6Chest: &cNO!');
     }
 }), () => (settings.chestglitch && inM7()), { type: 'renderOverlay', name: moduleName });
 

@@ -285,6 +285,14 @@ class Settings {
     chestglitch = false;
 
     @SwitchProperty({
+        name: 'Kick Timer',
+        description: 'Shows how long have you been kicked.',
+        category: 'HUD',
+        subcategory: 'Kick Timer'
+    })
+    kicktimer = false;
+
+    @SwitchProperty({
         name: 'Debug Mode',
         description: 'Toggle debug mode.',
         category: 'Others',

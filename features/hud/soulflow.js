@@ -3,6 +3,7 @@ import settings from "../../settings";
 import { data } from "../../utils/data";
 import { Hud } from "../../utils/hud";
 import hud_manager from "../../utils/hud_manager";
+import { isInSkyblock } from "../../utils/hypixel";
 import { registerWhen } from "../../utils/register";
 
 const soulflowHud = new Hud('soulflow', '&300000⸎', hud_manager, data);
@@ -47,5 +48,6 @@ registerWhen(register('renderOverlay', () => {
     soulflowHud.draw(`&3${soulflow}⸎`);
     const coords = soulflowHud.getCoords();
     const size = 8 * soulflowHud.getScale();
-    soulflowImage.draw(coords[0] - size - 2, coords[1], size, size);
+    if (isInSkyblock())
+        soulflowImage.draw(coords[0] - size - 2, coords[1], size, size);
 }), () => settings.soulflow, { type: 'renderOverlay', name: moduleName });
