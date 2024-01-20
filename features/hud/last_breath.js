@@ -1,5 +1,6 @@
 import settings from "../../settings";
 import { data } from "../../utils/data";
+// import { lb } from "../../utils/dungeon";
 import { Hud } from "../../utils/hud";
 import hud_manager from "../../utils/hud_manager";
 import getItemId from "../../utils/item_id";
@@ -119,6 +120,7 @@ registerWhen(register('renderOverlay', () => {
             lbHud.draw(`&6LastBreath: ${lbHitCount}`);
         }
     }
+    // lb = lbHitCount;
 }), () => settings.lbhud, { type: 'renderOverlay', name: moduleName });
 
 register('worldUnload', () => {

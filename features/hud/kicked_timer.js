@@ -15,7 +15,7 @@ registerWhen((register('step', () => {
     if (isInSkyblock()) {
         joinedOnce = true;
         kickTime = 0;
-    } else {
+    } else if (Server.getIP().includes('hypixel') && ChatLib.removeFormatting(Scoreboard.getTitle()).includes('PROTOTYPE')) {
         kickTime++;
     }
 }).setDelay(1)), () => settings.kicktimer, { type: 'step', name: moduleName });
@@ -23,3 +23,7 @@ registerWhen((register('step', () => {
 registerWhen((register('renderOverlay', () => {
     if (kickTime > 0 && joinedOnce === true) kickHud.draw(`&6Kicked for &c${kickTime}s`, false);
 })), () => settings.kicktimer, { type: 'renderOverlay', name: moduleName });
+
+register('worldLoad', () => {
+    kickTime = 0;
+});

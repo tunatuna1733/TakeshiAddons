@@ -2,6 +2,9 @@ import { getCurrentArea } from "./area";
 
 const BossStatus = Java.type('net.minecraft.entity.boss.BossStatus');
 
+export let lb = 0;
+export let icespray = false;
+
 export const getCurrentClass = () => {
     const tabNames = TabList.getNames();
     const partyNumLine = tabNames.find((name) => name.includes('§r§b§lParty §r§f('));

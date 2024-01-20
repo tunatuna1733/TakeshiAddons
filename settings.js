@@ -300,6 +300,14 @@ class Settings {
     })
     debugmode = false;
 
+    @SwitchProperty({
+        name: 'Ice Spray Notice',
+        description: 'Notifies when you successfully ice sprayed dragons.',
+        category: 'Dungeon',
+        subcategory: 'Ice Spray'
+    })
+    icespray = false;
+
     constructor() {
         this.initialize(this);
         this.setCategoryDescription('HUD', 'A lot of Overlays');
