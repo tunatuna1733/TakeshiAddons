@@ -3,6 +3,7 @@
         "# New Features",
         "- Added Chest Glitch HUD that shows whether you can glitch through the floor with your current location.",
         "- Added Kick Timer that shows how long have you been kicked.",
+        "- Added Ice Spray Notice that notifies you when you hit ice spray to dragons.",
         "# Bug Fixes & Improvements",
         "- Fixed huds shown outside skyblock."
     ],

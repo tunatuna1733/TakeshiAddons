@@ -24,14 +24,14 @@ const isCoordValid = (coord) => {
 
 const isGlitching = () => {
     if (inMaxor() && Player.getY() > 220 && (
-        getCurrentClass === 'Healer' || getCurrentClass === 'Mage'
+        getCurrentClass() === 'Healer' || getCurrentClass() === 'Mage'
     )) {
         return true;
     } else if (inMaxor() && (
         Player.getX() > 45 && Player.getX() < 65 &&
         Player.getY() > 110 && Player.getY() < 120 &&
         Player.getZ() > 50 && Player.getZ() < 120
-    ) && getCurrentClass === 'Healer') {
+    ) && getCurrentClass() === 'Healer') {
         return true;
     } else return false;
 }

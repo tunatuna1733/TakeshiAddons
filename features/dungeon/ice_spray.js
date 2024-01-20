@@ -1,5 +1,5 @@
 import settings from "../../settings";
-import { icespray, inM7 } from "../../utils/dungeon";
+import { inM7 } from "../../utils/dungeon";
 import getItemId from "../../utils/item_id";
 import { registerWhen } from "../../utils/register";
 
