@@ -2,8 +2,13 @@ import { getCurrentArea } from "./area";
 
 const BossStatus = Java.type('net.minecraft.entity.boss.BossStatus');
 
-// export let lb = 0;
-// export let icespray = false;
+let lb = 0;
+let icespray = false;
+
+export const setLb = (lbCount) => { lb = lbCount; };
+export const getLb = () => { return lb; };
+export const setSpray = (iceSprayHit) => { icespray = iceSprayHit; };
+export const getSpray = () => { return icespray; };
 
 export const getCurrentClass = () => {
     const tabNames = TabList.getNames();
@@ -28,14 +33,6 @@ export const getCurrentClass = () => {
 export const inM7 = () => {
     if (getCurrentArea().includes('The Catacombs (M7)')) return true;
     else return false;
-    /*
-    let inM7 = false;
-    const lines = Scoreboard.getLines();
-    lines.forEach((line) => {
-        if (line.getName().removeFormatting().includes('M7')) inM7 = true;
-    });
-    return inM7;
-    */
 };
 
 export const inMaxor = () => {

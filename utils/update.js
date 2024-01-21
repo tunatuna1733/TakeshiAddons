@@ -19,6 +19,7 @@ export const printHelp = () => {
     ChatLib.chat('&7|  &c"/fst"&7: &aOpen fishing timer in external window.');
     ChatLib.chat('&7| &bKeybind');
     ChatLib.chat('&7|  &aYou can bind a key for opening kuudra item price gui.');
+    ChatLib.chat('&7   &aYou can bind a key for sending party chat about estimated debuff result on dragons.');
 }
 
 export const printChangelog = (version) => {

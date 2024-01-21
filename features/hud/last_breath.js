@@ -1,6 +1,6 @@
 import settings from "../../settings";
 import { data } from "../../utils/data";
-// import { lb } from "../../utils/dungeon";
+import { setLb } from "../../utils/dungeon";
 import { Hud } from "../../utils/hud";
 import hud_manager from "../../utils/hud_manager";
 import getItemId from "../../utils/item_id";
@@ -58,6 +58,10 @@ registerWhen(register(Java.type('net.minecraftforge.event.entity.player.ArrowNoc
         if (heldItemID === 'LAST_BREATH' || heldItemID === 'STARRED_LAST_BREATH') {
             isDuplex = false;
             Player.getHeldItem().getLore().forEach((lore) => {
+                // ik that this event will be also triggered with duplex nock
+                // so this will actually double the amount of shot
+                // but we actually cannot detect if the arrows bounce
+                // so i remain it bugged :(
                 if (lore.includes('Duplex')) isDuplex = true;
             });
         }
@@ -120,7 +124,7 @@ registerWhen(register('renderOverlay', () => {
             lbHud.draw(`&6LastBreath: ${lbHitCount}`);
         }
     }
-    // lb = lbHitCount;
+    setLb(lbHitCount);
 }), () => settings.lbhud, { type: 'renderOverlay', name: moduleName });
 
 register('worldUnload', () => {

@@ -1,5 +1,5 @@
 import settings from "../../settings";
-import { inM7 } from "../../utils/dungeon";
+import { inM7, setSpray } from "../../utils/dungeon";
 import getItemId from "../../utils/item_id";
 import { registerWhen } from "../../utils/register";
 
@@ -21,7 +21,7 @@ registerWhen(register('clicked', (x, y, button, isDown) => {
 
 registerWhen(register('renderWorld', () => {
     if (Date.now() - iceSprayTime > 5 * 1000) {
-        // icespray = false;
+        setSpray(false);
         isIceSprayUsed = false;
         return;
     }
@@ -39,7 +39,7 @@ registerWhen(register('renderWorld', () => {
             const entity = new EntityLivingBase(dragon.getEntity());
             if (entity.getName() === 'Ender Dragon') {
                 isIceSprayHit = true;
-                // icespray = true;
+                setSpray(true);
             }
         });
     }

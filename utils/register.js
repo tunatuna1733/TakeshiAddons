@@ -28,9 +28,11 @@ export const setRegisters = () => {
         }
     });
     if (settings.debugmode) {
-        const debugMessage = new TextComponent(`${CHAT_PREFIX} &e[DEBUG] Registered these triggers.`)
-            .setHoverValue(`&2Registered:\n${registerInfo}\n\n&4Unregistered:\n${unregisterInfo}`);
-        ChatLib.chat(debugMessage);
+        if (!(registerCount === 0 && unregisterCount === 0)) {
+            const debugMessage = new TextComponent(`${CHAT_PREFIX} &e[DEBUG] Registered or unregistered triggers.`)
+                .setHoverValue(`&2Registered:\n${registerInfo}\n\n&4Unregistered:\n${unregisterInfo}`);
+            ChatLib.chat(debugMessage);
+        }
     }
 }
 
