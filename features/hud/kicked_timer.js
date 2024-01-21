@@ -27,3 +27,7 @@ registerWhen((register('renderOverlay', () => {
 register('worldLoad', () => {
     kickTime = 0;
 });
+
+register('serverDisconnect', () => {
+    joinedOnce = false;
+});

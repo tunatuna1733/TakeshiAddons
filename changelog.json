@@ -3,7 +3,8 @@
         "# New Features",
         "- Added debuff broadcast feature that adds keybind to send party chat about your estimated debuff results on dragons.",
         "# Bug Fixes & Improvements",
-        "- Fixed debug event registration message shown even if there is no registration / unregistration."
+        "- Fixed debug event registration message shown even if there is no registration / unregistration.",
+        "- Fixed kick timer shown when you re-login to hypixel."
     ],
     "0.2.3": [
         "# New Features",
