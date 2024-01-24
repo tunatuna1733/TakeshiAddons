@@ -1,4 +1,8 @@
 {
+    "0.2.5": [
+        "# Bug Fixes & Improvements",
+        "- Fixed area recognition feature sometimes throw exception when disconnecting."
+    ],
     "0.2.4": [
         "# New Features",
         "- Added debuff broadcast feature that adds keybind to send party chat about your estimated debuff results on dragons.",

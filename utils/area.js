@@ -6,46 +6,51 @@ let currentArea = '';
 let retryCount = 0;
 
 const updateCurrentArea = () => {
-    const areaLine = TabList?.getNames()?.find((name) => name.includes('Area') || name.includes('Dungeon: '));
-    if (areaLine) {
-        if (areaLine.includes('Dungeon: ') || areaLine.includes('Kuudra')) {
-            setTimeout(() => {
-                const zoneLine = Scoreboard.getLines().find((line) => line.getName().includes("⏣") || line.getName().includes("ф"));
-                if (zoneLine) {
-                    const zone = zoneLine.getName().replace("⏣ ", "").replace("ф ", "").removeFormatting().replace(/[^\x00-\x7F]/g, "").replace(/^\s+/, '');
-                    if (currentArea !== zone) {
-                        currentArea = zone;
+    try {
+        const areaLine = TabList?.getNames()?.find((name) => name.includes('Area') || name.includes('Dungeon: '));
+        if (areaLine) {
+            if (areaLine.includes('Dungeon: ') || areaLine.includes('Kuudra')) {
+                setTimeout(() => {
+                    const zoneLine = Scoreboard.getLines().find((line) => line.getName().includes("⏣") || line.getName().includes("ф"));
+                    if (zoneLine) {
+                        const zone = zoneLine.getName().replace("⏣ ", "").replace("ф ", "").removeFormatting().replace(/[^\x00-\x7F]/g, "").replace(/^\s+/, '');
+                        if (currentArea !== zone) {
+                            currentArea = zone;
+                            setTimeout(() => {
+                                setRegisters();
+                            }, 1000);
+                        }
+                    } else {
+                        retryCount++;
                         setTimeout(() => {
-                            setRegisters();
+                            updateCurrentArea();
                         }, 1000);
                     }
-                } else {
-                    retryCount++;
-                    setTimeout(() => {
-                        updateCurrentArea();
-                    }, 1000);
-                }
-            }, 1000);
-        }
-        else if (areaLine.includes('Area')) {
-            const area = areaLine.replace('Area: ', '').removeFormatting();
-            if (currentArea !== area) {
-                currentArea = area;
-                setTimeout(() => {
-                    setRegisters();
                 }, 1000);
             }
-        }
-    } else {
-        if (retryCount < 20) {
-            retryCount++;
-            setTimeout(() => {
-                updateCurrentArea();
-            }, 1000);
+            else if (areaLine.includes('Area')) {
+                const area = areaLine.replace('Area: ', '').removeFormatting();
+                if (currentArea !== area) {
+                    currentArea = area;
+                    setTimeout(() => {
+                        setRegisters();
+                    }, 1000);
+                }
+            }
         } else {
-            if (isInSkyblock())
-                ChatLib.chat(`${CHAT_PREFIX} &c[ERROR] Failed to get current area :(`);
+            if (retryCount < 20) {
+                retryCount++;
+                setTimeout(() => {
+                    updateCurrentArea();
+                }, 1000);
+            } else {
+                if (isInSkyblock())
+                    ChatLib.chat(`${CHAT_PREFIX} &c[ERROR] Failed to get current area :(`);
+            }
         }
+    } catch (e) {
+        console.log(`[Takeshi] Error in area.js`);
+        console.log(e);
     }
 }
 
