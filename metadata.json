@@ -3,13 +3,14 @@
     "description": "/takeshi for settings",
     "creator": "tunatuna1733",
     "entry": "index.js",
-    "version": "0.2.3",
+    "version": "0.2.4",
     "requires": [
         "PogData",
         "Vigilance",
         "axios",
         "Elementa",
         "BeaconBeam",
-        "numeraljs"
+        "numeraljs",
+        "RenderLib"
     ]
 }
