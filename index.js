@@ -21,9 +21,9 @@ import "./features/hud/reaper";
 import "./features/hud/last_breath";
 import "./features/hud/flare";
 import "./features/hud/inventory";
-import "./features/hud/composter";
 import "./features/hud/soulflow";
 import "./features/hud/kicked_timer";
+// import "./features/hud/gpro_charge";
 
 import "./features/gui/attribute_lb";
 import "./features/gui/auctions";
@@ -39,7 +39,11 @@ import "./features/kuudra/dropship";
 import "./features/kuudra/energized_chunk";
 import "./features/kuudra/kuudra_price";
 
+import "./features/garden/composter";
+import "./features/garden/pest_box";
+
 import "./utils/area";
+import "./utils/debug";
 
 import { CHAT_PREFIX } from "./data/chat";
 

@@ -97,6 +97,11 @@ const defaultData = {
         x: 0.4,
         y: 0.65,
         scale: 1.5
+    },
+    gprobattery: {
+        x: 0.9,
+        y: 0.9,
+        scale: 1
     }
 };
 

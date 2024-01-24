@@ -3,7 +3,7 @@ export const isInSkyblock = () => {
         return true;
     return false;
 }
-export const isInGarden = () => {
+export const inGarden = () => {
     let inGarden = false;
     Scoreboard.getLines().forEach((line) => {
         if (ChatLib.removeFormatting(line).includes('The Garde')) inGarden = true;

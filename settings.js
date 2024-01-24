@@ -4,7 +4,7 @@ const Color = Java.type('java.awt.Color');
 
 @Vigilant("TakeshiAddons", "§d§lTakeshiAddons", {
     getCategoryComparetor: () => (a, b) => {
-        const categories = ["HUD", "WIP"];
+        const categories = ["HUD", "Dungeon", "Kuudra", "Others", "Garden"];
         return categories.indexOf(a.name) - categories.indexOf(b.name);
     }
 })
@@ -221,7 +221,7 @@ class Settings {
     @SwitchProperty({
         name: 'Composter Time HUD',
         description: 'Shows remaining time of composter',
-        category: 'HUD',
+        category: 'Garden',
         subcategory: 'Composter'
     })
     composter = false;
@@ -308,6 +308,38 @@ class Settings {
     })
     icespray = false;
 
+    /*
+    @SwitchProperty({
+        name: 'GPro Battery HUD',
+        description: 'Shows current battery state of GPro X Superlight.',
+        category: 'HUD',
+        subcategory: 'GPro Battery'
+    })
+    gprobattery = false;
+    */
+
+    @SwitchProperty({
+        name: 'Draw Pest Box',
+        category: 'Garden',
+        subcategory: 'Pest Box'
+    })
+    pestbox = false;
+
+    @SwitchProperty({
+        name: 'Pest ESP',
+        description: 'Turning on this feature enables you to see pest box through wall. (UAYOR)',
+        category: 'Garden',
+        subcategory: 'Pest Box'
+    })
+    pestboxesp = false;
+
+    @ColorProperty({
+        name: 'Pest Box Color',
+        category: 'Garden',
+        subcategory: 'Pest Box'
+    })
+    pestboxcolor = Color.RED;
+
     constructor() {
         this.initialize(this);
         this.setCategoryDescription('HUD', 'A lot of Overlays');
@@ -324,6 +356,8 @@ class Settings {
         this.addDependency('Terminal Waypoint Color', 'M7 Terminal Waypoint');
         this.addDependency('Inventory HUD Color', 'Inventory HUD');
         this.addDependency('Warning time', 'Dropship Warning');
+        this.addDependency('Pest ESP', 'Draw Pest Box');
+        this.addDependency('Pest Box Color', 'Draw Pest Box');
     }
 }
 

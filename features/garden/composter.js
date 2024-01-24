@@ -4,7 +4,7 @@ import settings from "../../settings";
 import { data, gardenData } from "../../utils/data";
 import { Hud } from "../../utils/hud";
 import hud_manager from "../../utils/hud_manager";
-import { isInGarden, isInSkyblock } from "../../utils/hypixel";
+import { inGarden, isInSkyblock } from "../../utils/hypixel";
 import { decodeNumeral } from "../../utils/number";
 import { registerWhen } from "../../utils/register";
 
@@ -21,7 +21,7 @@ let fuel = 0;
 let previousTablistEntries = [];
 
 register('tick', () => {
-    if (!isInSkyblock() || !isInGarden() || !gardenData) return;
+    if (!isInSkyblock() || !inGarden() || !gardenData) return;
     const tablistEntries = TabList.getNames();
     if (!tablistEntries) return;
     if (previousTablistEntries === tablistEntries) return;

@@ -27,7 +27,12 @@ export const getCurrentClass = () => {
         // maybe not loaded
     }
     return currentClass;
-}
+};
+
+export const inF7 = () => {
+    if (getCurrentArea().includes('The Catacombs (F7)')) return true;
+    else return false;
+};
 
 // M7
 export const inM7 = () => {
@@ -40,32 +45,32 @@ export const inMaxor = () => {
     if (!bossName) return false;
     if (bossName.removeFormatting().includes('Maxor')) return true;
     else return false;
-}
+};
 
 export const inGoldor = () => {
     const bossName = BossStatus.field_82827_c;
     if (!bossName) return false;
     if (bossName.removeFormatting().includes('Goldor')) return true;
     else return false;
-}
+};
 
 export const inNecron = () => {
     const bossName = BossStatus.field_82827_c;
     if (!bossName) return false;
     if (bossName.removeFormatting().includes('Necron')) return true;
     else return false;
-}
+};
 
 export const inWitherKing = () => {
     const bossName = BossStatus.field_82827_c;
     if (!bossName) return false;
     if (bossName.removeFormatting().includes('Wither King')) return true;
     return false;
-}
+};
 
 export const getBossHealthPercent = () => {
     return BossStatus.field_82828_a;
-}
+};
 
 register('command', () => {
     ChatLib.chat(BossStatus.field_82828_a);
