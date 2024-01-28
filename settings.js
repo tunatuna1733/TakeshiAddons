@@ -340,6 +340,13 @@ class Settings {
     })
     pestboxcolor = Color.RED;
 
+    @ColorProperty({
+        name: 'Fishing Timer Background Color',
+        category: 'Others',
+        subcategory: 'Fishing Timer'
+    })
+    fishingtimercolor = Color.BLACK;
+
     constructor() {
         this.initialize(this);
         this.setCategoryDescription('HUD', 'A lot of Overlays');

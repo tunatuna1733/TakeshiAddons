@@ -17,6 +17,7 @@ export const printHelp = () => {
     ChatLib.chat('&7|  &c"/scc"&7: &aPrint your scoreboard to chat so that you can copy it.');
     ChatLib.chat('&7|  &c"/cpp"&7: &aCopy your purse text on your scoreboard.');
     ChatLib.chat('&7|  &c"/fst"&7: &aOpen fishing timer in external window.');
+    ChatLib.chat('&7|  &c"/ri <name>"&7: &aSave the inventory.');
     ChatLib.chat('&7| &bKeybind');
     ChatLib.chat('&7|  &aYou can bind a key for opening kuudra item price gui.');
     ChatLib.chat('&7   &aYou can bind a key for sending party chat about estimated debuff result on dragons.');

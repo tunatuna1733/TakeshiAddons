@@ -1,26 +1,57 @@
+import settings from "../../settings";
+
 const JFrame = Java.type('javax.swing.JFrame');
-const JLabel = Java.type("javax.swing.JLabel");
+const JLabel = Java.type('javax.swing.JLabel');
+const JPanel = Java.type('javax.swing.JPanel');
+const UIManager = Java.type('javax.swing.UIManager');
+const MetalLookAndFeel = Java.type('javax.swing.plaf.metal.MetalLookAndFeel');
+const BorderLayout = Java.type('java.awt.BorderLayout');
 const FlowLayout = Java.type('java.awt.FlowLayout');
-const Font = Java.type("java.awt.Font");
-const Color = Java.type("java.awt.Color");
+const Font = Java.type('java.awt.Font');
+const Color = Java.type('java.awt.Color');
 
-const jFrame = new JFrame("Fishing Timer");
-const jLabel = new JLabel("");
+JFrame.setDefaultLookAndFeelDecorated(true);
+UIManager.setLookAndFeel(new MetalLookAndFeel());
 
-jFrame.setSize(200, 100);
-jFrame.setLayout(new FlowLayout());
+const jFrame = new JFrame('Fishing Timer');
+const jLabel = new JLabel('');
+const mainPanel = new JPanel();
+
+let x = 200;
+let y = 100;
+
+jFrame.setSize(x, y);
+jFrame.setLayout(new BorderLayout());
 jFrame.setAlwaysOnTop(true);
-jFrame.add(jLabel);
+jFrame.setUndecorated(true);
+jFrame.setOpacity(settings.fishingtimercolor.getAlpha() / 255);
 
-const contentPane = jFrame.getContentPane();
-contentPane.setBackground(Color.BLACK);
+mainPanel.setLayout(new FlowLayout());
+mainPanel.add(jLabel);
+mainPanel.setBackground(new Color(settings.fishingtimercolor.getRed() / 255,
+    settings.fishingtimercolor.getGreen() / 255,
+    settings.fishingtimercolor.getBlue() / 255,
+));
 
-jLabel.setFont(new Font("Segoe UI", Font.PLAIN, 22));
+jFrame.add(mainPanel, BorderLayout.CENTER);
+
+jLabel.setFont(new Font('Segoe UI', Font.PLAIN, 40));
 
 const fishingTimerRegex = /^\d\.\d$/
 
 register('renderWorld', () => {
     if (jFrame.isVisible()) {
+        if (x !== jFrame.getWidth() || y !== jFrame.getHeight()) {
+            x = jFrame.getWidth();
+            y = jFrame.getHeight();
+            const baseSize = Math.min(x, y);
+            jLabel.setFont(new Font('Segoe UI', Font.PLAIN, parseInt(baseSize / 2)));
+        }
+        jFrame.setOpacity(settings.fishingtimercolor.getAlpha() / 255);
+        mainPanel.setBackground(new Color(settings.fishingtimercolor.getRed() / 255,
+            settings.fishingtimercolor.getGreen() / 255,
+            settings.fishingtimercolor.getBlue() / 255,
+        ));
         let found = false;
         World.getAllEntitiesOfType(Java.type('net.minecraft.entity.item.EntityArmorStand').class).forEach((armorStands) => {
             const name = armorStands.getName().removeFormatting();

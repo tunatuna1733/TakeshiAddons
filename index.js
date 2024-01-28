@@ -28,6 +28,7 @@ import "./features/hud/kicked_timer";
 import "./features/gui/attribute_lb";
 import "./features/gui/auctions";
 import "./features/gui/fishing_timer";
+import "./features/gui/remember_inv";
 
 import "./features/dungeon/terminal";
 import "./features/dungeon/relic";

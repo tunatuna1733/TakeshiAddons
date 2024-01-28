@@ -118,6 +118,7 @@ const defaultGardenData = {
 
 export let data = new PogObject('TakeshiAddons', defaultData, 'data.json');
 export let gardenData = new PogObject('TakeshiAddons', defaultGardenData, 'garden.json');
+export let inventoryData = new PogObject('TakeshiAddons', {}, 'inventory.json');
 
 export const resetData = () => {
     Object.keys(defaultData).forEach((k) => {

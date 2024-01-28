@@ -1,7 +1,10 @@
 {
     "0.2.5": [
+        "# New Features",
+        "- Added Inventory Saver. You can use it by running '/rememberinventory <inventory name>' or '/ri <inventory name>'.",
         "# Bug Fixes & Improvements",
-        "- Fixed area recognition feature sometimes throw exception when disconnecting."
+        "- Fixed area recognition feature sometimes throws exception when disconnecting.",
+        "- Fishing Timer's background color and transparency are now adjustable."
     ],
     "0.2.4": [
         "# New Features",
