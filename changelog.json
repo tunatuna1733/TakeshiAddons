@@ -5,7 +5,8 @@
         "- Added Dungeon Chest Profit Display that show profit of the reward chest calculated with the prices you set.",
         "# Bug Fixes & Improvements",
         "- Fixed area recognition feature sometimes throws exception when disconnecting.",
-        "- Fishing Timer's background color and transparency are now adjustable."
+        "- Fishing Timer's background color and transparency are now adjustable.",
+        "- This version might include some bugs or perfomance issues, so please report if you have them!"
     ],
     "0.2.4": [
         "# New Features",
