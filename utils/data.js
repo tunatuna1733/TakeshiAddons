@@ -102,6 +102,11 @@ const defaultData = {
         x: 0.9,
         y: 0.9,
         scale: 1
+    },
+    chestprofit: {
+        x: 0.3,
+        y: 0.4,
+        scale: 1
     }
 };
 

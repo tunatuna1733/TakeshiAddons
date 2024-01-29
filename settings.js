@@ -1,6 +1,24 @@
 // @ts-ignore
-import { @Vigilant, @SwitchProperty, @TextProperty, @CheckboxProperty, @ButtonProperty, @SelectorProperty, @SliderProperty, @ColorProperty, @PercentSliderProperty, @DecimalSliderProperty, Color} from "../Vigilance/index";
+import { m7NotRNGLootNames } from "./data/m7loot";
+import { @Vigilant,
+    @SwitchProperty,
+    @TextProperty,
+    @CheckboxProperty,
+    @ButtonProperty,
+    @SelectorProperty,
+    @SliderProperty,
+    @ColorProperty,
+    @PercentSliderProperty,
+    @DecimalSliderProperty,
+    @NumberProperty,
+    Color,
+    createPropertyAttributesExt
+} from "../Vigilance/index";
 const Color = Java.type('java.awt.Color');
+const PropertyData = Java.type("gg.essential.vigilance.data.PropertyData");
+const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType");
+const ValueBackedPropertyValue = Java.type("gg.essential.vigilance.data.ValueBackedPropertyValue");
+const JavaString = Java.type('java.lang.String');
 
 @Vigilant("TakeshiAddons", "§d§lTakeshiAddons", {
     getCategoryComparetor: () => (a, b) => {
@@ -347,6 +365,187 @@ class Settings {
     })
     fishingtimercolor = Color.BLACK;
 
+    @SwitchProperty({
+        name: 'Dungeon Chest Profit Display',
+        description: 'Shows chest profit calculated with the prices you set in M7.',
+        category: 'Dungeon',
+        subcategory: 'Chest Profit'
+    })
+    dungeonchestprofit = false;
+
+    /*
+    @NumberProperty({
+        name: "&9Rejuvenate 1",
+        category: 'Dungeon',
+        subcategory: 'Chest Profit',
+        min: 0,
+        max: 100000000
+    })
+    rejuvenateprice = 30000;
+
+    @NumberProperty({
+        name: "&dUltimate Wise 1",
+        category: 'Dungeon',
+        subcategory: 'Chest Profit',
+        min: 0,
+        max: 100000000
+    })
+    ultwiseprice = 30000;
+
+    @NumberProperty({
+        name: "&dWisdom 1",
+        category: 'Dungeon',
+        subcategory: 'Chest Profit',
+        min: 0,
+        max: 100000000
+    })
+    wisdomprice = 30000;
+
+    @NumberProperty({
+        name: "&dLast Stand 1",
+        category: 'Dungeon',
+        subcategory: 'Chest Profit',
+        min: 0,
+        max: 100000000
+    })
+    laststandprice = 30000;
+
+    @NumberProperty({
+        name: "&dSoul Eater 1",
+        category: 'Dungeon',
+        subcategory: 'Chest Profit',
+        min: 0,
+        max: 100000000
+    })
+    souleaterprice = 30000;
+
+    @NumberProperty({
+        name: "&dOne for All",
+        category: 'Dungeon',
+        subcategory: 'Chest Profit',
+        min: 0,
+        max: 100000000
+    })
+    ofaprice = 30000;
+
+    @NumberProperty({
+        name: "&5Precursor Gear",
+        category: 'Dungeon',
+        subcategory: 'Chest Profit',
+        min: 0,
+        max: 100000000
+    })
+    precursorprice = 30000;
+
+    @NumberProperty({
+        name: "&5Wither Blood",
+        category: 'Dungeon',
+        subcategory: 'Chest Profit',
+        min: 0,
+        max: 100000000
+    })
+    witherbloodprice = 30000;
+
+    @NumberProperty({
+        name: "&5Hot Potato Book",
+        category: 'Dungeon',
+        subcategory: 'Chest Profit',
+        min: 0,
+        max: 100000000
+    })
+    hotpotatoprice = 30000;
+
+    @NumberProperty({
+        name: "&5Fuming Potato Book",
+        category: 'Dungeon',
+        subcategory: 'Chest Profit',
+        min: 0,
+        max: 100000000
+    })
+    fumingprice = 30000;
+
+    @NumberProperty({
+        name: "&9Wither Catalyst",
+        category: 'Dungeon',
+        subcategory: 'Chest Profit',
+        min: 0,
+        max: 100000000
+    })
+    catalystprice = 30000;
+
+    @NumberProperty({
+        name: "&6Wither Helmet",
+        category: 'Dungeon',
+        subcategory: 'Chest Profit',
+        min: 0,
+        max: 100000000
+    })
+    helmetprice = 30000;
+
+    @NumberProperty({
+        name: "&6Wither Chestplate",
+        category: 'Dungeon',
+        subcategory: 'Chest Profit',
+        min: 0,
+        max: 100000000
+    })
+    chestplateprice = 30000;
+
+    @NumberProperty({
+        name: "&6Wither Leggings",
+        category: 'Dungeon',
+        subcategory: 'Chest Profit',
+        min: 0,
+        max: 100000000
+    })
+    leggingsprice = 30000;
+
+    @NumberProperty({
+        name: "&6Wither Boots",
+        category: 'Dungeon',
+        subcategory: 'Chest Profit',
+        min: 0,
+        max: 100000000
+    })
+    bootsprice = 30000;
+
+    @NumberProperty({
+        name: "&aMaster Skull Tier-4",
+        category: 'Dungeon',
+        subcategory: 'Chest Profit',
+        min: 0,
+        max: 100000000
+    })
+    skull4price = 30000;
+
+    @NumberProperty({
+        name: "&9Master Skull Tier-5",
+        category: 'Dungeon',
+        subcategory: 'Chest Profit',
+        min: 0,
+        max: 100000000
+    })
+    skull5price = 30000;
+
+    @NumberProperty({
+        name: "&6Auto Recombobulator",
+        category: 'Dungeon',
+        subcategory: 'Chest Profit',
+        min: 0,
+        max: 100000000
+    })
+    autorecombprice = 30000;
+
+    @NumberProperty({
+        name: "&6Recombobulator 3000",
+        category: 'Dungeon',
+        subcategory: 'Chest Profit',
+        min: 0,
+        max: 100000000
+    })
+    recombprice = 30000;
+    */
+
     constructor() {
         this.initialize(this);
         this.setCategoryDescription('HUD', 'A lot of Overlays');
@@ -365,6 +564,27 @@ class Settings {
         this.addDependency('Warning time', 'Dropship Warning');
         this.addDependency('Pest ESP', 'Draw Pest Box');
         this.addDependency('Pest Box Color', 'Draw Pest Box');
+
+        m7NotRNGLootNames.forEach((loot) => {
+            // const priceString = new JavaString(loot.price.toString());
+            const attributes = createPropertyAttributesExt(
+                PropertyType.TEXT,
+                {
+                    name: loot.name,
+                    description: `Enter the price for ${loot.name}&r.`,
+                    category: 'Dungeon',
+                    subcategory: 'Chest Profit',
+                }
+            );
+            const propertyData = new PropertyData(
+                attributes,
+                new ValueBackedPropertyValue(loot.price),
+                this.getConfig()
+            );
+            this.registerProperty(propertyData);
+
+            this.addDependency(loot.name, 'Dungeon Chest Profit Display');
+        });
     }
 }
 
