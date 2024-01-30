@@ -116,3 +116,8 @@ register('command', () => {
     });
     if (!copied) ChatLib.chat(`${CHAT_PREFIX} &cFailed to copy your purse :(`);
 }).setCommandName('copypurse').setAliases(['cpp']);
+
+register('command', () => {
+    const currentVersion = getVersion();
+    printChangelog(currentVersion);
+}).setCommandName('printtakeshichangelog');

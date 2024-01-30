@@ -1,10 +1,11 @@
-import { enchantedBookNameList, m7MustOpen, m7NotRNGLootNames, m7NotRNGLoots } from "../../data/m7loot";
+import { enchantedBookNameList, enchantedBookNameWithoutLevel, m7MustOpen, m7NotRNGLootNames, m7NotRNGLoots } from "../../data/m7loot";
 import settings from "../../settings";
 import { data } from "../../utils/data";
 import formatNumToCoin from "../../utils/format_coin";
 import { Hud } from "../../utils/hud";
 import hud_manager from "../../utils/hud_manager";
 import getItemId from "../../utils/item_id";
+import { decodeNumeral } from "../../utils/number";
 import { registerWhen } from "../../utils/register";
 const GuiChest = Java.type('net.minecraft.client.gui.inventory.GuiChest');
 
@@ -18,6 +19,8 @@ const chestVariants = [
     'Obsidian Chest',
     'Bedrock Chest'
 ];
+const colorCodes = ['1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+let currentColorCodeIndex = 0;
 
 /**
  * Get enchant of the enchanted book. 
@@ -105,7 +108,7 @@ registerWhen(register('postGuiRender', (x, y, gui) => {
         const [renderX, renderY] = chestProfitHud.getCoords();
         if (includeMustOpen) {
             Renderer.drawString('Must Open', renderX, renderY);
-            Renderer.drawString(` ${mustBuyItem}`, renderX, renderY + 20);
+            Renderer.drawString(` &${colorCodes[currentColorCodeIndex]}${mustBuyItem.removeFormatting()}`, renderX, renderY + 20);
         } else {
             if (shouldOpen) {
                 Renderer.drawString('&aOpen Chest', renderX, renderY);
@@ -119,12 +122,91 @@ registerWhen(register('postGuiRender', (x, y, gui) => {
             priceList.forEach((p, i) => {
                 console.dir(p, { depth: null });
                 if (p.isEnchantedBook) Renderer.drawString(`  ${p.name.replace(' 1', '')} ${p.level}&r: &6${formatNumToCoin(p.price)}`, renderX, renderY + 30 + i * 10);
-                else Renderer.drawString(`  ${p.name} &r: &6${formatNumToCoin(p.price)}`, renderX, renderY + 30 + i * 10);
+                else Renderer.drawString(`  ${p.name}&r: &6${formatNumToCoin(p.price)}`, renderX, renderY + 30 + i * 10);
             });
         }
+    } else if (GuiChest.class.isInstance(gui) && Player.getContainer() && Player.getContainer().getName() === 'Master Mode Catacombs - Floor V') {
+        // its wierd that the name of the container is floor v ??? (looks like the limit of number of letters)
+        let rewardTexts = [];
+        Player.getContainer().getItems().forEach((rewardChest) => {
+            if (rewardChest) {
+                if (rewardChest.getName().removeFormatting() === 'Obsidian Chest' || rewardChest.getName().removeFormatting() === 'Bedrock Chest') {
+                    let eachChestTexts = [];
+                    eachChestTexts.push(rewardChest.getName());
+                    eachChestTexts.push('Profit');   // profit
+                    eachChestTexts.push('Shiny')   // shiny
+                    let totalPrice = 0;
+                    let chestCost = 0;
+                    let includeMustOpen = false;
+                    let mustOpenItem = '';
+                    let includeShiny = false;
+                    let alreadyOpened = false;
+                    const lores = rewardChest.getLore();
+                    lores.forEach((lore) => {
+                        if (lore.removeFormatting().includes('Shiny')) includeShiny = true;
+                        if (Object.values(m7MustOpen).includes(lore.removeFormatting())) {
+                            includeMustOpen = true;
+                            mustOpenItem = lore;
+                        }
+                        if (!includeMustOpen) {
+                            if (lore.removeFormatting().includes('Enchanted Book')) {
+                                Object.keys(enchantedBookNameWithoutLevel).forEach((e) => {
+                                    if (lore.removeFormatting().includes(e)) {
+                                        const name = enchantedBookNameList[enchantedBookNameWithoutLevel[e]];
+                                        const level = decodeNumeral(lore.removeFormatting().replace(`Enchanted Book (${e} `, '').replace(')', ''));
+                                        let price = 0;
+                                        m7NotRNGLootNames.forEach((loot) => {
+                                            if (loot.name === name) price = parseInt(loot.price);
+                                        });
+                                        price = price * Math.pow(2, level - 1);
+                                        eachChestTexts.push(`  ${name.replace(' 1', '')} ${level}&r: &6${formatNumToCoin(price)}`);
+                                        totalPrice += price;
+                                    }
+                                })
+                            } else if (Object.values(m7NotRNGLoots).includes(lore.replace('§5§o', '').replace('§', '&'))) {
+                                m7NotRNGLootNames.forEach((loot) => {
+                                    if (loot.name === lore.replace('§5§o', '').replace('§', '&')) {
+                                        eachChestTexts.push(`  ${loot.name}&r: &6${formatNumToCoin(parseInt(loot.price))}`);
+                                        totalPrice += parseInt(loot.price);
+                                    }
+                                });
+                            }
+                        }
+                        if (lore.removeFormatting().includes('Coins')) {
+                            chestCost = parseInt(lore.removeFormatting().replaceAll(',', '').replace(' Coins', ''));
+                        } else if (lore.removeFormatting() === 'Already opened!') {
+                            alreadyOpened = true;
+                        }
+                    });
+                    const shouldOpen = totalPrice > chestCost;
+                    eachChestTexts[1] = alreadyOpened ? '  &aAlready Opened!' : `  &aProfit: ${shouldOpen ? '&a' : '&c'}${formatNumToCoin(totalPrice - chestCost)}`;
+                    eachChestTexts[2] = includeShiny ? ' &cS&6h&ei&an&9y&1!&d!' : '';
+                    if (includeMustOpen) {
+                        eachChestTexts = [
+                            rewardChest.getName(),
+                            ` &${colorCodes[currentColorCodeIndex]}${mustOpenItem.removeFormatting()} !!!!!!`,
+                            ` ${includeShiny ? ' &cS&6h&ei&an&9y&1!&d!' : ''}`
+                        ];
+                    }
+                    rewardTexts.push(eachChestTexts);
+                }
+            }
+        });
+        const [renderX, renderY] = chestProfitHud.getCoords();
+        let currentY = renderY;
+        const interval = 10;
+        rewardTexts.forEach((texts) => {
+            texts.forEach((text) => {
+                Renderer.drawString(text, renderX, currentY);
+                currentY += interval;
+            });
+            Renderer.drawString('', renderX, currentY += interval);
+            Renderer.drawString('', renderX, currentY += interval);
+        });
     }
 }), () => settings.dungeonchestprofit, { type: 'postGuiRender', name: 'Dungeon Chest Profit' });
 
-register('command', () => {
-    ChatLib.chat(Player.getHeldItem()?.getNBT());
-}).setCommandName('debugenchantedbook');
+registerWhen(register('step', () => {
+    currentColorCodeIndex++;
+    if (currentColorCodeIndex === colorCodes.length) currentColorCodeIndex = 0;
+}).setFps(2), () => settings.dungeonchestprofit, { type: 'step', name: 'Dungeon Chest Profit' });

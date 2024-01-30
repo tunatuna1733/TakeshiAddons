@@ -22,8 +22,17 @@ export const enchantedBookNameList = {
     "ultimate_wisdom": "&dWisdom 1",
     "ultimate_last_stand": "&dLast Stand 1",
     "ultimate_soul_eater": "&dSoul Eater 1",
-    "ultimate_one_for_all": "&dOne for All"
-}
+    "ultimate_one_for_all": "&dOne For All"
+};
+
+export const enchantedBookNameWithoutLevel = {
+    "Rejuvenate": "rejuvenate",
+    "Ultimate Wise": "ultimate_wise",
+    "Wisdom": "ultimate_wisdom",
+    "Last Stand": "ultimate_last_stand",
+    "Soul Eater": "ultimate_soul_eater",
+    "One For All": "ultimate_one_for_all"
+};
 
 export const m7NotRNGLootNames = [
     {
@@ -47,7 +56,7 @@ export const m7NotRNGLootNames = [
         price: "1100000"
     },
     {
-        name: "&dOne for All",
+        name: "&dOne For All",
         price: "2100000"
     },
     {

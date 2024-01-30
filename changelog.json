@@ -1,4 +1,8 @@
 {
+    "0.2.6": [
+        "# Bug Fixes & Improvements",
+        "- Dungeon Chest Profit Display is now shown in Croesus chest selection gui."
+    ],
     "0.2.5": [
         "# New Features",
         "- Added Inventory Saver. You can use it by running '/rememberinventory <inventory name>' or '/ri <inventory name>'.",

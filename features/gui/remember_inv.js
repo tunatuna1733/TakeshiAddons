@@ -59,7 +59,6 @@ const generateCheckBoxes = (options) => {
         if (!Object.keys(checkBoxes).includes(option)) {
             newCheckBoxes[option] = [new GuiCheckBox(i, x, y + interval * i, option, false)];
             newCheckBoxes[option].push(new GuiButton(i + options.length, x + newCheckBoxes[option][0].func_146117_b() + 3, y + interval * i - 3, 20, 20, 'X'));
-            ChatLib.chat(`${option}, ${Object.keys(checkBoxes)}`);
         } else {
             newCheckBoxes[option] = checkBoxes[option];
         }
