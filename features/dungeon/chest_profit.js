@@ -150,10 +150,15 @@ registerWhen(register('postGuiRender', (x, y, gui) => {
                         }
                         if (!includeMustOpen) {
                             if (lore.removeFormatting().includes('Enchanted Book')) {
+                                let found = false;
                                 Object.keys(enchantedBookNameWithoutLevel).forEach((e) => {
                                     if (lore.removeFormatting().includes(e)) {
+                                        found = true;
                                         const name = enchantedBookNameList[enchantedBookNameWithoutLevel[e]];
-                                        const level = decodeNumeral(lore.removeFormatting().replace(`Enchanted Book (${e} `, '').replace(')', ''));
+                                        let level = 0;
+                                        const levelText = lore.removeFormatting().replace(`Enchanted Book (${e} `, '').replace(')', '');
+                                        if (['1', '2', '3'].includes(levelText)) level = parseInt(levelText);
+                                        else level = decodeNumeral(lore.removeFormatting().replace(`Enchanted Book (${e} `, '').replace(')', ''));
                                         let price = 0;
                                         m7NotRNGLootNames.forEach((loot) => {
                                             if (loot.name === name) price = parseInt(loot.price);
@@ -163,6 +168,10 @@ registerWhen(register('postGuiRender', (x, y, gui) => {
                                         totalPrice += price;
                                     }
                                 })
+                                if (!found && lore.removeFormatting().includes('Thunderlord')) {
+                                    includeMustOpen = true;
+                                    mustOpenItem = 'Thunderlord 7';
+                                }
                             } else if (Object.values(m7NotRNGLoots).includes(lore.replace('§5§o', '').replace('§', '&'))) {
                                 m7NotRNGLootNames.forEach((loot) => {
                                     if (loot.name === lore.replace('§5§o', '').replace('§', '&')) {

@@ -1,4 +1,8 @@
 {
+    "0.2.7": [
+        "# Bug Fixes & Improvements",
+        "- Hopefully fixed Dungeon Chest Profit Display not working for the player who uses something like convert roman to numeral feature."
+    ],
     "0.2.6": [
         "# Bug Fixes & Improvements",
         "- Dungeon Chest Profit Display is now shown in Croesus chest selection gui."
