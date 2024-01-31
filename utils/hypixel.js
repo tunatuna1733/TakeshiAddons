@@ -3,6 +3,7 @@ export const isInSkyblock = () => {
         return true;
     return false;
 }
+
 export const inGarden = () => {
     let inGarden = false;
     Scoreboard.getLines().forEach((line) => {

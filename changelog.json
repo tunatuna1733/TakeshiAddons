@@ -1,4 +1,10 @@
 {
+    "0.2.8": [
+        "# New Features",
+        "- Added Ashfang Helper.",
+        "# Bug Fixes & Improvements",
+        "- Fixed Master skulls not shown in Dungeon Chest Profit Display."
+    ],
     "0.2.7": [
         "# Bug Fixes & Improvements",
         "- Hopefully fixed Dungeon Chest Profit Display not working for the player who uses something like convert roman to numeral feature."

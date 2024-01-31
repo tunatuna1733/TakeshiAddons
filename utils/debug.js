@@ -16,3 +16,11 @@ register('command', () => {
         ChatLib.chat(`${armorStand.getX()}, ${armorStand.getY()}, ${armorStand.getZ()}, ${armorStand.getWidth()}, ${armorStand.getHeight()}`);
     });
 }).setCommandName('debugarmorstands');
+
+register('command', () => {
+    World.getAllEntitiesOfType(Java.type('net.minecraft.entity.item.EntityArmorStand').class).forEach((armorStand) => {
+        const entity = new EntityLivingBase(armorStand.getEntity());
+        const headNBT = entity.getItemInSlot(4)?.getRawNBT();
+        ChatLib.chat(headNBT);
+    });
+}).setCommandName('debugarmorstandheads');

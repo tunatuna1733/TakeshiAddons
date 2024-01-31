@@ -18,11 +18,10 @@ const Color = Java.type('java.awt.Color');
 const PropertyData = Java.type("gg.essential.vigilance.data.PropertyData");
 const PropertyType = Java.type("gg.essential.vigilance.data.PropertyType");
 const ValueBackedPropertyValue = Java.type("gg.essential.vigilance.data.ValueBackedPropertyValue");
-const JavaString = Java.type('java.lang.String');
 
 @Vigilant("TakeshiAddons", "§d§lTakeshiAddons", {
     getCategoryComparetor: () => (a, b) => {
-        const categories = ["HUD", "Dungeon", "Kuudra", "Others", "Garden"];
+        const categories = ["HUD", "Dungeon", "Kuudra", "Others", "Garden", "Crimson Isle"];
         return categories.indexOf(a.name) - categories.indexOf(b.name);
     }
 })
@@ -373,178 +372,27 @@ class Settings {
     })
     dungeonchestprofit = false;
 
-    /*
-    @NumberProperty({
-        name: "&9Rejuvenate 1",
-        category: 'Dungeon',
-        subcategory: 'Chest Profit',
-        min: 0,
-        max: 100000000
+    @SwitchProperty({
+        name: 'Ashfang Helper',
+        description: 'Various features which helps you kill Ashfang.',
+        category: 'Crimson Isle',
+        subcategory: 'Ashfang Helper'
     })
-    rejuvenateprice = 30000;
+    ashfanghelper = false;
 
-    @NumberProperty({
-        name: "&dUltimate Wise 1",
-        category: 'Dungeon',
-        subcategory: 'Chest Profit',
-        min: 0,
-        max: 100000000
+    @ColorProperty({
+        name: 'Ashfang Color',
+        category: 'Crimson Isle',
+        subcategory: 'Ashfang Helper'
     })
-    ultwiseprice = 30000;
+    ashfangcolor = Color.PINK;
 
-    @NumberProperty({
-        name: "&dWisdom 1",
-        category: 'Dungeon',
-        subcategory: 'Chest Profit',
-        min: 0,
-        max: 100000000
+    @ColorProperty({
+        name: 'Ashfang Blackhole Color',
+        category: 'Crimson Isle',
+        subcategory: 'Ashfang Helper'
     })
-    wisdomprice = 30000;
-
-    @NumberProperty({
-        name: "&dLast Stand 1",
-        category: 'Dungeon',
-        subcategory: 'Chest Profit',
-        min: 0,
-        max: 100000000
-    })
-    laststandprice = 30000;
-
-    @NumberProperty({
-        name: "&dSoul Eater 1",
-        category: 'Dungeon',
-        subcategory: 'Chest Profit',
-        min: 0,
-        max: 100000000
-    })
-    souleaterprice = 30000;
-
-    @NumberProperty({
-        name: "&dOne for All",
-        category: 'Dungeon',
-        subcategory: 'Chest Profit',
-        min: 0,
-        max: 100000000
-    })
-    ofaprice = 30000;
-
-    @NumberProperty({
-        name: "&5Precursor Gear",
-        category: 'Dungeon',
-        subcategory: 'Chest Profit',
-        min: 0,
-        max: 100000000
-    })
-    precursorprice = 30000;
-
-    @NumberProperty({
-        name: "&5Wither Blood",
-        category: 'Dungeon',
-        subcategory: 'Chest Profit',
-        min: 0,
-        max: 100000000
-    })
-    witherbloodprice = 30000;
-
-    @NumberProperty({
-        name: "&5Hot Potato Book",
-        category: 'Dungeon',
-        subcategory: 'Chest Profit',
-        min: 0,
-        max: 100000000
-    })
-    hotpotatoprice = 30000;
-
-    @NumberProperty({
-        name: "&5Fuming Potato Book",
-        category: 'Dungeon',
-        subcategory: 'Chest Profit',
-        min: 0,
-        max: 100000000
-    })
-    fumingprice = 30000;
-
-    @NumberProperty({
-        name: "&9Wither Catalyst",
-        category: 'Dungeon',
-        subcategory: 'Chest Profit',
-        min: 0,
-        max: 100000000
-    })
-    catalystprice = 30000;
-
-    @NumberProperty({
-        name: "&6Wither Helmet",
-        category: 'Dungeon',
-        subcategory: 'Chest Profit',
-        min: 0,
-        max: 100000000
-    })
-    helmetprice = 30000;
-
-    @NumberProperty({
-        name: "&6Wither Chestplate",
-        category: 'Dungeon',
-        subcategory: 'Chest Profit',
-        min: 0,
-        max: 100000000
-    })
-    chestplateprice = 30000;
-
-    @NumberProperty({
-        name: "&6Wither Leggings",
-        category: 'Dungeon',
-        subcategory: 'Chest Profit',
-        min: 0,
-        max: 100000000
-    })
-    leggingsprice = 30000;
-
-    @NumberProperty({
-        name: "&6Wither Boots",
-        category: 'Dungeon',
-        subcategory: 'Chest Profit',
-        min: 0,
-        max: 100000000
-    })
-    bootsprice = 30000;
-
-    @NumberProperty({
-        name: "&aMaster Skull Tier-4",
-        category: 'Dungeon',
-        subcategory: 'Chest Profit',
-        min: 0,
-        max: 100000000
-    })
-    skull4price = 30000;
-
-    @NumberProperty({
-        name: "&9Master Skull Tier-5",
-        category: 'Dungeon',
-        subcategory: 'Chest Profit',
-        min: 0,
-        max: 100000000
-    })
-    skull5price = 30000;
-
-    @NumberProperty({
-        name: "&6Auto Recombobulator",
-        category: 'Dungeon',
-        subcategory: 'Chest Profit',
-        min: 0,
-        max: 100000000
-    })
-    autorecombprice = 30000;
-
-    @NumberProperty({
-        name: "&6Recombobulator 3000",
-        category: 'Dungeon',
-        subcategory: 'Chest Profit',
-        min: 0,
-        max: 100000000
-    })
-    recombprice = 30000;
-    */
+    ashfangbhcolor = Color.GRAY;
 
     constructor() {
         this.initialize(this);
@@ -564,9 +412,10 @@ class Settings {
         this.addDependency('Warning time', 'Dropship Warning');
         this.addDependency('Pest ESP', 'Draw Pest Box');
         this.addDependency('Pest Box Color', 'Draw Pest Box');
+        this.addDependency('Ashfang Color', 'Ashfang Helper');
+        this.addDependency('Ashfang Blackhole Color', 'Ashfang Helper');
 
         m7NotRNGLootNames.forEach((loot) => {
-            // const priceString = new JavaString(loot.price.toString());
             const attributes = createPropertyAttributesExt(
                 PropertyType.TEXT,
                 {

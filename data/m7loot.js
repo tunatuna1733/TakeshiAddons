@@ -10,8 +10,8 @@ export const m7NotRNGLoots = {
     "WITHER_CHESTPLATE": "&6Wither Chestplate",
     "WITHER_LEGGINGS": "&6Wither Leggings",
     "WITHER_BOOTS": "&6Wither Boots",
-    "MASTER_SKULL_TIER_4": "&aMaster Skull Tier-4",
-    "MASTER_SKULL_TIER_5": "&9Master Skull Tier-5",
+    "MASTER_SKULL_TIER_4": "&aMaster Skull - Tier 4",
+    "MASTER_SKULL_TIER_5": "&9Master Skull - Tier 5",
     "AUTO_RECOMBOBULATOR": "&6Auto Recombobulator",
     "RECOMBOBULATOR_3000": "&6Recombobulator 3000"
 };

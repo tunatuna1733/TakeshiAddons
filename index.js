@@ -44,6 +44,8 @@ import "./features/kuudra/kuudra_price";
 import "./features/garden/composter";
 import "./features/garden/pest_box";
 
+import "./features/nether/ashfang";
+
 import "./utils/area";
 import "./utils/debug";
 
