@@ -394,6 +394,38 @@ class Settings {
     })
     ashfangbhcolor = Color.GRAY;
 
+    @SwitchProperty({
+        name: 'Sea Creature Detector',
+        description: "Detects other players' sea creatures. (UAYOR)",
+        category: 'Crimson Isle',
+        subcategory: 'Sea Creature'
+    })
+    seacreature = false
+
+    @SwitchProperty({
+        name: 'Jawbus Waypoint',
+        description: 'Draws jawbus waypoint. (UAYOR)',
+        category: 'Crimson Isle',
+        subcategory: 'Sea Creature'
+    })
+    jawbuswaypoint = false
+
+    @SwitchProperty({
+        name: 'Enable Sea Creature ESP',
+        description: 'Shows sea creature box through walls.',
+        category: 'Crimson Isle',
+        subcategory: 'Sea Creature'
+    })
+    seacreatureesp = false
+
+    @SwitchProperty({
+        name: 'Stop rendering while holding fishing rod',
+        description: 'Stop rendering sea creature mob boxes while holding fishing rod.',
+        category: 'Crimson Isle',
+        subcategory: 'Sea Creature'
+    })
+    fishingrodstoprender = false
+
     constructor() {
         this.initialize(this);
         this.setCategoryDescription('HUD', 'A lot of Overlays');
@@ -414,6 +446,8 @@ class Settings {
         this.addDependency('Pest Box Color', 'Draw Pest Box');
         this.addDependency('Ashfang Color', 'Ashfang Helper');
         this.addDependency('Ashfang Blackhole Color', 'Ashfang Helper');
+        this.addDependency('Enable Sea Creature ESP', 'Sea Creature Detector');
+        this.addDependency('Stop rendering while holding fishing rod', 'Sea Creature Detector');
 
         m7NotRNGLootNames.forEach((loot) => {
             const attributes = createPropertyAttributesExt(
