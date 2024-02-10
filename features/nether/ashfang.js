@@ -1,13 +1,14 @@
 import RenderLib from "../../../RenderLib";
 import renderBeaconBeam from "../../../BeaconBeam";
 import settings from "../../settings";
-import { getCurrentArea } from "../../utils/area";
+import { getCurrentArea, getCurrentZone } from "../../utils/area";
 import { registerWhen } from "../../utils/register";
 
 const EntityArmorStand = Java.type('net.minecraft.entity.item.EntityArmorStand');
 const encodedBlackholeTexture = 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWE2OWNjZjdhZDkwNGM5YTg1MmVhMmZmM2Y1YjRlMjNhZGViZjcyZWQxMmQ1ZjI0Yjc4Y2UyZDQ0YjRhMiJ9fX0=';
 
 registerWhen(register('renderWorld', () => {
+    if (getCurrentZone() !== 'Ruins of Ashfang') return;
     World.getAllEntitiesOfType(EntityArmorStand.class).forEach((armorStand) => {
         // ashfang
         if (armorStand.getName().removeFormatting().includes('[Lv200] Ashfang')) {

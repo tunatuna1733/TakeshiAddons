@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
+        <script>
+            let currentMobs = [];
+
+            const fetchStaticMobData = async () => {
+                const res = await fetch('/staticmobdata');
+                const data = await res.json();
+                return data.data;
+            };
+
+            const fetchCurrentSettings = async () => {
+                const res = await fetch('/bestiarydata');
+                const data = await res.json();
+                currentMobs = data.data;
+                updateSelectedMobs();
+                return data.data;
+            };
+
+            const toggleCheckBox = (mob, toggle) => {
+                if (toggle) {
+                    currentMobs.push(mob);
+                } else {
+                    currentMobs = currentMobs.filter((m) => !(m.name === mob.name && m.island === mob.island));
+                }
+                updateSelectedMobs();
+            };
+
+            const updateSelectedMobs = () => {
+                const ps = document.querySelectorAll('[id^=selected-]');
+                ps.forEach((p) => {
+                    const island = p.id.replace('selected-', '');
+                    let text = '';
+                    currentMobs.forEach((m) => {
+                        if (m.island === island) {
+                            if (text !== '') text += ', ';
+                            text += m.name;
+                        }
+                    });
+                    p.innerText = text;
+                });
+            };
+
+            const sendMobSettings = () => {
+                fetch('/bestiarydata', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        data: currentMobs
+                    })
+                }).then((res) => {
+                    if (res.status === 200) {
+                        displayToast(true);
+                    }
+                });
+            };
+
+            const displayToast = (success) => {
+                if (success) {
+                    openToast();
+                }
+            }
+
+            let opacity = 0;
+            let openInterval;
+            let closeInterval;
+
+            const openToast = () => {
+                const toast = document.getElementById('toast');
+                toast.classList.remove('hidden');
+                openInterval = setInterval(() => {
+                    opacity += 5;
+                    toast.classList.replace(`opacity-${opacity - 5}`, `opacity-${opacity}`);
+                    if (opacity === 100) {
+                        clearInterval(openInterval);
+                    }
+                }, 20);
+                setTimeout(() => {
+                    closeToast();    
+                }, 5000);
+            }
+
+            const closeToast = () => {
+                const toast = document.getElementById('toast');
+                closeInterval = setInterval(() => {
+                    opacity -= 5;
+                    toast.classList.replace(`opacity-${opacity + 5}`, `opacity-${opacity}`);
+                    if (opacity === 0) {
+                        clearInterval(closeInterval);
+                    }
+                }, 20);
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const sendButton = document.getElementById('send-button');
+                sendButton.addEventListener('click', sendMobSettings);
+                fetchStaticMobData().then((mobs) => {
+                    fetchCurrentSettings().then((bestiaryData) => {
+                        mobs.forEach((mob) => {
+                            const parent = document.getElementById(`${mob.island}-mobs`);
+                            const listElement = document.createElement('li');
+                            listElement.innerHTML =
+                                `<input type="checkbox" id="${mob.island}-${mob.name}" value="" class="hidden peer" required="" ${bestiaryData.find((b) => b.name === mob.name && b.island === mob.island) ? "checked" : ""} />` +
+                                `<label for="${mob.island}-${mob.name}" class="inline-flex items-center justify-center w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 hover:text-gray-600 peer-checked:text-gray-600 hover:bg-gray-50" >` +
+                                `<div class="block">` +
+                                `<img class="w-auto max-h-32" src="${mob.image}" alt="${mob.island}-${mob.name}-img" />` +
+                                `<div class="w-full text-lg font-semibold">${mob.name}</div>` +
+                                `</div>` +
+                                `</label>`;
+                            parent.appendChild(listElement);
+                            const checkBoxElement = document.getElementById(`${mob.island}-${mob.name}`);
+                            checkBoxElement.addEventListener('change', () => {
+                                toggleCheckBox(mob, checkBoxElement.checked);
+                            });
+                        });
+                    });
+                });
+            });
+
+        </script>
+    </head>
+    <body>
+        <h1 class="text-3xl font-bold m-1">
+            TakeshiAddons Mob box settings
+        </h1>
+        <div class="container mx-4 my-2 p-4 border rounded-md">
+            <h2 class="text-2xl font-bold">
+                Selected mobs
+            </h2>
+            <div class="container p-2">
+                <p>Private Island: <span id="selected-private"></span></p>
+                <p>Hub: <span id="selected-hub"></span></p>
+                <p>The Farming Islands: <span id="selected-farming"></span></p>
+                <p>Spider's Den: <span id="selected-spider"></span></p>
+                <p>The End: <span id="selected-end"></span></p>
+                <p>Crimson Isle: <span id="selected-nether"></span></p>
+                <p>Deep Caverns: <span id="selected-deep"></span></p>
+                <p>Dwarven Mines: <span id="selected-dwarven"></span></p>
+                <p>Crystal Hollows: <span id="selected-crystal"></span></p>
+                <p>The Park: <span id="selected-park"></span></p>
+                <!-- <p id="selected-spooky">Spooky Festival: <span id="selected-spooky"></span></p> -->
+                <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 mt-5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" id="send-button">Apply</button>
+            </div>
+        </div>
+        <div class="container m-2 p-2">
+            <div class="mb-4 border-b border-gray-200">
+                <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist">
+                    <li class="me-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="private-tab" data-tabs-target="#private" type="button" role="tab" aria-controls="private" aria-selected="false">Private Island</button>
+                    </li>
+                    <li class="me-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="hub-tab" data-tabs-target="#hub" type="button" role="tab" aria-controls="hub" aria-selected="false">Hub</button>
+                    </li>
+                    <li class="me-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="farming-tab" data-tabs-target="#farming" type="button" role="tab" aria-controls="farming" aria-selected="false">The Farming Islands</button>
+                    </li>
+                    <li class="me-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="spider-tab" data-tabs-target="#spider" type="button" role="tab" aria-controls="spider" aria-selected="false">Spider's Den</button>
+                    </li>
+                    <li class="me-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="end-tab" data-tabs-target="#end" type="button" role="tab" aria-controls="end" aria-selected="false">The End</button>
+                    </li>
+                    <li class="me-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="nether-tab" data-tabs-target="#nether" type="button" role="tab" aria-controls="nether" aria-selected="false">Crimson Isle</button>
+                    </li>
+                    <li class="me-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="deep-tab" data-tabs-target="#deep" type="button" role="tab" aria-controls="deep" aria-selected="false">Deep Caverns</button>
+                    </li>
+                    <li class="me-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="dwarven-tab" data-tabs-target="#dwarven" type="button" role="tab" aria-controls="dwarven" aria-selected="false">Dwarven Mines</button>
+                    </li>
+                    <li class="me-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="crystal-tab" data-tabs-target="#crystal" type="button" role="tab" aria-controls="crystal" aria-selected="false">Crystal Hollows</button>
+                    </li>
+                    <li role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="park-tab" data-tabs-target="#park" type="button" role="tab" aria-controls="park" aria-selected="false">The Park</button>
+                    </li>
+                    <!--
+                    <li role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="spooky-tab" data-tabs-target="#spooky" type="button" role="tab" aria-controls="spooky" aria-selected="false">Spooky Festival</button>
+                    </li>
+                    -->
+                </ul>
+            </div>
+            <div id="default-tab-content">
+                <div class="hidden p-4 rounded-lg" id="private" role="tabpanel" aria-labelledby="private-tab">
+                    <ul class="grid w-full gap-6 md:grid-cols-6" id="private-mobs"></ul>
+                </div>
+                <div class="hidden p-4 rounded-lg" id="hub" role="tabpanel" aria-labelledby="hub-tab">
+                    <ul class="grid w-full gap-6 md:grid-cols-6" id="hub-mobs"></ul>
+                </div>
+                <div class="hidden p-4 rounded-lg" id="farming" role="tabpanel" aria-labelledby="farming-tab">
+                    <ul class="grid w-full gap-6 md:grid-cols-6" id="farming-mobs"></ul>
+                </div>
+                <div class="hidden p-4 rounded-lg" id="spider" role="tabpanel" aria-labelledby="spider-tab">
+                    <ul class="grid w-full gap-6 md:grid-cols-6" id="spider-mobs"></ul>
+                </div>
+                <div class="hidden p-4 rounded-lg" id="end" role="tabpanel" aria-labelledby="end-tab">
+                    <ul class="grid w-full gap-6 md:grid-cols-6" id="end-mobs"></ul>
+                </div>
+                <div class="hidden p-4 rounded-lg" id="nether" role="tabpanel" aria-labelledby="nether-tab">
+                    <ul class="grid w-full gap-6 md:grid-cols-6" id="nether-mobs"></ul>
+                </div>
+                <div class="hidden p-4 rounded-lg" id="deep" role="tabpanel" aria-labelledby="deep-tab">
+                    <ul class="grid w-full gap-6 md:grid-cols-6" id="deep-mobs"></ul>
+                </div>
+                <div class="hidden p-4 rounded-lg" id="dwarven" role="tabpanel" aria-labelledby="dwarven-tab">
+                    <ul class="grid w-full gap-6 md:grid-cols-6" id="dwarven-mobs"></ul>
+                </div>
+                <div class="hidden p-4 rounded-lg" id="crystal" role="tabpanel" aria-labelledby="crystal-tab">
+                    <ul class="grid w-full gap-6 md:grid-cols-6" id="crystal-mobs"></ul>
+                </div>
+                <div class="hidden p-4 rounded-lg" id="park" role="tabpanel" aria-labelledby="park-tab">
+                    <ul class="grid w-full gap-6 md:grid-cols-6" id="park-mobs"></ul>
+                </div>
+                <!--
+                <div class="hidden p-4 rounded-lg" id="spooky" role="tabpanel" aria-labelledby="spooky-tab">
+                    <ul class="grid w-full gap-6 md:grid-cols-6" id="spooky-mobs"></ul>
+                </div>
+                -->
+            </div>
+        </div>
+        <div class="hidden w-1/12 h-16 fixed right-10 bottom-10 mx-4 my-2 p-4 border rounded-md bg-emerald-500 opacity-0" id="toast">
+            <p class="font-semibold text-white">Success!</p>
+        </div>
+    </body>
+</html>

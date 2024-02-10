@@ -3,7 +3,7 @@
     "description": "/takeshi for settings",
     "creator": "tunatuna1733",
     "entry": "index.js",
-    "version": "0.2.9",
+    "version": "0.3.0",
     "requires": [
         "PogData",
         "Vigilance",
@@ -11,6 +11,7 @@
         "Elementa",
         "BeaconBeam",
         "numeraljs",
-        "RenderLib"
+        "RenderLib",
+        "ServerUtilities"
     ]
 }

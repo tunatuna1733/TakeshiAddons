@@ -426,6 +426,48 @@ class Settings {
     })
     fishingrodstoprender = false
 
+    @SwitchProperty({
+        name: 'Draw mob box',
+        description: 'Draws a box to the specified mobs.',
+        category: 'Bestiary',
+        subcategory: 'Mob Box'
+    })
+    mobbox = false;
+
+    @ButtonProperty({
+        name: 'Select Mobs',
+        description: 'Open GUI for mob selection.',
+        placeholder: 'Click!',
+        category: 'Bestiary',
+        subcategory: 'Mob Box'
+    })
+    bestiaryGui() {
+        java.awt.Desktop.getDesktop().browse(new java.net.URI('http://localhost:8085/bestiary'));
+    }
+
+    @SwitchProperty({
+        name: 'Is it Derpy now?',
+        description: 'Turn it on if the mayor Derpy is elected.',
+        category: 'Bestiary',
+        subcategory: 'Mob Box'
+    })
+    mobboxderpy = false;
+
+    @ColorProperty({
+        name: 'Mob box color',
+        category: 'Bestiary',
+        subcategory: 'Mob Box'
+    })
+    mobboxcolor = Color.PINK;
+
+    @SwitchProperty({
+        name: 'Mob ESP',
+        description: 'Shows mob box through walls.',
+        category: 'Bestiary',
+        subcategory: 'Mob Box'
+    })
+    mobboxesp = false;
+
     constructor() {
         this.initialize(this);
         this.setCategoryDescription('HUD', 'A lot of Overlays');

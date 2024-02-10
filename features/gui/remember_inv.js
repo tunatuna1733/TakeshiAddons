@@ -1,5 +1,7 @@
 import { CHAT_PREFIX } from "../../data/chat";
-import { inventoryData } from "../../utils/data";
+import { data, inventoryData } from "../../utils/data";
+import { Hud } from "../../utils/hud";
+import hud_manager from "../../utils/hud_manager";
 import getItemId from "../../utils/item_id";
 
 // TODO
@@ -11,12 +13,13 @@ const ImageIO = Java.type('javax.imageio.ImageIO');
 const GuiButton = Java.type('net.minecraft.client.gui.GuiButton');
 const GuiCheckBox = Java.type('net.minecraftforge.fml.client.config.GuiCheckBox');
 
+const rememberInvHud = new Hud('reminv', 'Remember Inventory', hud_manager, data);
+
 const itemNameDisplay = new Display();
 itemNameDisplay.setBackground(DisplayHandler.Background.FULL).setBackgroundColor(Renderer.color(20, 0, 40));
 itemNameDisplay.setRegisterType('post gui render');
 
-let x = 20;
-let y = 20;
+let [x, y] = rememberInvHud.getCoords();
 const interval = 20;
 
 let textures = [];
@@ -55,6 +58,7 @@ const getTexture = (textureId) => {
  */
 const generateCheckBoxes = (options) => {
     const newCheckBoxes = {};
+    [x, y] = rememberInvHud.getCoords();
     options.forEach((option, i) => {
         if (!Object.keys(checkBoxes).includes(option)) {
             newCheckBoxes[option] = [new GuiCheckBox(i, x, y + interval * i, option, false)];

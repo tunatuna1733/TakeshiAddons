@@ -56,8 +56,10 @@ const updateCurrentArea = () => {
 
 export const getCurrentArea = () => { return currentArea };
 export const getCurrentZone = () => {
-    return Scoreboard.getLines().find((l) => l.getName().includes('⏣') || l.getName().includes("ф"))
-        .getName().replace("⏣ ", "").replace("ф ", "").removeFormatting().replace(/[^\x00-\x7F]/g, "").replace(/^\s+/, '');
+    if (Scoreboard.getLines().find((l) => l.getName().includes('⏣') || l.getName().includes("ф")))
+        return Scoreboard.getLines().find((l) => l.getName().includes('⏣') || l.getName().includes("ф"))
+            .getName().replace("⏣ ", "").replace("ф ", "").removeFormatting().replace(/[^\x00-\x7F]/g, "").replace(/^\s+/, '');
+    else return '';
 };
 
 register('worldLoad', () => {
@@ -67,7 +69,3 @@ register('worldLoad', () => {
 register('worldUnload', () => {
     retryCount = 0;
 });
-
-register('command', () => {
-    ChatLib.chat(getCurrentArea());
-}).setCommandName('debugcurrentarea');

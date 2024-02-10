@@ -2,7 +2,7 @@
 /// <reference lib="es2022" />
 
 import { getVersion, printChangelog, printHelp } from "./utils/update";
-import { data, gardenData, resetData } from "./utils/data";
+import { bestiaryData, data, gardenData, inventoryData, resetData } from "./utils/data";
 import settings from "./settings";
 import { setRegisters } from "./utils/register";
 import hud_manager from "./utils/hud_manager";
@@ -30,6 +30,7 @@ import "./features/gui/auctions";
 import "./features/gui/fishing_timer";
 import "./features/gui/remember_inv";
 import "./features/gui/sea_creature_detector";
+import "./features/gui/bestiary_box";
 
 import "./features/dungeon/terminal";
 import "./features/dungeon/relic";
@@ -47,13 +48,18 @@ import "./features/garden/pest_box";
 
 import "./features/nether/ashfang";
 
+// import "./features/misc/chat_image";
+
 import "./utils/area";
+import "./utils/bestiary_settings";
 import "./utils/debug";
 
 import { CHAT_PREFIX } from "./data/chat";
 
 data.autosave();
 gardenData.autosave();
+inventoryData.autosave();
+bestiaryData.autosave();
 
 register('gameLoad', () => {
     if (!data.first) {
