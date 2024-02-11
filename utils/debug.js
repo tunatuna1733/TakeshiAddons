@@ -1,5 +1,6 @@
 import RenderLib from "../../RenderLib";
 import { getCurrentArea, getCurrentZone } from "./area";
+import { bestiaryData } from "./data";
 
 register('command', () => {
     const pestNames = ['Beetle', 'Cricket', 'Fly', 'Locust', 'Mite', 'Mosquito', 'Moth', 'Rat', 'Slug', 'Earthworm'];
@@ -101,12 +102,28 @@ register('command', () => {
 }).setCommandName('debugenderman');
 
 register('command', () => {
+    World.getAllEntitiesOfType(Java.type('net.minecraft.entity.passive.EntityMooshroom').class).forEach((e) => {
+        ChatLib.chat(`${e.toString()}, ${e.getEntity().func_110143_aJ()}, ${e.getEntity().func_110138_aP()}`);
+    });
+}).setCommandName('debugmooshroom');
+
+register('command', () => {
     World.getAllEntitiesOfType(Java.type('net.minecraft.entity.player.EntityPlayer').class).forEach((e) => {
         ChatLib.chat(`${e.toString()}, ${e.getEntity().func_110143_aJ()}, ${e.getEntity().func_110138_aP()}`);
         ChatLib.chat(e.getEntity().func_174819_aU() || '');
     });
 }).setCommandName('debugplayer');
 
+register('command', () => {
+    bestiaryData.data.forEach((b) => {
+        ChatLib.chat(`&a----------------------------------------`);
+        Object.keys(b).forEach((k) => {
+            ChatLib.chat(`&6${k}&a: ${b[k]}`);
+        });
+    });
+}).setCommandName('debugprintbe');
+
+/*
 register('renderWorld', () => {
     World.getAllEntitiesOfType(Java.type('net.minecraft.entity.monster.EntityBlaze').class).forEach((s) => {
         const maxHp = s.getEntity().func_110138_aP();
@@ -122,6 +139,7 @@ register('renderWorld', () => {
         }
     });
 });
+*/
 
 /*
 register('renderWorld', () => {

@@ -288,7 +288,7 @@ registerWhen(register('renderWorld', () => {
                     drawBox(entity);
                 }
             });
-        } else if (entity.getEntity() instanceof EntityCow) {
+        } else if (entity.getEntity() instanceof EntityCow && !(entity.getEntity() instanceof EntityMooshroom)) {
             const filtered = bestiaryData.data.filter(m => m.mcclass === CowClass);
             filtered.forEach((m) => {
                 if (checkIsland(m.island)) {

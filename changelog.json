@@ -1,4 +1,9 @@
 {
+    "0.3.1": [
+        "# Bug Fixes & Improvements",
+        "- Fixed Sea Creature Detector detects unintended mobs.",
+        "- Fixed Mooshrooms not detected by bestiary mob box."
+    ],
     "0.3.0": [
         "# New Features",
         "- Added bestiary mob box.",

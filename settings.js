@@ -427,6 +427,14 @@ class Settings {
     fishingrodstoprender = false
 
     @SwitchProperty({
+        name: 'Sea Screature Counter',
+        description: 'Show estimated number of sea creatures loaded.',
+        category: 'Crimson Isle',
+        subcategory: 'Sea Creature'
+    })
+    seacreaturecounter = false;
+
+    @SwitchProperty({
         name: 'Draw mob box',
         description: 'Draws a box to the specified mobs.',
         category: 'Bestiary',

@@ -112,6 +112,11 @@ const defaultData = {
         x: 0.1,
         y: 0.1,
         scale: 1
+    },
+    seacreature: {
+        x: 0.1,
+        y: 0.1,
+        scale: 1
     }
 };
 
