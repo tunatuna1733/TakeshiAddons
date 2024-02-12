@@ -1,4 +1,8 @@
 {
+    "0.3.2": [
+        "# Bug Fixes & Improvements",
+        "- Significantly improved bestiary mob box perfomance."
+    ],
     "0.3.1": [
         "# Bug Fixes & Improvements",
         "- Fixed Sea Creature Detector detects unintended mobs.",

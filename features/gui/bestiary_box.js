@@ -54,7 +54,12 @@ const EntitySheep = Java.type('net.minecraft.entity.passive.EntitySheep');
 
 const EntityPlayer = Java.type('net.minecraft.entity.player.EntityPlayer');
 
-const EntityArmorStand = Java.type('net.minecraft.entity.item.EntityArmorStand');
+// const EntityArmorStand = Java.type('net.minecraft.entity.item.EntityArmorStand');
+
+/**
+ * @type {Entity[]}
+ */
+let drawList = [];
 
 /**
  * Draw box around the entity.
@@ -109,38 +114,38 @@ const checkHealth = (entity, healths) => {
     return valid;
 }
 
-registerWhen(register('renderWorld', () => {
+const checkEntities = () => {
+    drawList = [];
+    let islands = [];
+    bestiaryData.data.forEach((b) => {
+        if (!islands.includes(islandNameMap[b.island])) islands.push(islandNameMap[b.island]);
+    });
+    if (!islands.includes(getCurrentArea())) return;
     World.getAllEntities().forEach((entity) => {
         if (entity.getEntity() instanceof EntityZombie) {
             const filtered = bestiaryData.data.filter(m => m.mcclass === ZombieClass);
             const livingEntity = new EntityLivingBase(entity.getEntity());
             filtered.forEach((m) => {
                 if (checkIsland(m.island)) {
-                    if (m.villager) {
-                        if (entity.getEntity().func_82231_m()) {    // isVillager
+                    if (m.villager === entity.getEntity().func_82231_m()) {    // isVillager
+                        if ('armor' in m) {
                             if (m.armor) {
                                 if (m.chestplate === livingEntity.getItemInSlot(3)?.getName()?.removeFormatting() &&
                                     m.leggings === livingEntity.getItemInSlot(2)?.getName()?.removeFormatting() &&
                                     m.boots === livingEntity.getItemInSlot(1)?.getName()?.removeFormatting()
                                 ) {
-                                    drawBox(entity);
+                                    drawList.push(entity);
                                 }
                             } else {
-                                drawBox(entity);
+                                if (
+                                    !livingEntity.getItemInSlot(3) &&
+                                    !livingEntity.getItemInSlot(2) &&
+                                    !livingEntity.getItemInSlot(1) ||
+                                    entity.getEntity().func_82231_m()
+                                ) drawList.push(entity);
                             }
-                        }
-                    } else {
-                        if (!entity.getEntity().func_82231_m()) {
-                            if (m.armor) {
-                                if (m.chestplate === livingEntity.getItemInSlot(3)?.getName()?.removeFormatting() &&
-                                    m.leggings === livingEntity.getItemInSlot(2)?.getName()?.removeFormatting() &&
-                                    m.boots === livingEntity.getItemInSlot(1)?.getName()?.removeFormatting()
-                                ) {
-                                    drawBox(entity);
-                                }
-                            } else {
-                                drawBox(entity);
-                            }
+                        } else {
+                            drawList.push(entity);
                         }
                     }
                 }
@@ -150,12 +155,12 @@ registerWhen(register('renderWorld', () => {
             filtered.forEach((m) => {
                 if (checkIsland(m.island)) {
                     if (m.skeletonType === entity.getEntity().func_82202_m()) { // getSkeletonType
-                        if (m.hasOwnProperty('isInvisible')) {
+                        if ('isInvisible' in m) {
                             if (m.isInvisible === entity.getEntity().func_82150_aj()) { // isInvisible
-                                drawBox(entity);
+                                drawList.push(entity);
                             }
                         } else {
-                            drawBox(entity);
+                            drawList.push(entity);
                         }
                     }
                 }
@@ -164,7 +169,7 @@ registerWhen(register('renderWorld', () => {
             const filtered = bestiaryData.data.filter(m => m.mcclass === CreeperClass);
             filtered.forEach((m) => {
                 if (checkIsland(m.island)) {
-                    drawBox(entity);
+                    drawList.push(entity);
                 }
             });
         } else if (entity.getEntity() instanceof EntityEnderman) {
@@ -173,10 +178,10 @@ registerWhen(register('renderWorld', () => {
                 if (checkIsland(m.island)) {
                     if ('health' in m) {
                         if (checkHealth(entity, m.health)) {
-                            drawBox(entity);
+                            drawList.push(entity);
                         }
                     } else {
-                        drawBox(entity);
+                        drawList.push(entity);
                     }
                 }
             });
@@ -184,7 +189,7 @@ registerWhen(register('renderWorld', () => {
             const filtered = bestiaryData.data.filter(m => m.mcclass === SlimeClass);
             filtered.forEach((m) => {
                 if (checkIsland(m.island)) {
-                    drawBox(entity);
+                    drawList.push(entity);
                 }
             });
         } else if (entity.getEntity() instanceof EntityMagmaCube) {
@@ -193,10 +198,10 @@ registerWhen(register('renderWorld', () => {
                 if (checkIsland(m.island)) {
                     if ('health' in m) {
                         if (checkHealth(entity, m.health)) {
-                            drawBox(entity);
+                            drawList.push(entity);
                         }
                     } else {
-                        drawBox(entity);
+                        drawList.push(entity);
                     }
                 }
             });
@@ -204,7 +209,7 @@ registerWhen(register('renderWorld', () => {
             const filtered = bestiaryData.data.filter(m => m.mcclass === SpiderClass);
             filtered.forEach((m) => {
                 if (checkIsland(m.island)) {
-                    drawBox(entity);
+                    drawList.push(entity);
                 }
             });
         } else if (entity.getEntity() instanceof EntityCaveSpider) {
@@ -213,10 +218,10 @@ registerWhen(register('renderWorld', () => {
                 if (checkIsland(m.island)) {
                     if ('health' in m) {
                         if (checkHealth(entity, m.health)) {
-                            drawBox(entity);
+                            drawList.push(entity);
                         }
                     } else {
-                        drawBox(entity);
+                        drawList.push(entity);
                     }
                 }
             });
@@ -224,14 +229,14 @@ registerWhen(register('renderWorld', () => {
             const filtered = bestiaryData.data.filter(m => m.mcclass === WitchClass);
             filtered.forEach((m) => {
                 if (checkIsland(m.island)) {
-                    drawBox(entity);
+                    drawList.push(entity);
                 }
             });
         } else if (entity.getEntity() instanceof EntitySilverfish) {
             const filtered = bestiaryData.data.filter(m => m.mcclass === SilverfishClass);
             filtered.forEach((m) => {
                 if (checkIsland(m.island)) {
-                    drawBox(entity);
+                    drawList.push(entity);
                 }
             });
         } else if (entity.getEntity() instanceof EntityBlaze) {
@@ -240,10 +245,10 @@ registerWhen(register('renderWorld', () => {
                 if (checkIsland(m.island)) {
                     if ('health' in m) {
                         if (checkHealth(entity, m.health)) {
-                            drawBox(entity);
+                            drawList.push(entity);
                         }
                     } else {
-                        drawBox(entity);
+                        drawList.push(entity);
                     }
                 }
             });
@@ -251,21 +256,21 @@ registerWhen(register('renderWorld', () => {
             const filtered = bestiaryData.data.filter(m => m.mcclass === EndermiteClass);
             filtered.forEach((m) => {
                 if (checkIsland(m.island)) {
-                    drawBox(entity);
+                    drawList.push(entity);
                 }
             });
         } else if (entity.getEntity() instanceof EntityPigman) {
             const filtered = bestiaryData.data.filter(m => m.mcclass === PigmanClass);
             filtered.forEach((m) => {
                 if (checkIsland(m.island)) {
-                    drawBox(entity);
+                    drawList.push(entity);
                 }
             });
         } else if (entity.getEntity() instanceof EntityIronGolem) {
             const filtered = bestiaryData.data.filter(m => m.mcclass === IronGolemClass);
             filtered.forEach((m) => {
                 if (checkIsland(m.island)) {
-                    drawBox(entity);
+                    drawList.push(entity);
                 }
             });
         } else if (entity.getEntity() instanceof EntityWolf) {
@@ -274,10 +279,10 @@ registerWhen(register('renderWorld', () => {
                 if (checkIsland(m.island)) {
                     if ('health' in m) {
                         if (checkHealth(entity, m.health)) {
-                            drawBox(entity);
+                            drawList.push(entity);
                         }
                     } else {
-                        drawBox(entity);
+                        drawList.push(entity);
                     }
                 }
             });
@@ -285,42 +290,45 @@ registerWhen(register('renderWorld', () => {
             const filtered = bestiaryData.data.filter(m => m.mcclass === ChickenClass);
             filtered.forEach((m) => {
                 if (checkIsland(m.island)) {
-                    drawBox(entity);
+                    drawList.push(entity);
                 }
             });
         } else if (entity.getEntity() instanceof EntityCow && !(entity.getEntity() instanceof EntityMooshroom)) {
             const filtered = bestiaryData.data.filter(m => m.mcclass === CowClass);
             filtered.forEach((m) => {
                 if (checkIsland(m.island)) {
-                    drawBox(entity);
+                    drawList.push(entity);
                 }
             });
         } else if (entity.getEntity() instanceof EntityMooshroom) {
             const filtered = bestiaryData.data.filter(m => m.mcclass === MooshroomClass);
             filtered.forEach((m) => {
                 if (checkIsland(m.island)) {
-                    drawBox(entity);
+                    if (m.island === 'nether') {
+                        if (entity.getX() > -285 && entity.getZ() < -660) drawList.push(entity);
+                    } else
+                        drawList.push(entity);
                 }
             });
         } else if (entity.getEntity() instanceof EntityPig) {
             const filtered = bestiaryData.data.filter(m => m.mcclass === PigClass);
             filtered.forEach((m) => {
                 if (checkIsland(m.island)) {
-                    drawBox(entity);
+                    drawList.push(entity);
                 }
             });
         } else if (entity.getEntity() instanceof EntityRabbit) {
             const filtered = bestiaryData.data.filter(m => m.mcclass === RabbitClass);
             filtered.forEach((m) => {
                 if (checkIsland(m.island)) {
-                    drawBox(entity);
+                    drawList.push(entity);
                 }
             });
         } else if (entity.getEntity() instanceof EntitySheep) {
             const filtered = bestiaryData.data.filter(m => m.mcclass === SheepClass);
             filtered.forEach((m) => {
                 if (checkIsland(m.island)) {
-                    drawBox(entity);
+                    drawList.push(entity);
                 }
             });
         } else if (entity.getEntity() instanceof EntityPlayer) {
@@ -331,14 +339,14 @@ registerWhen(register('renderWorld', () => {
                     m.playerName.forEach((n) => {
                         if (entity.getName() === n) {
                             if (!drawn) {
-                                drawBox(entity);
+                                drawList.push(entity);
                                 drawn = true;
                             }
                         }
                     });
                 }
             });
-        } else if (entity.getEntity() instanceof EntityArmorStand) {
+        } /* else if (entity.getEntity() instanceof EntityArmorStand) {
             const filtered = bestiaryData.data.filter(m => m.mcclass === ArmorStandClass);
             const livingEntity = new EntityLivingBase(entity.getEntity());
             filtered.forEach((m) => {
@@ -358,6 +366,17 @@ registerWhen(register('renderWorld', () => {
                     }
                 }
             });
-        }
-    })
+        } */
+    });
+};
+
+registerWhen(register('step', () => {
+    checkEntities();
+}).setFps(2), () => settings.mobbox, { type: 'step', name: 'Mob Box' });
+
+registerWhen(register('renderWorld', () => {
+    drawList.forEach((e) => {
+        if (e && !(e.isDead() || e.getEntity().func_110143_aJ() <= 0))
+            drawBox(e);
+    });
 }), () => settings.mobbox, { type: 'renderWorld', name: 'Mob Box' });

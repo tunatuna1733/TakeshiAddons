@@ -443,7 +443,7 @@ class Settings {
     mobbox = false;
 
     @ButtonProperty({
-        name: 'Select Mobs',
+        name: 'Select mobs',
         description: 'Open GUI for mob selection.',
         placeholder: 'Click!',
         category: 'Bestiary',
@@ -498,6 +498,11 @@ class Settings {
         this.addDependency('Ashfang Blackhole Color', 'Ashfang Helper');
         this.addDependency('Enable Sea Creature ESP', 'Sea Creature Detector');
         this.addDependency('Stop rendering while holding fishing rod', 'Sea Creature Detector');
+        this.addDependency('Sea Screature Counter', 'Sea Creature Detector');
+        this.addDependency('Select mobs', 'Draw mob box');
+        this.addDependency('Is it Derpy now?', 'Draw mob box');
+        this.addDependency('Mob box color', 'Draw mob box');
+        this.addDependency('Mob ESP', 'Draw mob box');
 
         m7NotRNGLootNames.forEach((loot) => {
             const attributes = createPropertyAttributesExt(
