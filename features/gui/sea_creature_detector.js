@@ -50,7 +50,7 @@ registerWhen(register('renderWorld', () => {
                     entity.getX() <= -385 &&
                     52 <= entity.getY() &&
                     entity.getY() <= 75 &&
-                    -720 <= entity.getZ() &&
+                    -722 <= entity.getZ() &&
                     entity.getZ() <= -647
                 ) && !(
                     -440 <= entity.getX() &&
