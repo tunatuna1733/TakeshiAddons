@@ -1,4 +1,8 @@
 {
+    "0.3.4": [
+        "# Bug Fixes & Improvements",
+        "- Changed pest area to be shown only when you have vacuums or spray."
+    ],
     "0.3.3": [
         "# New Features",
         "- Added Spray Timer.",

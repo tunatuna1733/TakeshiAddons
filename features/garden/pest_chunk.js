@@ -3,6 +3,7 @@ import { getCurrentArea, getCurrentZone } from "../../utils/area";
 import { data, gardenData } from "../../utils/data";
 import { Hud } from "../../utils/hud";
 import hud_manager from "../../utils/hud_manager";
+import getItemId from "../../utils/item_id";
 import { registerWhen } from "../../utils/register";
 const GuiButton = Java.type('net.minecraft.client.gui.GuiButton');
 
@@ -88,6 +89,10 @@ register('renderOverlay', () => {
 })
 
 registerWhen(register('renderWorld', () => {
+    const heldItem = Player.getHeldItem();
+    if (!heldItem) return;
+    const heldItemId = getItemId(heldItem);
+    if (!(heldItemId.includes('_VACUUM') || heldItemId === 'SPRAYONATOR')) return;
     pestList.forEach((p) => {
         const ix = gardenData.plotData.find((d) => d.name === p.name).x;
         const iy = gardenData.plotData.find((d) => d.name === p.name).y;
