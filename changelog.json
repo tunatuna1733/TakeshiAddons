@@ -1,4 +1,8 @@
 {
+    "0.3.5": [
+        "# Bug Fixes & Improvements",
+        "- Fixed clearing pest not clearing pest area display."
+    ],
     "0.3.4": [
         "# Bug Fixes & Improvements",
         "- Changed pest area to be shown only when you have vacuums or spray."

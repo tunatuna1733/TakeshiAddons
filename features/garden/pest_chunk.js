@@ -84,7 +84,7 @@ register('postGuiRender', () => {
 
 register('renderOverlay', () => {
     if ((getCurrentZone().includes('The Garden') && !getCurrentZone().includes('x')) || getCurrentZone().includes('Plot - ')) {
-        // pestList = [];
+        pestList = [];
     }
 })
 
