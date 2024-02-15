@@ -45,6 +45,8 @@ import "./features/kuudra/kuudra_price";
 
 import "./features/garden/composter";
 import "./features/garden/pest_box";
+import "./features/garden/spray";
+import "./features/garden/pest_chunk";
 
 import "./features/nether/ashfang";
 
@@ -53,6 +55,7 @@ import "./features/nether/ashfang";
 import "./utils/area";
 import "./utils/bestiary_settings";
 import "./utils/debug";
+// import "./utils/debug_gui";
 
 import { CHAT_PREFIX } from "./data/chat";
 

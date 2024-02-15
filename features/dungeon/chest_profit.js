@@ -120,7 +120,6 @@ registerWhen(register('postGuiRender', (x, y, gui) => {
                 Renderer.drawString(' &cS&6h&ei&an&9y&1!&d!', renderX, renderY + 20);
             }
             priceList.forEach((p, i) => {
-                console.dir(p, { depth: null });
                 if (p.isEnchantedBook) Renderer.drawString(`  ${p.name.replace(' 1', '')} ${p.level}&r: &6${formatNumToCoin(p.price)}`, renderX, renderY + 30 + i * 10);
                 else Renderer.drawString(`  ${p.name}&r: &6${formatNumToCoin(p.price)}`, renderX, renderY + 30 + i * 10);
             });

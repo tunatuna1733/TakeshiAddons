@@ -1,4 +1,9 @@
 {
+    "0.3.3": [
+        "# New Features",
+        "- Added Spray Timer.",
+        "- Added Pest Area Display."
+    ],
     "0.3.2": [
         "# Bug Fixes & Improvements",
         "- Significantly improved bestiary mob box perfomance."

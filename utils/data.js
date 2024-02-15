@@ -115,7 +115,17 @@ const defaultData = {
     },
     seacreature: {
         x: 0.1,
+        y: 0.2,
+        scale: 1
+    },
+    spray: {
+        x: 0.9,
         y: 0.1,
+        scale: 1
+    },
+    pests: {
+        x: 0.7,
+        y: 0.4,
         scale: 1
     }
 };
@@ -128,7 +138,9 @@ const defaultGardenData = {
         organic: 1,
         cost: 1
     },
-    endTime: 0
+    endTime: 0,
+    sprayTime: 0,
+    plotData: []
 }
 
 export let data = new PogObject('TakeshiAddons', defaultData, 'data.json');

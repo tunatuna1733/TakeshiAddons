@@ -476,6 +476,30 @@ class Settings {
     })
     mobboxesp = false;
 
+    @SwitchProperty({
+        name: 'Spray Timer',
+        description: 'Timer for Spraynator.',
+        category: 'Garden',
+        subcategory: 'Spray'
+    })
+    spraytimer = false;
+
+    @SwitchProperty({
+        name: 'Always Warn',
+        description: 'Shows title for a long time when the spray is expired.',
+        category: 'Garden',
+        subcategory: 'Spray'
+    })
+    sprayalwayswarn = false;
+
+    @SwitchProperty({
+        name: 'Show spawned pest area',
+        description: '',
+        category: 'Garden',
+        subcategory: 'Pest Area'
+    })
+    pestarea = false;
+
     constructor() {
         this.initialize(this);
         this.setCategoryDescription('HUD', 'A lot of Overlays');
@@ -503,6 +527,7 @@ class Settings {
         this.addDependency('Is it Derpy now?', 'Draw mob box');
         this.addDependency('Mob box color', 'Draw mob box');
         this.addDependency('Mob ESP', 'Draw mob box');
+        this.addDependency('Always Warn', 'Spray Timer');
 
         m7NotRNGLootNames.forEach((loot) => {
             const attributes = createPropertyAttributesExt(

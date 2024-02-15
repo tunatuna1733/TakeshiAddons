@@ -80,8 +80,8 @@ registerWhen(register('renderWorld', () => {
                     entity.getX() <= -530 &&
                     20 <= entity.getY() &&
                     entity.getY() <= 40 &&
-                    -880 <= entity.getZ() &&
-                    entity.getZ() <= -900
+                    -900 <= entity.getZ() &&
+                    entity.getZ() <= -880
                 )) { // Matriarch check
                     mobs++;
                     renderEntityBox(entity, 0.2, 0.2, 1, 1, settings.seacreatureesp);
