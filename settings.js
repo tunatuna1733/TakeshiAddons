@@ -477,6 +477,14 @@ class Settings {
     mobboxesp = false;
 
     @SwitchProperty({
+        name: 'Spray Area Preview',
+        description: 'Shows the area you gonna spray.',
+        category: 'Garden',
+        subcategory: 'Spray'
+    })
+    sprayarea = false;
+
+    @SwitchProperty({
         name: 'Spray Timer',
         description: 'Timer for Spraynator.',
         category: 'Garden',
@@ -499,6 +507,14 @@ class Settings {
         subcategory: 'Pest Area'
     })
     pestarea = false;
+
+    @SwitchProperty({
+        name: 'Pest Title',
+        description: 'Shows a title when the farming fortune is reduced by the pests.',
+        category: 'Garden',
+        subcategory: 'Pest Title'
+    })
+    pesttitle = false;
 
     constructor() {
         this.initialize(this);

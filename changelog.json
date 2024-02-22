@@ -1,4 +1,12 @@
 {
+    "0.3.6": [
+        "# New Features",
+        "- Added Pest title which will be shown when your farming fortune is decreased by pests.",
+        "- Added spray area display.",
+        "# Bug Fixes & Improvements",
+        "- Fixed pest area display sometimes not working.",
+        "- Improved the accuracy of pest box feature."
+    ],
     "0.3.5": [
         "# Bug Fixes & Improvements",
         "- Fixed clearing pest not clearing pest area display."

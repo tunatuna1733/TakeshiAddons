@@ -47,6 +47,7 @@ import "./features/garden/composter";
 import "./features/garden/pest_box";
 import "./features/garden/spray";
 import "./features/garden/pest_chunk";
+import "./features/garden/pest_title";
 
 import "./features/nether/ashfang";
 

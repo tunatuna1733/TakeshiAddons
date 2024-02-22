@@ -14,6 +14,7 @@ const plotSize = 96;
 const bottomY = 68;
 const topY = 100;
 let buttons = [];
+let scoreChecked = false;
 
 const pestHud = new Hud('pests', 'Pest Display', hud_manager, data);
 
@@ -31,7 +32,7 @@ const generateButtons = (plots, x, y) => {
 
 register('gameLoad', () => {
     generateButtons(gardenData.plotData);
-})
+});
 
 register('chat', (a, num, name) => {
     const amount = parseInt(num);
@@ -40,14 +41,35 @@ register('chat', (a, num, name) => {
         if (p.name === name) {
             p.amount += amount;
             found = true;
+            ChatLib.chat(`Add ${name}, ${p.amount}`);
         }
-    })
-    if (!found)
+    });
+    if (!found) {
+        ChatLib.chat(`Push ${name}, ${amount}`);
         pestList.push({
             name: name,
             amount: amount
         });
-}).setChatCriteria('${a}! ${num} Pests have spawned in Plot - ${name}!');
+    }
+}).setChatCriteria('${a}! ${num} Pests have spawned in Plot - ${name}!').setContains();
+
+register('chat', (a, name) => {
+    let found = false;
+    pestList.forEach((p) => {
+        if (p.name === name) {
+            p.amount += 1;
+            found = true;
+            ChatLib.chat(`Add ${name}, ${p.amount}`);
+        }
+    });
+    if (!found) {
+        ChatLib.chat(`Push ${name}`);
+        pestList.push({
+            name: name,
+            amount: 1
+        });
+    }
+}).setChatCriteria('${a}! A Pest has appeared in Plot - ${name}!').setContains();
 
 register('postGuiRender', () => {
     const inventory = Player.getContainer();
@@ -82,17 +104,23 @@ register('postGuiRender', () => {
     }
 });
 
-register('renderOverlay', () => {
+register('step', () => {
     if ((getCurrentZone().includes('The Garden') && !getCurrentZone().includes('x')) || getCurrentZone().includes('Plot - ')) {
-        pestList = [];
+        if (!scoreChecked) {
+            scoreChecked = true;
+        } else {
+            pestList = [];
+        }
+    } else {
+        scoreChecked = false;
     }
-})
+}).setDelay(1);
 
 registerWhen(register('renderWorld', () => {
     const heldItem = Player.getHeldItem();
     if (!heldItem) return;
     const heldItemId = getItemId(heldItem);
-    if (!(heldItemId.includes('_VACUUM') || heldItemId === 'SPRAYONATOR')) return;
+    if (!heldItemId.includes('_VACUUM')) return;
     pestList.forEach((p) => {
         const ix = gardenData.plotData.find((d) => d.name === p.name).x;
         const iy = gardenData.plotData.find((d) => d.name === p.name).y;
@@ -224,3 +252,9 @@ registerWhen(register('guiClosed', (gui) => {
         });
     }
 }), () => settings.pestarea && getCurrentArea() === 'Garden', { type: 'guiClosed', name: 'Pest Area' });
+
+register('command', () => {
+    pestList.forEach((p) => {
+        ChatLib.chat(`${p.name}: ${p.amount}`);
+    })
+}).setCommandName('debugprintpests');
