@@ -122,6 +122,18 @@ register('command', () => {
     });
 }).setCommandName('debugprintbe');
 
+register('command', () => {
+    World.getAllEntitiesOfType(Java.type('net.minecraft.entity.projectile.EntityArrow').class).forEach((e) => {
+        ChatLib.chat(e.getEntity().field_70159_w);
+    });
+}).setCommandName('debugarrow');
+
+/*
+register('soundPlay', () => {
+    ChatLib.chat('Neutral Hurt Sound');
+}).setCriteria('game.neutral.hurt');
+*/
+
 /*
 register('spawnParticle', (particle, type) => {
     if (!particle.toString().startsWith('EntityDropParticleFX,')) return;

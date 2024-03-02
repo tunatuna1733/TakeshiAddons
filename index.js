@@ -43,6 +43,7 @@ import "./features/dungeon/chest_profit";
 import "./features/kuudra/dropship";
 import "./features/kuudra/energized_chunk";
 import "./features/kuudra/kuudra_price";
+import "./features/kuudra/rend_count";
 
 import "./features/garden/composter";
 import "./features/garden/pest_box";

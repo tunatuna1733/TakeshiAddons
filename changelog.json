@@ -1,5 +1,7 @@
 {
     "0.3.8": [
+        "# New Features",
+        "- Added Rend Count.",
         "# Bug Fixes & Improvements",
         "- Fishing Timer now shows 'ROD!!!' when you do not cast fishing rod."
     ],

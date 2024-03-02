@@ -524,6 +524,14 @@ class Settings {
     })
     feedertimer = false;
 
+    @SwitchProperty({
+        name: 'Rend Arrows Count',
+        description: 'Shows how many arrows you pulled.',
+        category: 'Kuudra',
+        subcategory: 'Rend'
+    })
+    rendcount = false;
+
     constructor() {
         this.initialize(this);
         this.setCategoryDescription('HUD', 'A lot of Overlays');
