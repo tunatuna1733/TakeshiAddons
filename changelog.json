@@ -1,4 +1,8 @@
 {
+    "0.3.8": [
+        "# Bug Fixes & Improvements",
+        "- Fishing Timer now shows 'ROD!!!' when you do not cast fishing rod."
+    ],
     "0.3.7": [
         "# New Features",
         "- Added Caducous Feeder Timer. (Might buggy cuz I dont have enough money to test :3 )",

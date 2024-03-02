@@ -10,6 +10,10 @@ const FlowLayout = Java.type('java.awt.FlowLayout');
 const Font = Java.type('java.awt.Font');
 const Color = Java.type('java.awt.Color');
 
+const EntityArmorStandClass = Java.type('net.minecraft.entity.item.EntityArmorStand').class;
+const EntityFishHookClass = Java.type('net.minecraft.entity.projectile.EntityFishHook').class;
+const EntityPlayerMP = Java.type('net.minecraft.entity.player.EntityPlayerMP');
+
 JFrame.setDefaultLookAndFeelDecorated(true);
 UIManager.setLookAndFeel(new MetalLookAndFeel());
 
@@ -53,7 +57,7 @@ register('renderWorld', () => {
             settings.fishingtimercolor.getBlue() / 255,
         ));
         let found = false;
-        World.getAllEntitiesOfType(Java.type('net.minecraft.entity.item.EntityArmorStand').class).forEach((armorStands) => {
+        World.getAllEntitiesOfType(EntityArmorStandClass).forEach((armorStands) => {
             const name = armorStands.getName().removeFormatting();
             if (name.match(fishingTimerRegex)) {
                 jLabel.setForeground(Color.YELLOW);
@@ -66,7 +70,18 @@ register('renderWorld', () => {
             }
         });
         if (!found) {
-            jLabel.setText("");
+            let hookFound = false;
+            World.getAllEntitiesOfType(EntityFishHookClass).forEach((hook) => {
+                if (hook.getEntity().field_146042_b.func_70005_c_() === Player.getName()) {
+                    hookFound = true;
+                }
+            });
+            if (hookFound) {
+                jLabel.setText("");
+            } else {
+                jLabel.setForeground(Color.RED);
+                jLabel.setText("ROD!!!");
+            }
         }
     }
 });
