@@ -15,6 +15,7 @@ const bottomY = 68;
 const topY = 100;
 let buttons = [];
 let scoreChecked = false;
+let lastPestAddTime = 0;
 
 const pestHud = new Hud('pests', 'Pest Display', hud_manager, data);
 
@@ -41,16 +42,15 @@ register('chat', (a, num, name) => {
         if (p.name === name) {
             p.amount += amount;
             found = true;
-            ChatLib.chat(`Add ${name}, ${p.amount}`);
         }
     });
     if (!found) {
-        ChatLib.chat(`Push ${name}, ${amount}`);
         pestList.push({
             name: name,
             amount: amount
         });
     }
+    lastPestAddTime = Date.now();
 }).setChatCriteria('${a}! ${num} Pests have spawned in Plot - ${name}!').setContains();
 
 register('chat', (a, name) => {
@@ -59,16 +59,15 @@ register('chat', (a, name) => {
         if (p.name === name) {
             p.amount += 1;
             found = true;
-            ChatLib.chat(`Add ${name}, ${p.amount}`);
         }
     });
     if (!found) {
-        ChatLib.chat(`Push ${name}`);
         pestList.push({
             name: name,
             amount: 1
         });
     }
+    lastPestAddTime = Date.now();
 }).setChatCriteria('${a}! A Pest has appeared in Plot - ${name}!').setContains();
 
 register('postGuiRender', () => {
@@ -105,14 +104,16 @@ register('postGuiRender', () => {
 });
 
 register('step', () => {
-    if ((getCurrentZone().includes('The Garden') && !getCurrentZone().includes('x')) || getCurrentZone().includes('Plot - ')) {
-        if (!scoreChecked) {
-            scoreChecked = true;
+    if (Date.now() - lastPestAddTime > 1000) {
+        if ((getCurrentZone().includes('The Garden') && !getCurrentZone().includes('x')) || getCurrentZone().includes('Plot - ')) {
+            if (!scoreChecked) {
+                scoreChecked = true;
+            } else {
+                pestList = [];
+            }
         } else {
-            pestList = [];
+            scoreChecked = false;
         }
-    } else {
-        scoreChecked = false;
     }
 }).setDelay(1);
 
@@ -236,13 +237,15 @@ registerWhen(register('postGuiRender', (mx, my, gui) => {
     }
 }), () => settings.pestarea && getCurrentArea() === 'Garden', { type: 'postGuiRender', name: 'Pest Area' });
 
-registerWhen(register('guiMouseClick', () => {
-    buttons.forEach((b) => {
-        if (b.button.func_146115_a()) {
-            const command = `plottp ${b.name}`;
-            ChatLib.command(command);
-        }
-    });
+registerWhen(register('guiMouseClick', (mx, my, mb, gui) => {
+    if (Java.type('net.minecraft.client.gui.GuiChat').class.isInstance(gui)) {
+        buttons.forEach((b) => {
+            if (b.button.func_146115_a()) {
+                const command = `plottp ${b.name}`;
+                ChatLib.command(command);
+            }
+        });
+    }
 }), () => settings.pestarea && getCurrentArea() === 'Garden', { type: 'guiMouseClick', name: 'Pest Area' });
 
 registerWhen(register('guiClosed', (gui) => {

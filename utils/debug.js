@@ -1,4 +1,3 @@
-import RenderLib from "../../RenderLib";
 import { getCurrentArea, getCurrentZone } from "./area";
 import { bestiaryData } from "./data";
 
@@ -122,6 +121,14 @@ register('command', () => {
         });
     });
 }).setCommandName('debugprintbe');
+
+/*
+register('spawnParticle', (particle, type) => {
+    if (!particle.toString().startsWith('EntityDropParticleFX,')) return;
+    if (particle.getColor().getRGB() !== -65536) return;
+    ChatLib.chat(`${particle.getX()}, ${particle.getY()}, ${particle.getZ()}`);
+});
+*/
 
 /*
 register('renderWorld', () => {

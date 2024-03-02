@@ -23,6 +23,7 @@ import "./features/hud/flare";
 import "./features/hud/inventory";
 import "./features/hud/soulflow";
 import "./features/hud/kicked_timer";
+import "./features/hud/feeder";
 // import "./features/hud/gpro_charge";
 
 import "./features/gui/attribute_lb";
@@ -56,7 +57,6 @@ import "./features/nether/ashfang";
 import "./utils/area";
 import "./utils/bestiary_settings";
 import "./utils/debug";
-// import "./utils/debug_gui";
 
 import { CHAT_PREFIX } from "./data/chat";
 

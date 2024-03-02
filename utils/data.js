@@ -127,6 +127,12 @@ const defaultData = {
         x: 0.7,
         y: 0.4,
         scale: 1
+    },
+    feeder: {
+        x: 0.8,
+        y: 0.1,
+        scale: 1,
+        times: [0, 0]
     }
 };
 

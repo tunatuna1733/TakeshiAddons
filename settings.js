@@ -516,6 +516,14 @@ class Settings {
     })
     pesttitle = false;
 
+    @SwitchProperty({
+        name: 'Feeder Timer',
+        description: 'Shows a timer for Caducous Feeder cooldown.',
+        category: 'Others',
+        subcategory: 'Feeder Timer'
+    })
+    feedertimer = false;
+
     constructor() {
         this.initialize(this);
         this.setCategoryDescription('HUD', 'A lot of Overlays');

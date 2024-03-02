@@ -1,6 +1,6 @@
 import RenderLib from "../../../RenderLib";
 import settings from "../../settings";
-import { inGarden } from "../../utils/hypixel";
+import { getCurrentArea } from "../../utils/area";
 import { registerWhen } from "../../utils/register";
 
 const pestTextures = {
@@ -39,4 +39,4 @@ registerWhen(register('renderWorld', () => {
             })
         }
     });
-}), () => (settings.pestbox && inGarden()), { type: 'renderWorld', name: 'Pest Box' });
+}), () => (settings.pestbox && getCurrentArea() === 'Garden'), { type: 'renderWorld', name: 'Pest Box' });

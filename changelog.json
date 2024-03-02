@@ -1,4 +1,13 @@
 {
+    "0.3.7": [
+        "# New Features",
+        "- Added Caducous Feeder Timer. (Might buggy cuz I dont have enough money to test :3 )",
+        "# Bug Fixes & Improvements",
+        "- Fixed Pest Box sometimes not shown.",
+        "- Fixed pest tp button unintendedly accessible outside of chat gui.",
+        "- Fixed pest tp feature sometimes not registering newly spawned pests.",
+        "- Fixed Inventory HUD always shown. (wtf)"
+    ],
     "0.3.6": [
         "# New Features",
         "- Added Pest title which will be shown when your farming fortune is decreased by pests.",

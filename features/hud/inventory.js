@@ -43,4 +43,4 @@ registerWhen(register('renderOverlay', () => {
         }
     }
     GlStateManager.func_179121_F();
-}).setPriority(Priority.HIGHEST), () => settings.inventory, { type: 'renderOverlay', name: moduleName });
+}), () => settings.inventory, { type: 'renderOverlay', name: moduleName });
