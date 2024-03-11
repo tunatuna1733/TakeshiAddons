@@ -400,7 +400,7 @@ class Settings {
         category: 'Crimson Isle',
         subcategory: 'Sea Creature'
     })
-    seacreature = false
+    seacreature = false;
 
     @SwitchProperty({
         name: 'Jawbus Waypoint',
@@ -408,7 +408,7 @@ class Settings {
         category: 'Crimson Isle',
         subcategory: 'Sea Creature'
     })
-    jawbuswaypoint = false
+    jawbuswaypoint = false;
 
     @SwitchProperty({
         name: 'Enable Sea Creature ESP',
@@ -424,7 +424,7 @@ class Settings {
         category: 'Crimson Isle',
         subcategory: 'Sea Creature'
     })
-    fishingrodstoprender = false
+    fishingrodstoprender = false;
 
     @SwitchProperty({
         name: 'Sea Screature Counter',
@@ -554,7 +554,6 @@ class Settings {
         this.addDependency('Ashfang Blackhole Color', 'Ashfang Helper');
         this.addDependency('Enable Sea Creature ESP', 'Sea Creature Detector');
         this.addDependency('Stop rendering while holding fishing rod', 'Sea Creature Detector');
-        this.addDependency('Sea Screature Counter', 'Sea Creature Detector');
         this.addDependency('Select mobs', 'Draw mob box');
         this.addDependency('Is it Derpy now?', 'Draw mob box');
         this.addDependency('Mob box color', 'Draw mob box');

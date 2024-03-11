@@ -9,7 +9,9 @@ registerWhen(register('soundPlay', () => {
     rends++;
     if (rends > 1) return;
     Client.scheduleTask(20, () => {
-        ChatLib.chat(`${CHAT_PREFIX} &bRend Arrows: &a${rends - 1}`);
+        if (rends !== 1) {
+            ChatLib.chat(`${CHAT_PREFIX} &bRend Arrows: &a${rends - 1}`);
+        }
         rends = 0;
     });
 }).setCriteria('game.neutral.hurt'), () => settings.rendcount, { type: 'soundPlay', name: 'Rend Count' });

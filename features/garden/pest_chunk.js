@@ -16,6 +16,7 @@ const topY = 100;
 let buttons = [];
 let scoreChecked = false;
 let lastPestAddTime = 0;
+let pestCount = 0;
 
 const pestHud = new Hud('pests', 'Pest Display', hud_manager, data);
 
@@ -206,6 +207,40 @@ registerWhen(register('renderWorld', () => {
 }), () => settings.pestarea && getCurrentArea() === 'Garden', { type: 'renderWorld', name: 'Pest Area' });
 
 registerWhen(register('renderOverlay', () => {
+    if (getCurrentZone().includes('The Garden') && getCurrentZone().includes('x')) {
+        const amount = parseInt(getCurrentZone().match(/\d/g)[0]);
+        if (amount < pestCount) {
+            // pest kill occured
+            const [x, z] = [Player.getX(), Player.getZ()];
+            let minName = '', minDist = 100000;
+            pestList.forEach((pest) => {
+                gardenData.plotData.forEach((plot) => {
+                    if (plot.name === pest.name) {
+                        const dist = Math.sqrt(Math.pow(x - (baseX + plot.x * plotSize + plotSize / 2), 2) + Math.pow(z - (baseY + plot.y * plotSize + plotSize / 2), 2));
+                        if (dist < minDist) {
+                            minName = plot.name;
+                            minDist = dist;
+                        }
+                    }
+                });
+            });
+            let removeElem = false;
+            pestList.forEach((pest) => {
+                if (pest.name === minName) {
+                    if (pest.amount === 1) {
+                        removeElem = true;
+                    } else {
+                        pest.amount -= 1;
+                    }
+                }
+            });
+            if (removeElem) {
+                pestList = pestList.filter((p) => p.name !== minName);
+            }
+        }
+        pestCount = amount;
+    }
+
     let lines = '&aPests';
     pestList.forEach((p) => {
         lines += `\n &6${p.name}: &c${p.amount}`;
@@ -240,7 +275,7 @@ registerWhen(register('postGuiRender', (mx, my, gui) => {
 registerWhen(register('guiMouseClick', (mx, my, mb, gui) => {
     if (Java.type('net.minecraft.client.gui.GuiChat').class.isInstance(gui)) {
         buttons.forEach((b) => {
-            if (b.button.func_146115_a()) {
+            if (b.button.func_146115_a() && b.button.field_146125_m) {
                 const command = `plottp ${b.name}`;
                 ChatLib.command(command);
             }
