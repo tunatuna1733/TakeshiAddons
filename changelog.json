@@ -1,4 +1,8 @@
 {
+    "0.4.1": [
+        "# Bug Fixes & Improvements",
+        "- You can now see preview of the tablist hud while editing location."
+    ],
     "0.4.0": [
         "# New Features",
         "- Added Tablist HUD which you can add tablist widget as a hud. You can use it by running '/addhud' and '/removehud'.",

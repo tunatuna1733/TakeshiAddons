@@ -8,14 +8,34 @@ let categories = [];
 let categoryTexts = [];
 let huds = [];
 
+const getHudText = (name) => {
+    let text = '';
+    categories.forEach((c) => {
+        if (
+            (c.category.match(/^§r§[0-9a-f]§l.+\:/) &&
+                c.category.match(/^§r§[0-9a-f]§l(.+)\:/)[1].removeFormatting() === name) ||
+            (c.category.match(/^§r§l§r§[0-9a-f]§l.+\:/) &&
+                c.category.match(/^§r§l§r§[0-9a-f]§l(.+)\:/)[1].removeFormatting() === name)
+        ) {
+            text = c.category + '\n' + c.details.join('\n');
+        }
+    });
+    if (text === '') text = name;
+    return text;
+}
+
 export const loadHuds = () => {
     huds.forEach(h => h.remove());
     huds = [];
     customHudsData.data.forEach((h) => {
         if (settings.tablistbackground) {
-            huds.push(new Hud(h.name, h.name, hud_manager, customHudsData, true, true, settings.tablistbackgroundcolor.getRGB()));
+            const hud = new Hud(h.name, h.name, hud_manager, customHudsData, true, true, settings.tablistbackgroundcolor.getRGB());
+            hud.setText(getHudText(h.name));
+            huds.push(hud);
         } else {
-            huds.push(new Hud(h.name, h.name, hud_manager, customHudsData, true));
+            const hud = new Hud(h.name, h.name, hud_manager, customHudsData, true);
+            hud.setText(getHudText(h.name));
+            huds.push(hud);
         }
     });
 };

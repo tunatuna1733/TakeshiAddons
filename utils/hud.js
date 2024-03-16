@@ -138,6 +138,14 @@ export class Hud {
     }
 
     /**
+     * Set text. (mainly for custom hud)
+     * @param {string} text 
+     */
+    setText = (text) => {
+        this.currentText.setString(text);
+    }
+
+    /**
      * Draw hud.
      * @param {string} text 
      * @param {boolean} skyblockOnly
