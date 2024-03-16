@@ -1,4 +1,8 @@
 {
+    "0.4.3": [
+        "# Bug Fixes & Improvements",
+        "- Finally fixed Null Pointer Exception."
+    ],
     "0.4.2": [
         "# Bug Fixes & Improvements",
         "- I forgot to test restarting minecraft bruh."

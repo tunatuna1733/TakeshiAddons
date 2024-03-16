@@ -3,6 +3,7 @@ import settings from "../../settings";
 import { customHudsData } from "../../utils/data";
 import { Hud } from "../../utils/hud";
 import hud_manager from "../../utils/hud_manager";
+import { isInSkyblock } from "../../utils/hypixel";
 
 let categories = [];
 let categoryTexts = [];
@@ -61,6 +62,7 @@ register('renderOverlay', () => {
 });
 
 register('step', () => {
+    if (!isInSkyblock()) return;
     if (!TabList) return;
     if (!TabList.getNames()) return;
     if (TabList.getNames().length < 20 * 4) return;
