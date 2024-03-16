@@ -119,7 +119,7 @@ register('command', (args) => {
 register('command', () => {
     const lines = Scoreboard.getLines(false);
     lines.map((line) => {
-        ChatLib.chat(`${line.getName().removeFormatting()}`);
+        ChatLib.chat(`${line.getName().removeFormatting().replace(/[^\x00-\x7F]/g, "")}`);
     });
 }).setCommandName('scc');
 
@@ -128,7 +128,7 @@ register('command', () => {
     const lines = Scoreboard.getLines(false);
     lines.map((line) => {
         if (line.getName().includes('Piggy') || line.getName().includes('Purse')) {
-            const selection = new StringSelection(ChatLib.removeFormatting(line.getName()));
+            const selection = new StringSelection(ChatLib.removeFormatting(line.getName()).replace(/[^\x00-\x7F]/g, ""));
             Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, null);
             EssentialNotifications.push('Purse copied!', 'Copied your purse to your clipboard.', 3);
             copied = true;

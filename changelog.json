@@ -1,7 +1,8 @@
 {
     "0.4.1": [
         "# Bug Fixes & Improvements",
-        "- You can now see preview of the tablist hud while editing location."
+        "- You can now see preview of the tablist hud while editing location.",
+        "- Fixed copy purse and scoreboard copy command output includes wierd characters."
     ],
     "0.4.0": [
         "# New Features",
