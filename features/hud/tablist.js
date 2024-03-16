@@ -61,6 +61,7 @@ register('renderOverlay', () => {
 });
 
 register('step', () => {
+    if (!TabList) return;
     if (!TabList.getNames()) return;
     if (TabList.getNames().length < 20 * 4) return;
     categories = [];
