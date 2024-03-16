@@ -1,4 +1,9 @@
 {
+    "0.4.0": [
+        "# New Features",
+        "- Added Tablist HUD which you can add tablist widget as a hud. You can use it by running '/addhud' and '/removehud'.",
+        "- Added Pest Map which shows garden plot map with pest amount in your inventory. You can warp to the plot by clicking the map."
+    ],
     "0.3.9": [
         "# Bug Fixes & Improvements",
         "- Fixed Rend Count triggers on death.",

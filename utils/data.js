@@ -153,6 +153,7 @@ export let data = new PogObject('TakeshiAddons', defaultData, 'data.json');
 export let gardenData = new PogObject('TakeshiAddons', defaultGardenData, 'garden.json');
 export let inventoryData = new PogObject('TakeshiAddons', {}, 'inventory.json');
 export let bestiaryData = new PogObject('TakeshiAddons', { data: [] }, 'bestiary.json');
+export let customHudsData = new PogObject('TakeshiAddons', { data: [] }, 'customhuds.json');
 
 export const resetData = () => {
     Object.keys(defaultData).forEach((k) => {

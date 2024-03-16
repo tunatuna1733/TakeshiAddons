@@ -532,6 +532,29 @@ class Settings {
     })
     rendcount = false;
 
+    @SwitchProperty({
+        name: 'Tablist HUD Background',
+        description: 'Enable this option to draw background behind tablist huds.',
+        category: 'Others',
+        subcategory: 'Tablist HUD'
+    })
+    tablistbackground = false;
+
+    @ColorProperty({
+        name: 'Tablist HUD Background Color',
+        category: 'Others',
+        subcategory: 'Tablist HUD'
+    })
+    tablistbackgroundcolor = new Color(0.5, 0.5, 0.5, 0.5);
+
+    @SwitchProperty({
+        name: 'Pest Map',
+        description: 'Shows garden plot map with the pest amount info in the inventory.',
+        category: 'Garden',
+        subcategory: 'Pest Map'
+    })
+    pestmap = false;
+
     constructor() {
         this.initialize(this);
         this.setCategoryDescription('HUD', 'A lot of Overlays');
@@ -559,6 +582,7 @@ class Settings {
         this.addDependency('Mob box color', 'Draw mob box');
         this.addDependency('Mob ESP', 'Draw mob box');
         this.addDependency('Always Warn', 'Spray Timer');
+        this.addDependency('Tablist HUD Background Color', 'Tablist HUD Background');
 
         m7NotRNGLootNames.forEach((loot) => {
             const attributes = createPropertyAttributesExt(

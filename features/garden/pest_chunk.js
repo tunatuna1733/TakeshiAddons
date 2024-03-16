@@ -17,6 +17,8 @@ let buttons = [];
 let scoreChecked = false;
 let lastPestAddTime = 0;
 let pestCount = 0;
+let plotButtons = [];
+let lastCommand = 0;
 
 const pestHud = new Hud('pests', 'Pest Display', hud_manager, data);
 
@@ -84,15 +86,16 @@ register('postGuiRender', () => {
             let plots = [];
             for (let i = 0; i < 5; i++) {
                 for (let j = 0; j < 5; j++) {
-                    currentSlot = j * 9 + i + 2;
+                    currentSlot = i * 9 + j + 2;
                     plotItem = inventory.getStackInSlot(currentSlot);
                     plotName = plotItem.getName().removeFormatting();
-                    if (plotName && plotName !== 'The Barn') {
+                    if (plotName/* && plotName !== 'The Barn'*/) {
                         plotName = plotName.replace('Plot - ', '');
                         plots.push({
                             name: plotName,
-                            x: i,
-                            y: j
+                            x: j,
+                            y: i,
+                            id: plotItem.getID()
                         });
                     }
                 }
@@ -249,6 +252,55 @@ registerWhen(register('renderOverlay', () => {
         pestHud.draw(lines);
 }), () => settings.pestarea && getCurrentArea() === 'Garden', { type: 'renderOverlay', name: 'Pest Area' });
 
+registerWhen(register('guiRender', (mx, my, gui) => {
+    if (Java.type('net.minecraft.client.gui.inventory.GuiInventory').class.isInstance(gui)) {
+        const [x, y] = pestHud.getCoords();
+        const scale = 1.5;
+        GlStateManager.func_179094_E();
+        gardenData.plotData.forEach((plot, i) => {
+            const item = new Item(plot.id || 3);
+            // ink sack -> cocoa bean
+            if (item.getID() === 351) {
+                item.setDamage(3);
+            }
+            const ix = i % 5;
+            const iy = (i - ix) / 5;
+            const absx = x + ix * 16 * scale;
+            const absy = y + iy * 16 * scale;
+            plotButtons.push({
+                absx: absx,
+                absy: absy,
+                name: plot.name
+            });
+            Renderer.translate(absx, absy, 500);
+            item.draw(0, 0, scale);
+            Renderer.translate(0, 0, 0);
+            GlStateManager.func_179097_i();
+            pestList.forEach((pest) => {
+                if (pest.name === plot.name) {
+                    Renderer.translate(absx + 8, absy + 8, 600);
+                    Renderer.scale(2);
+                    Renderer.drawString(`&e${pest.amount}`, 0, 0, true);
+                    Renderer.translate(0, 0, 0);
+                    Renderer.scale(1);
+                }
+            });
+            if (
+                absx < mx &&
+                mx < absx + 16 * scale &&
+                absy < my &&
+                my < absy + 16 * scale
+            ) {
+                Renderer.translate(absx, absy, 700);
+                Renderer.drawRect(Renderer.color(210, 210, 210, 150), 0, 0, 16 * scale, 16 * scale);
+                Renderer.translate(0, 0, 0);
+            }
+            GlStateManager.func_179126_j();
+        });
+        GlStateManager.func_179121_F();
+    }
+}), () => settings.pestmap && getCurrentArea() === 'Garden', { type: 'guiRender', name: 'Pest Map' });
+
 registerWhen(register('postGuiRender', (mx, my, gui) => {
     if (Java.type('net.minecraft.client.gui.GuiChat').class.isInstance(gui)) {
         let lines = '&aPests';
@@ -282,6 +334,29 @@ registerWhen(register('guiMouseClick', (mx, my, mb, gui) => {
         });
     }
 }), () => settings.pestarea && getCurrentArea() === 'Garden', { type: 'guiMouseClick', name: 'Pest Area' });
+
+registerWhen(register('guiMouseClick', (mx, my, mb, gui) => {
+    if (Java.type('net.minecraft.client.gui.inventory.GuiInventory').class.isInstance(gui)) {
+        const scale = 1.5;
+        plotButtons.forEach((pb) => {
+            if (
+                pb.absx < mx &&
+                mx < pb.absx + 16 * scale &&
+                pb.absy < my &&
+                my < pb.absy + 16 * scale
+            ) {
+                if (Date.now() - lastCommand > 1000) {
+                    if (pb.name === 'The Barn') {
+                        ChatLib.command('plottp barn');
+                    } else {
+                        ChatLib.command(`plottp ${pb.name}`);
+                    }
+                    lastCommand = Date.now();
+                }
+            }
+        });
+    }
+}), () => settings.pestmap && getCurrentArea() === 'Garden', { type: 'guiMouseClick', name: 'Pest Map' });
 
 registerWhen(register('guiClosed', (gui) => {
     if (Java.type('net.minecraft.client.gui.GuiChat').class.isInstance(gui)) {

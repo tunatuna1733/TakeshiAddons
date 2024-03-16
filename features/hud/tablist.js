@@ -1,0 +1,132 @@
+import { CHAT_PREFIX } from "../../data/chat";
+import settings from "../../settings";
+import { customHudsData } from "../../utils/data";
+import { Hud } from "../../utils/hud";
+import hud_manager from "../../utils/hud_manager";
+
+let categories = [];
+let categoryTexts = [];
+let huds = [];
+
+export const loadHuds = () => {
+    huds.forEach(h => h.remove());
+    huds = [];
+    customHudsData.data.forEach((h) => {
+        if (settings.tablistbackground) {
+            huds.push(new Hud(h.name, h.name, hud_manager, customHudsData, true, true, settings.tablistbackgroundcolor.getRGB()));
+        } else {
+            huds.push(new Hud(h.name, h.name, hud_manager, customHudsData, true));
+        }
+    });
+};
+
+register('gameLoad', () => {
+    loadHuds();
+});
+
+register('renderOverlay', () => {
+    huds.forEach((h) => {
+        categories.forEach((c) => {
+            if (
+                (c.category.match(/^§r§[0-9a-f]§l.+\:/) &&
+                    c.category.match(/^§r§[0-9a-f]§l(.+)\:/)[1].removeFormatting() === h.name) ||
+                (c.category.match(/^§r§l§r§[0-9a-f]§l.+\:/) &&
+                    c.category.match(/^§r§l§r§[0-9a-f]§l(.+)\:/)[1].removeFormatting() === h.name)
+            ) {
+                const text = c.category + '\n' + c.details.join('\n');
+                h.draw(text);
+            }
+        });
+    });
+});
+
+register('step', () => {
+    if (!TabList.getNames()) return;
+    if (TabList.getNames().length < 20 * 4) return;
+    categories = [];
+    categoryTexts = [];
+    let currentCategory = '';
+    let details = [];
+    TabList.getNames().forEach((n, i) => {
+        if (n.match(/^§r§[0-9a-f]§l.+\:/)) {
+            currentCategory = n;
+            categoryTexts.push(n.match(/^§r§[0-9a-f]§l(.+)\:/)[1].removeFormatting());
+        } else if (n.match(/^§r§l§r§[0-9a-f]§l.+\:/)) {
+            if (currentCategory !== '') {
+                categories.push({
+                    category: currentCategory,
+                    details,
+                });
+                currentCategory = '';
+                details = [];
+            }
+            currentCategory = n;
+            categoryTexts.push(n.match(/^§r§l§r§[0-9a-f]§l(.+)\:/)[1].removeFormatting());
+        } else if (n !== '§r' && currentCategory !== '') {
+            details.push(n);
+        } else if (n === '§r' && currentCategory !== '') {
+            categories.push({
+                category: currentCategory,
+                details
+            });
+            currentCategory = '';
+            details = [];
+        }
+
+        if (i % 20 === 19 && currentCategory !== '') {
+            categories.push({
+                category: currentCategory,
+                details
+            });
+            currentCategory = '';
+            details = [];
+        }
+    });
+}).setDelay(1);
+
+register('command', () => {
+    ChatLib.chat(`${CHAT_PREFIX} &aPlease select the tablist widget you want to add as a hud.`);
+    categoryTexts.forEach(c => {
+        ChatLib.chat(new TextComponent(` &e${c}`).setClick('run_command', `/addcustomtablisthud ${c}`));
+    });
+}).setCommandName('addhud', true);
+
+register('command', (...args) => {
+    if (!args || typeof args === 'undefined') {
+        ChatLib.chat(`${CHAT_PREFIX} &c[ERROR] Please specify the name.`);
+        return;
+    }
+    const categoryName = args.join(' ');
+    if (customHudsData.data.find(h => h.name === categoryName)) {
+        ChatLib.chat(`${CHAT_PREFIX} &c[ERROR] You've already added this!`);
+    } else {
+        customHudsData.data.push({
+            name: categoryName,
+            x: customHudsData.data.length * 0.05,
+            y: customHudsData.data.length * 0.05,
+            scale: 1
+        });
+        customHudsData.save();
+        ChatLib.chat(`${CHAT_PREFIX} &aAdded &e${categoryName} &aas a hud!`);
+        loadHuds();
+    }
+}).setCommandName('addcustomtablisthud', true);
+
+register('command', () => {
+    ChatLib.chat(`${CHAT_PREFIX} &aPlease select the hud you want to &c&lremove&r&a.`);
+    customHudsData.data.forEach((h) => {
+        ChatLib.chat(new TextComponent(` &e${h.name}`).setClick('run_command', `/removecustomtablisthud ${h.name}`));
+    });
+}).setCommandName('removehud', true);
+
+register('command', (...args) => {
+    if (!args || typeof args === 'undefined') {
+        ChatLib.chat(`${CHAT_PREFIX} &c[ERROR] Please specify the name.`);
+        return;
+    }
+    const categoryName = args.join(' ');
+    customHudsData.data = customHudsData.data.filter(h => h.name !== categoryName);
+    customHudsData.save();
+    ChatLib.chat(`${CHAT_PREFIX} &cRemoved &e${categoryName} &cfrom huds.`);
+    loadHuds();
+}).setCommandName('removecustomtablisthud', true);

@@ -2,7 +2,7 @@
 /// <reference lib="es2022" />
 
 import { getVersion, printChangelog, printHelp } from "./utils/update";
-import { bestiaryData, data, gardenData, inventoryData, resetData } from "./utils/data";
+import { bestiaryData, customHudsData, data, gardenData, inventoryData, resetData } from "./utils/data";
 import settings from "./settings";
 import { setRegisters } from "./utils/register";
 import hud_manager from "./utils/hud_manager";
@@ -24,6 +24,7 @@ import "./features/hud/inventory";
 import "./features/hud/soulflow";
 import "./features/hud/kicked_timer";
 import "./features/hud/feeder";
+import "./features/hud/tablist";
 // import "./features/hud/gpro_charge";
 
 import "./features/gui/attribute_lb";
@@ -60,11 +61,13 @@ import "./utils/bestiary_settings";
 import "./utils/debug";
 
 import { CHAT_PREFIX } from "./data/chat";
+import { loadHuds } from "./features/hud/tablist";
 
 data.autosave();
 gardenData.autosave();
 inventoryData.autosave();
 bestiaryData.autosave();
+customHudsData.autosave();
 
 register('gameLoad', () => {
     if (!data.first) {
@@ -90,7 +93,10 @@ register('gameLoad', () => {
 });
 
 register('guiClosed', (event) => {
-    if (event.toString().includes("vigilance")) setRegisters();
+    if (event.toString().includes("vigilance")) {
+        setRegisters();
+        loadHuds();
+    }
 });
 
 register('gameUnload', () => {
