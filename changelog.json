@@ -1,4 +1,11 @@
 {
+    "0.4.4": [
+        "# New Features",
+        "- Added Powder Chest Highlight.",
+        "- Finally added built-in updater.",
+        "# Bug Fixes & Improvements",
+        "- Added option to disable the 'ROD!!!' display."
+    ],
     "0.4.3": [
         "# Bug Fixes & Improvements",
         "- Finally fixed Null Pointer Exception."

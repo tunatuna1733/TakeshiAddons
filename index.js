@@ -1,7 +1,7 @@
 /// <reference types="../CTAutocomplete" />
 /// <reference lib="es2022" />
 
-import { getVersion, printChangelog, printHelp } from "./utils/update";
+import { getCurrentVersion, printChangelog, printHelp, update } from "./utils/update";
 import { bestiaryData, customHudsData, data, gardenData, inventoryData, resetData } from "./utils/data";
 import settings from "./settings";
 import { setRegisters } from "./utils/register";
@@ -54,6 +54,8 @@ import "./features/garden/pest_title";
 
 import "./features/nether/ashfang";
 
+import "./features/mining/powder";
+
 // import "./features/misc/chat_image";
 
 import "./utils/area";
@@ -84,7 +86,7 @@ register('gameLoad', () => {
         data.helpPrinted = true;
         data.save();
     }
-    const currentVersion = getVersion();
+    const currentVersion = getCurrentVersion();
     if (currentVersion !== data.version) {
         data.version = currentVersion;
         data.save();
@@ -113,6 +115,8 @@ register('command', (args) => {
         resetData();
     } else if (args == 'help') {
         printHelp();
+    } else if (args == 'update') {
+        update();
     }
 }).setCommandName('takeshi', true).setAliases(['takeshiaddons']);
 
@@ -138,6 +142,6 @@ register('command', () => {
 }).setCommandName('copypurse').setAliases(['cpp']);
 
 register('command', () => {
-    const currentVersion = getVersion();
+    const currentVersion = getCurrentVersion();
     printChangelog(currentVersion);
 }).setCommandName('printtakeshichangelog');

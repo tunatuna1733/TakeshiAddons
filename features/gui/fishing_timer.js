@@ -79,8 +79,11 @@ register('renderWorld', () => {
             if (hookFound) {
                 jLabel.setText("");
             } else {
-                jLabel.setForeground(Color.RED);
-                jLabel.setText("ROD!!!");
+                if (settings.fishingtimerwarning) {
+                    jLabel.setForeground(Color.RED);
+                    jLabel.setText("ROD!!!");
+                }
+                else jLabel.setText("");
             }
         }
     }

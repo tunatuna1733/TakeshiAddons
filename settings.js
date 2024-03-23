@@ -365,6 +365,14 @@ class Settings {
     fishingtimercolor = Color.BLACK;
 
     @SwitchProperty({
+        name: 'Rod Cast Warning',
+        description: 'Shows "ROD!" when you are not casting your rod.',
+        category: 'Others',
+        subcategory: 'Fishing Timer'
+    })
+    fishingtimerwarning = false;
+
+    @SwitchProperty({
         name: 'Dungeon Chest Profit Display',
         description: 'Shows chest profit calculated with the prices you set in M7.',
         category: 'Dungeon',
@@ -555,6 +563,20 @@ class Settings {
     })
     pestmap = false;
 
+    @SwitchProperty({
+        name: 'Highlight Powder Chest',
+        category: 'Mining',
+        subcategory: 'Powder Mining'
+    })
+    powderchesthighlight = false;
+
+    @ColorProperty({
+        name: 'Chest Highlight Color',
+        category: 'Mining',
+        subcategory: 'Powder Mining'
+    })
+    powderchesthighlightcolor = Color.PINK;
+
     constructor() {
         this.initialize(this);
         this.setCategoryDescription('HUD', 'A lot of Overlays');
@@ -583,6 +605,7 @@ class Settings {
         this.addDependency('Mob ESP', 'Draw mob box');
         this.addDependency('Always Warn', 'Spray Timer');
         this.addDependency('Tablist HUD Background Color', 'Tablist HUD Background');
+        this.addDependency('Chest Highlight Color', 'Highlight Powder Chest');
 
         m7NotRNGLootNames.forEach((loot) => {
             const attributes = createPropertyAttributesExt(

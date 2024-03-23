@@ -1,6 +1,14 @@
 import { request } from '../../axios';
+import FileUtilities from '../../FileUtilities/main'
+import { CHAT_PREFIX } from '../data/chat';
 
-export const getVersion = () => {
+let latestVersion = '';
+
+register('gameLoad', () => {
+    checkForUpdate();
+});
+
+export const getCurrentVersion = () => {
     const metadata = FileLib.read('./config/ChatTriggers/modules/TakeshiAddons/metadata.json');
     if (metadata === '') {
         console.log('[Takeshi] Failed to read metadata file.');
@@ -47,4 +55,49 @@ export const printChangelog = (version) => {
         console.log(`[Takeshi] Failed to fetch changelog for version ${version}`);
         console.dir(e, { depth: null });
     })
-}
+};
+
+const checkForUpdate = () => {
+    request({
+        url: 'https://api.github.com/repos/tunatuna1733/TakeshiAddons/releases/latest'
+    }).then((res) => {
+        const response = res.data;
+        latestVersion = response.tag_name;
+        if (isNewerVersion(latestVersion, getCurrentVersion())) {
+            ChatLib.chat(`${CHAT_PREFIX} &bA new version of TakeshiAddons (v${latestVersion}) is available!`);
+            ChatLib.chat(new TextComponent(` &eClick here to update!`).setClick('run_command', `/takeshi update`));
+        }
+    });
+};
+
+const isNewerVersion = (latest, current) => {
+    const latestSplit = latest.split('.');
+    const currentSplit = current.split('.');
+
+    for (let i = 0; i < Math.min(latestSplit.length, currentSplit.length); i++) {
+        if (parseInt(latestSplit[i]) > parseInt(currentSplit[i])) return true;
+        else if (parseInt(latestSplit[i]) < parseInt(currentSplit[i])) return false;
+    }
+
+    return latestSplit.length > currentSplit.length;
+};
+
+export const update = () => {
+    if (latestVersion === '') return;
+    try {
+        const downloadUrl = `https://github.com/tunatuna1733/TakeshiAddons/releases/download/${latestVersion}/TakeshiAddons.zip`;
+        FileUtilities.urlToFile(downloadUrl, './config/ChatTriggers/modules/TakeshiAddons.zip', 1000, 1000);
+    } catch (e) {
+        ChatLib.chat(`${CHAT_PREFIX} &c[ERROR]Connection timed out while downloading update.`);
+        return;
+    }
+    setTimeout(() => {
+        FileLib.unzip('./config/ChatTriggers/modules/TakeshiAddons.zip', './config/ChatTriggers/modules/');
+        const success = FileUtilities.delete('./config/ChatTriggers/modules/TakeshiAddons.zip');
+        if (success) {
+            ChatLib.chat(new TextComponent(`&aSuccessfully updated TakeshiAddons! Click here to complete!`).setClick('run_command', `/ct load`));
+        } else {
+            ChatLib.chat(`${CHAT_PREFIX} &c[ERROR]Failed to extract downloaded zip file :(`);
+        }
+    }, 1500);   // make sure that the download has completed
+};
