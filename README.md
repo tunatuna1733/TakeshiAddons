@@ -74,15 +74,15 @@
 
 ### Garden
 
-- Composter Timer (HUD): Shows remaining time of composter.
-  - You need to enable composter tablist widget and to see the composter upgrade gui at once.
+- Composter Timer (HUD): Shows the remaining time of the composter.
+  - You need to enable the composter tablist widget and to see the composter upgrade gui at once.
 - Pest Area (HUD): Shows spawned pests as a hud and you can click it to tp to the plot with pests while opening chat.
-  - You will see the chunk border like things while holding vacuum.
+  - You will see the chunk border like things while holding vacuums.
   - This feature detects pest spawn chat messages so it sometimes doesn't work correctly if you play as a co-op.
 - Pest Box: Detects pests and draws boxes around them. You can also enable "see through walls" thing but it's UAYOR.
 - Pest Map: Draws garden plot map with pest count and tp function while you are in inventory.
 - Pest Title: Draws title when the farming fortune is reduced by pests. Useful for semi-afk farming.
-- Spray Title: Draws title when the spray if expired. 
+- Spray Title: Draws title when the spray is expired. 
 - Spray Timer (HUD): Self-explanatory.
 
 ### HUD
@@ -94,7 +94,7 @@
   - This feature scans your equipment when you open the `/eq` gui so if you are in laggy situation, it sometimes fails to update equipment.
 - Reforge HUD (HUD): Shows your currently selected accessory power.
   - Currently this feature fails to refresh selected power when you add power using power stones.
-- Inventory HUD (HUD): Shows your current inventory. You can customize background color and transparency.
+- Inventory HUD (HUD): Shows your current inventory. You can customize the background color and transparency.
 - Kick Timer (HUD): Shows time since you kicked out of skyblock.
   - You may be able to reconnect to skyblock after 60s.
 - Kuudra Armor HUD (HUD): Shows current stack and timer until losing stack of crimson/terror armor stack.
@@ -108,14 +108,14 @@
 ### Kuudra
 
 - Dropship Timer (HUD): Shows time until dropship explosion and warns you with title.
-  - This feature count the number of seconds instead of detecting dropship entity, so this feature will work even if you are stunning kuudra or you are too far away from dropship.
+  - This feature counts the number of seconds instead of detecting the dropship entity, so this feature will work even if you are stunning kuudra or you are too far away from the dropship.
 - Energized Chunk Warning: Warns you with sound and title if chunks are near you in p4.
 - Kuudra Profit Display: Shows estimated profit of the reward chest. It considers attributes.
 - Rend Arrows Count: Does not know if it works correctly.
 
 ### Mining
 
-- Highlight Powder Chest: Draws box around the chest in crystal hollows.
+- Highlight Powder Chest: Draws boxes around the chest in crystal hollows.
 
 ### Others
 
