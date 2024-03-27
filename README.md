@@ -111,7 +111,7 @@
   - This feature counts the number of seconds instead of detecting the dropship entity, so this feature will work even if you are stunning kuudra or you are too far away from the dropship.
 - Energized Chunk Warning: Warns you with sound and title if chunks are near you in p4.
 - Kuudra Profit Display: Shows estimated profit of the reward chest. It considers attributes.
-- Rend Arrows Count: Does not know if it works correctly.
+- Rend Arrows Count: Idk if it works correctly.
 
 ### Mining
 

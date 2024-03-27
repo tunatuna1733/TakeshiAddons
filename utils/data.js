@@ -133,6 +133,16 @@ const defaultData = {
         y: 0.1,
         scale: 1,
         times: [0, 0]
+    },
+    phoenix: {
+        x: 0.35,
+        y: 0.1,
+        scale: 3.5
+    },
+    bonzo: {
+        x: 0.4,
+        y: 0.2,
+        scale: 3.5,
     }
 };
 

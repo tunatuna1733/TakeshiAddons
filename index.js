@@ -25,6 +25,7 @@ import "./features/hud/soulflow";
 import "./features/hud/kicked_timer";
 import "./features/hud/feeder";
 import "./features/hud/tablist";
+import "./features/hud/bonzo_and_phoenix";
 // import "./features/hud/gpro_charge";
 
 import "./features/gui/attribute_lb";

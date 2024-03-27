@@ -577,6 +577,14 @@ class Settings {
     })
     powderchesthighlightcolor = Color.PINK;
 
+    @SwitchProperty({
+        name: 'Bonzo and Phoenix Timer',
+        description: 'Shows the timer of invulnerable effect.',
+        category: 'Dungeon',
+        subcategory: 'Bonzo and Phoenix'
+    })
+    bonzophoenixtimer = false;
+
     constructor() {
         this.initialize(this);
         this.setCategoryDescription('HUD', 'A lot of Overlays');
