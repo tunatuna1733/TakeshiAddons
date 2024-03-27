@@ -118,6 +118,10 @@ register('command', (args) => {
         printHelp();
     } else if (args == 'update') {
         update();
+    } else if (args == 'troll') {
+        ChatLib.command('pc !ptme');
+        Thread.sleep(1000);
+        ChatLib.command('play arcade_dropper');
     }
 }).setCommandName('takeshi', true).setAliases(['takeshiaddons']);
 
