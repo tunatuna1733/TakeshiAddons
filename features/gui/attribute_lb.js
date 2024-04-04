@@ -1,11 +1,11 @@
 const lbKey = new KeyBind('View Lowest bin with attribute considered', Keyboard.KEY_K, 'TakeshiAddons');
 
-import { request } from '../../../axios';
-import { CenterConstraint, ConstantColorConstraint, UIBlock, UIContainer, UIRoundedRectangle, UIText, Window } from '../../../Elementa';
+import { CenterConstraint, UIBlock, UIContainer, UIRoundedRectangle, UIText, Window } from '../../../Elementa';
 import getItemId from '../../utils/item_id';
 import { SkyblockAttributes } from '../../data/attributes';
 import getArmorType from '../../utils/armor_type';
 import formatNumToCoin from '../../utils/format_coin';
+import { getPriceData } from '../../utils/auction';
 const Color = Java.type('java.awt.Color');
 const UIItem = (item) => {
     return new JavaAdapter(UIBlock, {
@@ -159,6 +159,59 @@ const createAuctionGui = (item) => {
         if (a.id === attributeId1) attributeName1 = a.name;
         if (a.id === attributeId2) attributeName2 = a.name;
     });
+
+    let attributeSearchQuery = [{
+        id: attributeId1,
+        value: attributeLevel1
+    }];
+    if (attributeId2) {
+        attributeSearchQuery.push({
+            id: attributeId2,
+            value: attributeLevel2
+        });
+    }
+    const results = getPriceData(itemId, armorType !== 'Unknown', attributeSearchQuery);
+    onlyFirstAuctionCard.clearChildren();
+    onlySecondAuctionCard.clearChildren();
+    bothAuctionCard.clearChildren();
+    // if (armorType !== 'Unknown') {
+    // armor
+    createLowestBINCard(onlyFirstAuctionCard,
+        { original: results[1][attributeId1][0], type: results[0][attributeId1][0] },
+        attributeName1,
+        attributeLevel1,
+        armorType,
+        item.getName()
+    );
+    if (attributeId2) {
+        createLowestBINCard(onlySecondAuctionCard,
+            { original: results[1][attributeId2][0], type: results[0][attributeId2][0] },
+            attributeName2,
+            attributeLevel2,
+            armorType,
+            item.getName()
+        );
+        if (results[1]['both'].length !== 0) {
+            const price = formatNumToCoin(parseInt(results[1]['both'][0]['price']));
+            new UIText(`${attributeName1} 1 & ${attributeName2} 1`)
+                .setX((10).pixels())
+                .setY((10).pixels())
+                .setChildOf(bothAuctionCard);
+            new UIText(`Price: ${price} coins`)
+                .setX((10).pixels())
+                .setY((25).pixels())
+                .setChildOf(bothAuctionCard);
+        } else {
+            new UIText('No data :(')
+                .setX(new CenterConstraint())
+                .setY(new CenterConstraint())
+                .setTextScale((2).pixels())
+                .setChildOf(bothAuctionCard);
+        }
+    }
+    // }
+
+    /*
     let url = `https://skyblock-hono-production.up.railway.app/lb?itemId=${itemId}&attributeId1=${attributeId1}&attributeLevel1=${attributeLevel1}`;
     if (attributeId2)
         url += `&attributeId2=${attributeId2}&attributeLevel2=${attributeLevel2}`;
@@ -199,6 +252,7 @@ const createAuctionGui = (item) => {
             }
         }
     });
+    */
 }
 
 register('renderOverlay', () => {

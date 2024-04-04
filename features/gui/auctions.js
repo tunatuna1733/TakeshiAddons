@@ -31,6 +31,14 @@ let attributeLevel1 = '';
 let attributeId2 = '';
 let attributeLevel2 = '';
 
+export const setAuctionViewVars = (itemId, attributeId1, attributeLevel1, attributeId2, attributeLevel2) => {
+    itemId = itemId;
+    attributeId1 = attributeId1;
+    attributeLevel1 = attributeLevel1;
+    attributeId2 = attributeId2;
+    attributeLevel2 = attributeLevel2;
+}
+
 const createAuctionCard = (auctionData) => {
     const uuid = auctionData.uuid;
     const name = auctionData.itemNameWithFormat;
@@ -125,7 +133,7 @@ const createAuctionCard = (auctionData) => {
     return card;
 }
 
-const AuctionView = new JavaAdapter(WindowScreen, {
+export const AuctionView = new JavaAdapter(WindowScreen, {
     init() {
         this.getWindow().clearChildren();
         const container = new UIBlock()

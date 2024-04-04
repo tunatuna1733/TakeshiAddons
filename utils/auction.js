@@ -1,6 +1,8 @@
 import { request } from "../../axios";
 import { SkyblockAttributes } from "../data/attributes";
+import { CHAT_PREFIX } from "../data/chat";
 import { KuudraItems } from "../data/kuudra_items";
+import settings from "../settings";
 
 const decoder = Java.type('java.util.Base64').getDecoder();
 const ByteArrayInputStream = Java.type('java.io.ByteArrayInputStream');
@@ -18,7 +20,6 @@ register('gameLoad', () => {
 
 register('step', () => {
     if (allItems.length !== 0) {
-        ChatLib.chat('Updating auctions...');
         updateAuction(0);
     } else {
         ChatLib.chat('No item list. Updating...');
@@ -28,7 +29,6 @@ register('step', () => {
 
 register('command', () => {
     if (allItems.length !== 0 && Date.now() - auctionUpdateTime > 2 * 60 * 1000) {
-        ChatLib.chat('Updating auctions...');
         updateAuction(0);
     } else {
         ChatLib.chat('No item list. Updating...');
@@ -52,15 +52,14 @@ const updateItems = () => {
     }).then((res) => {
         if (res.data.success === false) {
             itemRetry++;
-            ChatLib.chat('Failed to fetch item data.');
+            ChatLib.chat(`${CHAT_PREFIX} &cFailed to fetch item data. Retrying...`);
             setTimeout(() => {
-                ChatLib.chat(`Retrying... ${itemRetry}`);
                 updateItems();
             }, itemRetry * 1000);
         } else {
             allItems = res.data.items;
         }
-    })
+    });
 }
 
 // Credit: Volcaddons
@@ -111,6 +110,9 @@ const formatAuction = (rawAuction) => {
 const updateAuction = (page) => {
     if (page === 0) {
         tempAuctions = [];
+        if (settings.debugmode) {
+            ChatLib.chat(`${CHAT_PREFIX} &eUpdating auction data...`);
+        }
     }
     request({
         url: `https://api.hypixel.net/v2/skyblock/auctions?page=${page}`,
@@ -126,6 +128,13 @@ const updateAuction = (page) => {
                 if (auction.claimed === false && 'bin' in auction && auction.bin === true)
                     tempAuctions.push(formatAuction(auction));
             });
+            if (settings.debugmode) {
+                if (page === 0) {
+                    ChatLib.editChat(`[Takeshi] Updating auction data...`, new Message(`${CHAT_PREFIX} &eUpdating auction data... ${page + 1}/${pages}`));
+                } else {
+                    ChatLib.editChat(`[Takeshi] Updating auction data... ${page}/${pages}`, new Message(`${CHAT_PREFIX} &eUpdating auction data... ${page + 1}/${pages}`));
+                }
+            }
             if (page + 1 < pages) updateAuction(page + 1);
             else {
                 auctions = tempAuctions.sort((a, b) => {
@@ -134,8 +143,13 @@ const updateAuction = (page) => {
                     return 0;
                 });
                 auctionUpdateTime = Date.now();
-                ChatLib.chat('Auctions updated.');
+                if (settings.debugmode) {
+                    ChatLib.editChat(`[Takeshi] Updating auction data... ${pages}/${pages}`, new Message(`${CHAT_PREFIX} &eSuccessfully updated auction data.`));
+                }
             }
+        } else {
+            ChatLib.chat(`${CHAT_PREFIX} &cError fetching auctions. Status: ${res.status}`);
+            ChatLib.chat(JSON.stringify(res.data));
         }
     });
 }
@@ -256,6 +270,9 @@ register('command', (itemId, attributeId1, attributeLevel1, attributeId2, attrib
 
         ChatLib.chat('Exact match');
         ChatLib.chat(` ${JSON.stringify(results[1][attributeId1][0])}`);
+
+        ChatLib.chat('Both');
+        ChatLib.chat(` ${JSON.stringify(results[1]['both'][0])}`);
     } else {
         ChatLib.chat('A1');
         ChatLib.chat(` ${JSON.stringify(results[attributeId1][0])}`);

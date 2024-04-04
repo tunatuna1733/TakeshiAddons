@@ -26,7 +26,6 @@ import "./features/hud/kicked_timer";
 import "./features/hud/feeder";
 import "./features/hud/tablist";
 import "./features/hud/bonzo_and_phoenix";
-// import "./features/hud/gpro_charge";
 
 import "./features/gui/attribute_lb";
 import "./features/gui/auctions";
@@ -56,8 +55,6 @@ import "./features/garden/pest_title";
 import "./features/nether/ashfang";
 
 import "./features/mining/powder";
-
-// import "./features/misc/chat_image";
 
 import "./utils/area";
 import "./utils/bestiary_settings";

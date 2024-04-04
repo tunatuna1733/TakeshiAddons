@@ -1,4 +1,8 @@
 {
+    "0.4.6": [
+        "# Bug Fixes & Improvements",
+        "- Finally fixed updater."
+    ],
     "0.4.5": [
         "# New Features",
         "- Added Bonzo and Phoenix Timer.",

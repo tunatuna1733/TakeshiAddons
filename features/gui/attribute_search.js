@@ -1,22 +1,13 @@
-/*
-Im gonna work on this once UITextInput and State work correctly
+import { CenterConstraint, ConstantColorConstraint, UIBlock, UIContainer, UIRoundedRectangle, UIText, UITextInput, Window, WindowScreen } from '../../../Elementa';
 
-const asKey = Client.getKeyBindFromKey(Keyboard.KEY_J, 'Open attribute search GUI');
-
-import { CenterConstraint, ConstantColorConstraint, UIBlock, UIContainer, UIRoundedRectangle, UIText, UITextInput, Window } from '../../../Elementa';
-
-let guiOpen = false;
-const gui = new Gui();
-const window = new Window();
-
-const createSearchGui = () => {
+const createSearchGui = (window) => {
     window.clearChildren();
-    const background = new UIBlock()
-        .setX((0).pixels())
-        .setY((0).pixels())
-        .setWidth((Renderer.screen.getWidth()).pixels())
-        .setHeight((Renderer.screen.getHeight()).pixels())
-        .setColor(new Color(30 / 255, 30 / 255, 30 / 255, 0.8))
+    const background = new UIRoundedRectangle(5)
+        .setX((Renderer.screen.getWidth() * 0.2).pixels())
+        .setY((Renderer.screen.getHeight() * 0.2).pixels())
+        .setWidth((Renderer.screen.getWidth() * 0.6).pixels())
+        .setHeight((Renderer.screen.getHeight() * 0.6).pixels())
+        .setColor(new Color(40 / 255, 40 / 255, 40 / 255, 0))
         .setChildOf(window);
 
     const inputContainer = new UIContainer()
@@ -37,19 +28,13 @@ const createSearchGui = () => {
         .setChildOf(itemNameInputBlock);
 }
 
-register('renderOverlay', () => {
-    if (asKey.isPressed()) {
-        // create gui
-        guiOpen = true;
+const AuctionSearch = new JavaAdapter(WindowScreen, {
+    init() {
+        createSearchGui(this.window);
     }
-    if (guiOpen) {
-        gui.open();
-        window.draw();
-    }
-}).setPriority(Priority.LOWEST);
-
-register('guiClosed', (e) => {
-    if (guiOpen && e.class.isInstance(gui)) guiOpen = !guiOpen;
 });
 
-*/
+register('command', () => {
+    AuctionSearch.init();
+    GuiHandler.openGui(AuctionSearch);
+}).setCommandName('debugopenattributesearch');
