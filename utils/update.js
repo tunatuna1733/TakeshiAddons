@@ -65,7 +65,9 @@ const checkForUpdate = () => {
         latestVersion = response.tag_name;
         if (isNewerVersion(latestVersion, getCurrentVersion())) {
             ChatLib.chat(`${CHAT_PREFIX} &bA new version of TakeshiAddons (v${latestVersion}) is available!`);
-            ChatLib.chat(new TextComponent(` &eClick here to update!`).setClick('run_command', `/takeshi update`));
+            ChatLib.chat(new TextComponent(` &eClick here to update!`).setClick('run_command', `/takeshi forceupdate`));
+        } else {
+            ChatLib.chat(`${CHAT_PREFIX} &bYou are running the latest version of TakeshiAddons!`);
         }
     });
 };
@@ -82,10 +84,14 @@ const isNewerVersion = (latest, current) => {
     return latestSplit.length > currentSplit.length;
 };
 
-export const update = () => {
+export const update = (manual = false) => {
+    if (manual) {
+        checkForUpdate();
+        return;
+    }
     if (latestVersion === '') return;
     try {
-        const downloadUrl = `https://github.com/tunatuna1733/TakeshiAddons/releases/download/${latestVersion}/TakeshiAddons.zip`;
+        const downloadUrl = `https://github.com/tunatuna1733/TakeshiAddons/releases/download/${latestVersion}/TakeshiAddons.zip`.replace('https://', 'http://');    // workaround for wierd java 8 issue
         FileUtilities.urlToFile(downloadUrl, './config/ChatTriggers/modules/TakeshiAddons.zip', 1000, 1000);
     } catch (e) {
         ChatLib.chat(`${CHAT_PREFIX} &c[ERROR]Connection timed out while downloading update.`);

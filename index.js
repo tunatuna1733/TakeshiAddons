@@ -61,6 +61,7 @@ import "./features/mining/powder";
 
 import "./utils/area";
 import "./utils/bestiary_settings";
+import "./utils/auction";
 import "./utils/debug";
 
 import { CHAT_PREFIX } from "./data/chat";
@@ -117,6 +118,8 @@ register('command', (args) => {
     } else if (args == 'help') {
         printHelp();
     } else if (args == 'update') {
+        update(true);
+    } else if (args == 'forceupdate') {
         update();
     } else if (args == 'troll') {
         ChatLib.command('pc !ptme');
