@@ -1,7 +1,12 @@
 {
     "0.4.6": [
+        "# New Features",
+        "- Added Minechaft Notification.",
+        "- Added mineshaft mob box.",
+        "- Added corpse location display.",
         "# Bug Fixes & Improvements",
-        "- Finally fixed updater."
+        "- Finally fixed updater.",
+        "- Added internal auction fetcher."
     ],
     "0.4.5": [
         "# New Features",

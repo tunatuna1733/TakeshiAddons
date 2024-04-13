@@ -3,7 +3,7 @@
     "description": "/takeshi for settings",
     "creator": "tunatuna1733",
     "entry": "index.js",
-    "version": "0.4.5",
+    "version": "0.4.6",
     "requires": [
         "PogData",
         "Vigilance",
@@ -13,6 +13,7 @@
         "numeraljs",
         "RenderLib",
         "ServerUtilities",
-        "FileUtilities"
+        "FileUtilities",
+        "PromiseV2"
     ]
 }

@@ -532,6 +532,7 @@ class Settings {
     })
     feedertimer = false;
 
+    /*
     @SwitchProperty({
         name: 'Rend Arrows Count',
         description: 'Shows how many arrows you pulled.',
@@ -539,6 +540,7 @@ class Settings {
         subcategory: 'Rend'
     })
     rendcount = false;
+    */
 
     @SwitchProperty({
         name: 'Tablist HUD Background',
@@ -585,6 +587,59 @@ class Settings {
     })
     bonzophoenixtimer = false;
 
+    @SwitchProperty({
+        name: 'Fetch auctions internally',
+        description: 'Fetch all auctions with 5 mins interval(default).\n&cThis feature consumes a lot of memory so be careful!',
+        category: 'Others',
+        subcategory: 'Auction'
+    })
+    auctionfetch = true;
+
+    @SliderProperty({
+        name: 'Auction fetch interval (min)',
+        category: 'Others',
+        subcategory: 'Auction',
+        min: 3,
+        max: 10,
+    })
+    auctioninterval = 5;
+
+    @SwitchProperty({
+        name: 'Mineshaft Notification',
+        description: 'Shows a title and play sound when you find mineshaft.',
+        category: 'Mining',
+        subcategory: 'Glacite Tunnel'
+    })
+    minechaftnotice = false;
+
+    @SwitchProperty({
+        name: 'Announce mineshaft in pchat',
+        category: 'Mining',
+        subcategory: 'Glacite Tunnel'
+    })
+    announcemineshaft = false;
+
+    @SwitchProperty({
+        name: 'Draw mobs box in minechaft',
+        category: 'Mining',
+        subcategory: 'Glacite Tunnel'
+    })
+    mineshaftmobbox = false;
+
+    @ColorProperty({
+        name: 'Mineshaft mob box color',
+        category: 'Mining',
+        subcategory: 'Glacite Tunnel'
+    })
+    mineshaftmobboxcolor = Color.PINK;
+
+    @SwitchProperty({
+        name: 'Show corpses location',
+        category: 'Mining',
+        subcategory: 'Glacite Tunnel'
+    })
+    corpselocation = false;
+
     constructor() {
         this.initialize(this);
         this.setCategoryDescription('HUD', 'A lot of Overlays');
@@ -614,6 +669,9 @@ class Settings {
         this.addDependency('Always Warn', 'Spray Timer');
         this.addDependency('Tablist HUD Background Color', 'Tablist HUD Background');
         this.addDependency('Chest Highlight Color', 'Highlight Powder Chest');
+        this.addDependency('Auction fetch interval (min)', 'Fetch auctions internally');
+        this.addDependency('Mineshaft mob box color', 'Draw mobs box in minechaft');
+        this.addDependency('Announce mineshaft in pchat', 'Mineshaft Notification');
 
         m7NotRNGLootNames.forEach((loot) => {
             const attributes = createPropertyAttributesExt(

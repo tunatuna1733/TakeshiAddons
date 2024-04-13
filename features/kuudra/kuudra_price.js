@@ -8,6 +8,7 @@ import { Hud } from '../../utils/hud';
 import hud_manager from '../../utils/hud_manager';
 import getItemId from "../../utils/item_id";
 import { registerWhen } from "../../utils/register";
+import { getPriceData } from '../../utils/auction';
 
 const display = new Display();
 display.setRenderLoc(data.kuudraprofit.x, data.kuudraprofit.y);
@@ -42,8 +43,10 @@ registerWhen(register('postGuiRender', () => {
             const armorType = getArmorType(rewardItemId);
             const attributes = rewardItem.getNBT()?.get('tag')?.get('ExtraAttributes')?.get('attributes')?.toObject();
             if (!attributes) {
-                ChatLib.chat('Looks like the primary item does not have attributes');
-                return;
+                if (settings.debugmode) {
+                    ChatLib.chat('Looks like the primary item does not have attributes');
+                    return;
+                }
             }
             display.addLine('Loading...');
             const [attributeId1, attributeId2] = Object.keys(attributes);
@@ -53,6 +56,53 @@ registerWhen(register('postGuiRender', () => {
                 if (a.id === attributeId1) attributeName1 = a.name;
                 if (a.id === attributeId2) attributeName2 = a.name;
             });
+            let attributeSearchQuery = [{
+                id: attributeId1,
+                value: attributeLevel1
+            }];
+            if (attributeId2) {
+                attributeSearchQuery.push({
+                    id: attributeId2,
+                    value: attributeLevel2
+                });
+            }
+            const results = getPriceData(rewardItemId, armorType !== 'Unknown', attributeSearchQuery);
+            display.clearLines();
+            if (armorType !== 'Unknown') {
+                const typePrice1 = results[0][attributeId1][0]['price'] ? formatNumToCoin(results[0][attributeId1][0]['price']) : 'Unknown';
+                const typePrice2 = results[0][attributeId2][0]['price'] ? formatNumToCoin(results[0][attributeId2][0]['price']) : 'Unknown';
+                const exactPrice1 = results[1][attributeId1][0]['price'] ? formatNumToCoin(results[1][attributeId1][0]['price']) : 'Unknown';
+                const exactPrice2 = results[1][attributeId2][0]['price'] ? formatNumToCoin(results[1][attributeId2][0]['price']) : 'Unknown';
+                const exactBothPrice = results[1]['both'][0]['price'] ? formatNumToCoin(results[1]['both'][0]['price']) : 'Unknown';
+                display.addLines([
+                    `${rewardItemName}\n`,
+                    ` ${armorType} with ${attributeName1} ${attributeLevel1}\n`,
+                    `  ${typePrice1} coins\n`,
+                    ` ${rewardItemName} with ${attributeName1} ${attributeLevel1}\n`,
+                    `  ${exactPrice1} coins\n\n`,
+                    ` ${armorType} with ${attributeName2} ${attributeLevel2}\n`,
+                    `  ${typePrice2} coins\n`,
+                    ` ${rewardItemName} with ${attributeName2} ${attributeLevel2}\n`,
+                    `  ${exactPrice2} coins\n\n`,
+                    ` ${rewardItemName} with ${attributeName1} 1 & ${attributeName2} 1\n`,
+                    `  ${exactBothPrice} coins`
+                ]);
+            } else {
+                const price1 = results[attributeId1][0]['price'] ? formatNumToCoin(results[attributeId1][0]['price']) : 'Unknown';
+                const price2 = results[attributeId2][0]['price'] ? formatNumToCoin(results[attributeId2][0]['price']) : 'Unknown';
+                const bothPrice = results[attributeId1][0]['price'] ? formatNumToCoin(results[attributeId1][0]['price']) : 'Unknown';
+                display.addLines([
+                    `${rewardItemName}\n`,
+                    ` ${rewardItemName} with ${attributeName1} ${attributeLevel1}\n`,
+                    `  ${price1} coins\n`,
+                    ` ${rewardItemName} with ${attributeName2} ${attributeLevel2 ?? '?'}\n`,
+                    `  ${price2} coins\n\n`,
+                    ` ${rewardItemName} with ${attributeName1} 1 & ${attributeName2} 1\n`,
+                    `  ${bothPrice} coins`
+                ]);
+            }
+
+            /*
             let url = `https://skyblock-hono-production.up.railway.app/lb?itemId=${rewardItemId}&attributeId1=${attributeId1}&attributeLevel1=${attributeLevel1}`;
             if (attributeId2)
                 url += `&attributeId2=${attributeId2}&attributeLevel2=${attributeLevel2}`;
@@ -91,6 +141,7 @@ registerWhen(register('postGuiRender', () => {
                 ChatLib.chat(e);
                 return;
             });
+            */
         })
     }
 }), () => settings.kuudraprofit, { type: 'postGuiRender', name: moduleName });

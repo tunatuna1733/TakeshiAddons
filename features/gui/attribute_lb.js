@@ -1,11 +1,12 @@
 const lbKey = new KeyBind('View Lowest bin with attribute considered', Keyboard.KEY_K, 'TakeshiAddons');
 
-import { CenterConstraint, UIBlock, UIContainer, UIRoundedRectangle, UIText, Window } from '../../../Elementa';
+import { AdditiveConstraint, CenterConstraint, UIBlock, UIContainer, UIRoundedRectangle, UIText, Window } from '../../../Elementa';
 import getItemId from '../../utils/item_id';
 import { SkyblockAttributes } from '../../data/attributes';
 import getArmorType from '../../utils/armor_type';
 import formatNumToCoin from '../../utils/format_coin';
 import { getPriceData } from '../../utils/auction';
+import { getMinAndSec } from '../../utils/time';
 const Color = Java.type('java.awt.Color');
 const UIItem = (item) => {
     return new JavaAdapter(UIBlock, {
@@ -51,18 +52,23 @@ const createLowestBINCard = (parentCard, auctionData, attributeName, attributeLe
                     .setChildOf(parentCard);
                 currentY += 10;
             });
+            const lastUpdatedTime = getMinAndSec(Date.now() - auctionData.type.lastUpdated);
+            new UIText(`Last Update: ${lastUpdatedTime[0]}m${lastUpdatedTime[1]}secs ago`)
+                .setX((50).pixels())
+                .setY(new AdditiveConstraint(currentY.pixels(), (5).pixels()))
+                .setChildOf(parentCard);
         }
         if (auctionData.original) {
             const price = formatNumToCoin(parseInt(auctionData.original.price));
             new UIText(`${itemName} ${attributeName} ${attributeLevel}`)
                 .setX((10).pixels())
-                .setY((60).pixels())
+                .setY((80).pixels())
                 .setChildOf(parentCard);
             new UIText(`Price: ${price} coins`)
                 .setX((10).pixels())
-                .setY((75).pixels())
+                .setY((95).pixels())
                 .setChildOf(parentCard);
-            let currentY = 85;
+            let currentY = 105;
             auctionData.original.attributes.forEach((a) => {
                 new UIText(`${a.name} ${a.value}`)
                     .setX((20).pixels())
@@ -70,6 +76,11 @@ const createLowestBINCard = (parentCard, auctionData, attributeName, attributeLe
                     .setChildOf(parentCard);
                 currentY += 10;
             });
+            const lastUpdatedTime = getMinAndSec(Date.now() - auctionData.original.lastUpdated);
+            new UIText(`Last Update: ${lastUpdatedTime[0]}m${lastUpdatedTime[1]}secs ago`)
+                .setX((50).pixels())
+                .setY(new AdditiveConstraint(currentY.pixels(), (5).pixels()))
+                .setChildOf(parentCard);
         }
     }
 }
@@ -174,42 +185,76 @@ const createAuctionGui = (item) => {
     onlyFirstAuctionCard.clearChildren();
     onlySecondAuctionCard.clearChildren();
     bothAuctionCard.clearChildren();
-    // if (armorType !== 'Unknown') {
-    // armor
-    createLowestBINCard(onlyFirstAuctionCard,
-        { original: results[1][attributeId1][0], type: results[0][attributeId1][0] },
-        attributeName1,
-        attributeLevel1,
-        armorType,
-        item.getName()
-    );
-    if (attributeId2) {
-        createLowestBINCard(onlySecondAuctionCard,
-            { original: results[1][attributeId2][0], type: results[0][attributeId2][0] },
-            attributeName2,
-            attributeLevel2,
+    if (armorType !== 'Unknown') {
+        // armor
+        createLowestBINCard(onlyFirstAuctionCard,
+            { original: results[1][attributeId1][0], type: results[0][attributeId1][0] },
+            attributeName1,
+            attributeLevel1,
             armorType,
             item.getName()
         );
-        if (results[1]['both'].length !== 0) {
-            const price = formatNumToCoin(parseInt(results[1]['both'][0]['price']));
-            new UIText(`${attributeName1} 1 & ${attributeName2} 1`)
-                .setX((10).pixels())
-                .setY((10).pixels())
-                .setChildOf(bothAuctionCard);
-            new UIText(`Price: ${price} coins`)
-                .setX((10).pixels())
-                .setY((25).pixels())
-                .setChildOf(bothAuctionCard);
-        } else {
-            new UIText('No data :(')
-                .setX(new CenterConstraint())
-                .setY(new CenterConstraint())
-                .setTextScale((2).pixels())
-                .setChildOf(bothAuctionCard);
+        if (attributeId2) {
+            createLowestBINCard(onlySecondAuctionCard,
+                { original: results[1][attributeId2][0], type: results[0][attributeId2][0] },
+                attributeName2,
+                attributeLevel2,
+                armorType,
+                item.getName()
+            );
+            if (results[1]['both'].length !== 0) {
+                const price = formatNumToCoin(parseInt(results[1]['both'][0]['price']));
+                new UIText(`${attributeName1} 1 & ${attributeName2} 1`)
+                    .setX((10).pixels())
+                    .setY((10).pixels())
+                    .setChildOf(bothAuctionCard);
+                new UIText(`Price: ${price} coins`)
+                    .setX((10).pixels())
+                    .setY((25).pixels())
+                    .setChildOf(bothAuctionCard);
+            } else {
+                new UIText('No data :(')
+                    .setX(new CenterConstraint())
+                    .setY(new CenterConstraint())
+                    .setTextScale((2).pixels())
+                    .setChildOf(bothAuctionCard);
+            }
+        }
+    } else {
+        createLowestBINCard(onlyFirstAuctionCard,
+            { original: results[attributeId1][0] },
+            attributeName1,
+            attributeLevel1,
+            '',
+            item.getName()
+        );
+        if (attributeId2) {
+            createLowestBINCard(onlySecondAuctionCard,
+                { original: results[attributeId2][0] },
+                attributeName2,
+                attributeLevel2,
+                '',
+                item.getName()
+            );
+            if (results['both'].length !== 0) {
+                const price = formatNumToCoin(parseInt(results['both'][0]['price']));
+                new UIText(`${attributeName1} 1 & ${attributeName2} 1`)
+                    .setX((10).pixels())
+                    .setY((10).pixels())
+                    .setChildOf(bothAuctionCard);
+                new UIText(`Price: ${price} coins`)
+                    .setX((10).pixels())
+                    .setY((25).pixels())
+                    .setChildOf(bothAuctionCard);
+            } else {
+                new UIText('No data :(')
+                    .setX(new CenterConstraint())
+                    .setY(new CenterConstraint())
+                    .setTextScale((2).pixels())
+                    .setChildOf(bothAuctionCard);
+            }
         }
     }
-    // }
 
     /*
     let url = `https://skyblock-hono-production.up.railway.app/lb?itemId=${itemId}&attributeId1=${attributeId1}&attributeLevel1=${attributeLevel1}`;

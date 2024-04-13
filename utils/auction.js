@@ -1,8 +1,11 @@
 import { request } from "../../axios";
+import { Promise } from "../../PromiseV2";
 import { SkyblockAttributes } from "../data/attributes";
 import { CHAT_PREFIX } from "../data/chat";
 import { KuudraItems } from "../data/kuudra_items";
 import settings from "../settings";
+import { sendDebugMessage } from "./debug";
+import { registerWhen } from "./register";
 
 const decoder = Java.type('java.util.Base64').getDecoder();
 const ByteArrayInputStream = Java.type('java.io.ByteArrayInputStream');
@@ -10,26 +13,28 @@ const Compressor = Java.type('net.minecraft.nbt.CompressedStreamTools');
 
 let itemRetry = 0;
 let allItems = [];
-let tempAuctions = [];
 let auctions = [];
 let auctionUpdateTime = 0;
 
 register('gameLoad', () => {
     updateItems();
+    setTimeout(() => {
+        updateAuction();
+    }, 5000);
 });
 
-register('step', () => {
+registerWhen(register('step', () => {
     if (allItems.length !== 0) {
-        updateAuction(0);
+        updateAuction();
     } else {
-        ChatLib.chat('No item list. Updating...');
+        // ChatLib.chat('No item list. Updating...');
         updateItems();
     }
-}).setDelay(5 * 60);
+}).setDelay(settings.auctioninterval * 60), () => settings.auctionfetch, { type: 'step', name: 'Auction Fetch' });
 
 register('command', () => {
     if (allItems.length !== 0 && Date.now() - auctionUpdateTime > 2 * 60 * 1000) {
-        updateAuction(0);
+        updateAuction();
     } else {
         ChatLib.chat('No item list. Updating...');
         updateItems();
@@ -58,6 +63,7 @@ const updateItems = () => {
             }, itemRetry * 1000);
         } else {
             allItems = res.data.items;
+            sendDebugMessage('&aFetched item data.');
         }
     });
 }
@@ -92,6 +98,7 @@ const formatAuction = (rawAuction) => {
         uuid: rawAuction.uuid,
         auctioneer: rawAuction.auctioneer,
         profileId: rawAuction.profileId,
+        lastUpdated: rawAuction.lastUpdated,
         start: rawAuction.start,
         end: rawAuction.end,
         itemName: rawAuction.item_name,
@@ -107,51 +114,72 @@ const formatAuction = (rawAuction) => {
     return auctionData;
 }
 
-const updateAuction = (page) => {
-    if (page === 0) {
-        tempAuctions = [];
-        if (settings.debugmode) {
-            ChatLib.chat(`${CHAT_PREFIX} &eUpdating auction data...`);
-        }
-    }
+const updateAuction = () => {
+    let auctionsPromise = [];
+    let tempAuctions = [];
     request({
-        url: `https://api.hypixel.net/v2/skyblock/auctions?page=${page}`,
+        url: 'https://api.hypixel.net/v2/skyblock/auctions',
         headers: {
-            "User-Agent": "Mozilla/5.0 (ChatTriggers)",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
             "Content-Type": "application/json"
-        }
+        },
+        timeout: 3000
     }).then((res) => {
-        const response = res.data;
-        if (response.success === true) {
-            const pages = response.totalPages;
-            response.auctions.forEach((auction) => {
-                if (auction.claimed === false && 'bin' in auction && auction.bin === true)
-                    tempAuctions.push(formatAuction(auction));
-            });
-            if (settings.debugmode) {
-                if (page === 0) {
-                    ChatLib.editChat(`[Takeshi] Updating auction data...`, new Message(`${CHAT_PREFIX} &eUpdating auction data... ${page + 1}/${pages}`));
-                } else {
-                    ChatLib.editChat(`[Takeshi] Updating auction data... ${page}/${pages}`, new Message(`${CHAT_PREFIX} &eUpdating auction data... ${page + 1}/${pages}`));
-                }
-            }
-            if (page + 1 < pages) updateAuction(page + 1);
-            else {
-                auctions = tempAuctions.sort((a, b) => {
-                    if (a.price < b.price) return -1;
-                    else if (a.price > b.price) return 1;
-                    return 0;
-                });
-                auctionUpdateTime = Date.now();
-                if (settings.debugmode) {
-                    ChatLib.editChat(`[Takeshi] Updating auction data... ${pages}/${pages}`, new Message(`${CHAT_PREFIX} &eSuccessfully updated auction data.`));
-                }
-            }
-        } else {
-            ChatLib.chat(`${CHAT_PREFIX} &cError fetching auctions. Status: ${res.status}`);
-            ChatLib.chat(JSON.stringify(res.data));
+        const totalPages = res.data.totalPages;
+        const lastUpdated = res.data.lastUpdated;
+        sendDebugMessage(`&eStarted updating auctions. Total Pages: ${totalPages}`);
+        for (let i = 0; i < totalPages; i++) {
+            auctionsPromise.push(
+                new Promise((resolve) => {
+                    request({
+                        url: `https://api.hypixel.net/v2/skyblock/auctions?page=${i}`,
+                        headers: {
+                            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+                            "Content-Type": "application/json"
+                        },
+                        timeout: 3000
+                    }).then((r) => {
+                        resolve(r.data.auctions);
+                    });
+                })
+            );
         }
+        return Promise.all(auctionsPromise).then((auctionsList) => {
+            sendDebugMessage(`&eFetched auctions. Pages: ${auctionsList.length}`);
+            auctionsList.forEach((as) => {
+                as.forEach((a) => {
+                    if (a.claimed === false && 'bin' in a && a.bin === true) {
+                        a.lastUpdated = lastUpdated;
+                        tempAuctions.push(a);
+                    }
+                });
+            });
+        }).then(() => {
+            formatAllAuctions(tempAuctions);
+        });
     });
+}
+
+const formatAllAuctions = (tempAuctions) => {
+    new Thread(() => {
+        sendDebugMessage('&eFormatting auctions...');
+        const processStart = Date.now();
+        let formattedAuctions = [];
+        tempAuctions.forEach(a => {
+            formattedAuctions.push(formatAuction(a));
+        });
+        sendDebugMessage(`&eFormatted all auctions. Elapsed time: ${Date.now() - processStart}ms`);
+        sendDebugMessage('&eSorting auctions.');
+        const sortStart = Date.now();
+        auctions = formattedAuctions.sort((a, b) => {
+            if (a.price < b.price) return -1;
+            else if (a.price > b.price) return 1;
+            return 0;
+        });
+        sendDebugMessage(`&eSorted auctions. Elapsed time: ${Date.now() - sortStart}ms`);
+        auctionUpdateTime = Date.now();
+        sendDebugMessage('&eUpdated auctions');
+    }).start();
 }
 
 const checkAttribute = (auction, attributeSearch) => {
@@ -167,6 +195,8 @@ const checkAttribute = (auction, attributeSearch) => {
     }
     return hasAttribute;
 };
+
+export const getAllItems = () => { return allItems };
 
 export const getAllAuctions = () => { return auctions };
 
@@ -271,8 +301,10 @@ register('command', (itemId, attributeId1, attributeLevel1, attributeId2, attrib
         ChatLib.chat('Exact match');
         ChatLib.chat(` ${JSON.stringify(results[1][attributeId1][0])}`);
 
-        ChatLib.chat('Both');
-        ChatLib.chat(` ${JSON.stringify(results[1]['both'][0])}`);
+        if ('both' in results[1]) {
+            ChatLib.chat('Both');
+            ChatLib.chat(` ${JSON.stringify(results[1]['both'][0])}`);
+        }
     } else {
         ChatLib.chat('A1');
         ChatLib.chat(` ${JSON.stringify(results[attributeId1][0])}`);
@@ -286,3 +318,9 @@ register('command', (itemId, attributeId1, attributeLevel1, attributeId2, attrib
         }
     }
 }).setCommandName('debugatsearch');
+
+register('command', (uuid) => {
+    const auction = auctions.find(a => a.uuid === uuid);
+    ChatLib.chat(JSON.stringify(auction, null, 2));
+    ChatLib.chat(`Index: ${auctions.findIndex(a => a.uuid === uuid)}`);
+}).setCommandName('debugauctionuuid');

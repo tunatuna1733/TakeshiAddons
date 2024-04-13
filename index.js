@@ -44,7 +44,7 @@ import "./features/dungeon/chest_profit";
 import "./features/kuudra/dropship";
 import "./features/kuudra/energized_chunk";
 import "./features/kuudra/kuudra_price";
-import "./features/kuudra/rend_count";
+// import "./features/kuudra/rend_count";
 
 import "./features/garden/composter";
 import "./features/garden/pest_box";
@@ -55,11 +55,14 @@ import "./features/garden/pest_title";
 import "./features/nether/ashfang";
 
 import "./features/mining/powder";
+import "./features/mining/glacite";
 
 import "./utils/area";
 import "./utils/bestiary_settings";
 import "./utils/auction";
 import "./utils/debug";
+
+// import "./features/gui/attribute_search";
 
 import { CHAT_PREFIX } from "./data/chat";
 import { loadHuds } from "./features/hud/tablist";

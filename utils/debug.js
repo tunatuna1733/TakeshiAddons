@@ -1,5 +1,14 @@
+import { CHAT_PREFIX } from "../data/chat";
+import settings from "../settings";
 import { getCurrentArea, getCurrentZone } from "./area";
 import { bestiaryData } from "./data";
+import getItemId from "./item_id";
+
+export const sendDebugMessage = (msg) => {
+    if (settings.debugmode) {
+        ChatLib.chat(`${CHAT_PREFIX} ${msg}`);
+    }
+};
 
 register('command', () => {
     const pestNames = ['Beetle', 'Cricket', 'Fly', 'Locust', 'Mite', 'Mosquito', 'Moth', 'Rat', 'Slug', 'Earthworm'];
@@ -25,6 +34,8 @@ register('command', () => {
         const entity = new EntityLivingBase(armorStand.getEntity());
         const headNBT = entity.getItemInSlot(4)?.getRawNBT();
         ChatLib.chat(headNBT);
+        const itemId = getItemId(entity.getItemInSlot(4));
+        ChatLib.chat(itemId);
     });
 }).setCommandName('debugarmorstandheads');
 
@@ -127,6 +138,12 @@ register('command', () => {
         ChatLib.chat(e.getEntity().field_70159_w);
     });
 }).setCommandName('debugarrow');
+
+register('command', () => {
+    World.getAllTileEntitiesOfType(Java.type('net.minecraft.tileentity.TileEntitySkull').class).forEach(e => {
+        ChatLib.chat(e.tileEntity.func_152108_a());
+    })
+}).setCommandName('debugtileentities');
 
 /*
 register('soundPlay', () => {
