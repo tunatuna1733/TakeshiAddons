@@ -19,6 +19,7 @@ import {
 } from '../../../Elementa';
 import { getHour } from "../../utils/time";
 import formatNumToCoin from "../../utils/format_coin";
+import { getPriceData } from '../../utils/auction';
 const Color = Java.type('java.awt.Color');
 const Toolkit = Java.type('java.awt.Toolkit');
 const StringSelection = Java.type('java.awt.datatransfer.StringSelection');
@@ -31,12 +32,17 @@ let attributeLevel1 = '';
 let attributeId2 = '';
 let attributeLevel2 = '';
 
-export const setAuctionViewVars = (itemId, attributeId1, attributeLevel1, attributeId2, attributeLevel2) => {
+const cardWidth = 200;
+const cardHeight = 150;
+
+export const openAuctionView = (itemId, attributeId1, attributeLevel1, attributeId2, attributeLevel2) => {
     itemId = itemId;
     attributeId1 = attributeId1;
     attributeLevel1 = attributeLevel1;
     attributeId2 = attributeId2;
     attributeLevel2 = attributeLevel2;
+    AuctionView.init();
+    GuiHandler.openGui(AuctionView);
 }
 
 const createAuctionCard = (auctionData) => {
@@ -133,16 +139,66 @@ const createAuctionCard = (auctionData) => {
     return card;
 }
 
+const createListPane = (window, auctionList) => {
+    const pane = new ScrollComponent()
+        .setX((0).pixels())
+        .setY((0).pixels())
+        .setWidth((100).percent())
+        .setHeight((100).percent())
+        .setChildOf(window);
+
+    let currentY = 0;
+    auctionList.forEach((auction, index) => {
+        const x = pane.getWidth() - cardWidth * 4 > 0 ?
+            (pane.getWidth() - cardWidth * 4) * ((index % 4) + 1) + cardWidth * (index % 4) :
+            (pane.getWidth() - cardWidth * 3 > 0 ?
+                (pane.getWidth() - cardWidth * 3) * ((index % 3) + 1) + cardWidth * (index % 3) :
+                (pane.getWidth() - cardWidth * 2 > 0 ?
+                    (pane.getWidth() - cardWidth * 2) * ((index % 2) + 1) + cardWidth * (index % 2) :
+                    pane.getWidth() - cardWidth * 2
+                )
+            );
+        const card = new UIRoundedRectangle(3)
+            .setX(x.pixels())
+            .setY(currentY.pixels())
+            .setWidth(cardWidth)
+            .setHeight(cardHeight)
+            .setChildOf(pane)
+    })
+
+    return pane;
+}
+
 export const AuctionView = new JavaAdapter(WindowScreen, {
     init() {
         this.getWindow().clearChildren();
-        const container = new UIBlock()
-            .setColor(new Color(30 / 255, 30 / 255, 30 / 255, 0.8))
-            .setX((0).pixels())
-            .setY((0).pixels())
-            .setWidth(Renderer.screen.getWidth().pixels())
-            .setHeight(Renderer.screen.getHeight().pixels())
+        const background = new UIRoundedRectangle(5)
+            .setX((Renderer.screen.getWidth() * 0.2).pixels())
+            .setY((Renderer.screen.getHeight() * 0.2).pixels())
+            .setWidth((Renderer.screen.getWidth() * 0.6).pixels())
+            .setHeight((Renderer.screen.getHeight() * 0.6).pixels())
+            .setColor(new Color(40 / 255, 40 / 255, 40 / 255, 1))
             .setChildOf(this.getWindow());
+
+        let isArmor = false;
+        if (itemId.includes('HELMET') ||
+            itemId.includes('CHESTPLATE') ||
+            itemId.includes('LEGGINGS') ||
+            itemId.includes('BOOTS')
+        ) {
+            isArmor = true;
+        }
+        let atQuery = [{
+            id: attributeId1,
+            value: attributeLevel1 ? attributeLevel1 : 1
+        }];
+        if (attributeId2) {
+            atQuery.push({
+                id: attributeId2,
+                value: attributeLevel2 ? attributeLevel2 : 1
+            })
+        }
+        const priceData = getPriceData(itemId, isArmor, atQuery);
         let url = `https://skyblock-hono-production.up.railway.app/auctions?itemId=${itemId}`;
         if (attributeId1) url += `&attributeId1=${attributeId1}&attributeLevel1=${attributeLevel1}`;
         if (attributeId2) url += `&attributeId2=${attributeId2}&attributeLevel2=${attributeLevel2}`;

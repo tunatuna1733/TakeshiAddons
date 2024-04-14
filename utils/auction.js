@@ -11,6 +11,8 @@ const decoder = Java.type('java.util.Base64').getDecoder();
 const ByteArrayInputStream = Java.type('java.io.ByteArrayInputStream');
 const Compressor = Java.type('net.minecraft.nbt.CompressedStreamTools');
 
+const attributeItems = [];
+
 let itemRetry = 0;
 let allItems = [];
 let auctions = [];
@@ -19,6 +21,11 @@ let auctionUpdateTime = 0;
 register('gameLoad', () => {
     updateItems();
     setTimeout(() => {
+        allItems.forEach(i => {
+            if ('can_have_attributes' in i && i['can_have_attributes'] === true) {
+                attributeItems.push(i.name);
+            }
+        });
         updateAuction();
     }, 5000);
 });
@@ -40,6 +47,10 @@ register('command', () => {
         updateItems();
     }
 }).setCommandName('debugrefreshauctions');
+
+register('command', () => {
+    ChatLib.chat(JSON.stringify(attributeItems));
+}).setCommandName('debugattributeitems');
 
 register('command', () => {
     ChatLib.chat(auctions.length);
@@ -160,13 +171,27 @@ const updateAuction = () => {
     });
 }
 
+const checkHasAttributes = (itemName) => {
+    let hasAttributes = false;
+    attributeItems.forEach(ai => {
+        if (!hasAttributes) {
+            if (itemName.toLowerCase().includes(ai.toLowerCase())) hasAttributes = true;
+        }
+    });
+    return hasAttributes;
+}
+
 const formatAllAuctions = (tempAuctions) => {
     new Thread(() => {
         sendDebugMessage('&eFormatting auctions...');
         const processStart = Date.now();
         let formattedAuctions = [];
         tempAuctions.forEach(a => {
-            formattedAuctions.push(formatAuction(a));
+            if (checkHasAttributes(a.item_name)) {
+                formattedAuctions.push(formatAuction(a));
+            } else {
+                formattedAuctions.push(a);
+            }
         });
         sendDebugMessage(`&eFormatted all auctions. Elapsed time: ${Date.now() - processStart}ms`);
         sendDebugMessage('&eSorting auctions.');

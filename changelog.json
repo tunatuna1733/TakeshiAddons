@@ -1,4 +1,8 @@
 {
+    "0.4.7": [
+        "# Bug Fixes & Improvements",
+        "- Improved performance of the auction related things."
+    ],
     "0.4.6": [
         "# New Features",
         "- Added Minechaft Notification.",
