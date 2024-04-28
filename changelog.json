@@ -1,4 +1,8 @@
 {
+    "0.4.8": [
+        "# Bug Fixes & Improvements",
+        "- Fixed Chocolate Egg Waypoint not loading eggs immediately after world load."
+    ],
     "0.4.7": [
         "# New Features",
         "- Added Chocolate Egg Waypoint (Others -> Chocolate)",

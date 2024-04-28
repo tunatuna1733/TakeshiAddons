@@ -25,27 +25,7 @@ let currentEggState = {
     gold: defaultEggState
 };
 
-registerWhen(register('chat', (eggtype) => {
-    if (eggtype === 'Breakfast') {
-        currentEggState.gold.found = false;
-    } else if (eggtype === 'Lunch') {
-        currentEggState.blue.found = false;
-    } else if (eggtype === 'Dinner') {
-        currentEggState.green.found = false;
-    }
-}).setChatCriteria("HOPPITY'S HUNT A Chocolate ${eggtype} Egg has appeared!"), () => settings.chocolatelocation, { type: 'chat', name: 'Chocolate Egg' });
-
-registerWhen(register('chat', (eggtype) => {
-    if (eggtype === 'Breakfast') {
-        currentEggState.gold.got = true;
-    } else if (eggtype === 'Lunch') {
-        currentEggState.blue.got = true;
-    } else if (eggtype === 'Dinner') {
-        currentEggState.green.got = true;
-    }
-}).setChatCriteria("HOPPITY'S HUNT You found a Chocolate ${eggtype} Egg ${location}!"), () => settings.chocolatelocation, { type: 'chat', name: 'Chocolate Egg' });
-
-registerWhen(register('step', () => {
+const searchEggs = () => {
     World.getAllEntitiesOfType(EntityArmorStand.class).forEach(e => {
         const livingEntity = new EntityLivingBase(e.getEntity());
         const headNbt = livingEntity.getItemInSlot(4)?.getRawNBT();
@@ -75,7 +55,31 @@ registerWhen(register('step', () => {
                 };
             }
         }
-    })
+    });
+}
+
+registerWhen(register('chat', (eggtype) => {
+    if (eggtype === 'Breakfast') {
+        currentEggState.gold.found = false;
+    } else if (eggtype === 'Lunch') {
+        currentEggState.blue.found = false;
+    } else if (eggtype === 'Dinner') {
+        currentEggState.green.found = false;
+    }
+}).setChatCriteria("HOPPITY'S HUNT A Chocolate ${eggtype} Egg has appeared!"), () => settings.chocolatelocation, { type: 'chat', name: 'Chocolate Egg' });
+
+registerWhen(register('chat', (eggtype) => {
+    if (eggtype === 'Breakfast') {
+        currentEggState.gold.got = true;
+    } else if (eggtype === 'Lunch') {
+        currentEggState.blue.got = true;
+    } else if (eggtype === 'Dinner') {
+        currentEggState.green.got = true;
+    }
+}).setChatCriteria("HOPPITY'S HUNT You found a Chocolate ${eggtype} Egg ${location}!"), () => settings.chocolatelocation, { type: 'chat', name: 'Chocolate Egg' });
+
+registerWhen(register('step', () => {
+    searchEggs();
 }).setDelay(5), () => settings.chocolatelocation, { type: 'step', name: 'Chocolate Egg' });
 
 registerWhen(register('renderWorld', () => {
@@ -149,6 +153,12 @@ registerWhen(register('renderWorld', () => {
         );
     }
 }), () => settings.chocolatelocation, { type: 'renderWorld', name: 'Chocolate Egg' });
+
+register('worldLoad', () => {
+    if (settings.chocolatelocation) {
+        searchEggs();
+    }
+});
 
 register('worldUnload', () => {
     currentEggState = {
