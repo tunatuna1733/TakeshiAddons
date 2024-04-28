@@ -141,7 +141,7 @@ register('command', () => {
 
 register('command', () => {
     World.getAllTileEntitiesOfType(Java.type('net.minecraft.tileentity.TileEntitySkull').class).forEach(e => {
-        ChatLib.chat(e.tileEntity.func_152108_a());
+        ChatLib.chat(e.tileEntity.serializeNBT().toString());
     })
 }).setCommandName('debugtileentities');
 

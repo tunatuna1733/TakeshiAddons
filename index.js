@@ -57,6 +57,8 @@ import "./features/nether/ashfang";
 import "./features/mining/powder";
 import "./features/mining/glacite";
 
+import "./features/misc/choco";
+
 import "./utils/area";
 import "./utils/bestiary_settings";
 import "./utils/auction";

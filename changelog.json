@@ -1,5 +1,7 @@
 {
     "0.4.7": [
+        "# New Features",
+        "- Added Chocolate Egg Waypoint (Others -> Chocolate)",
         "# Bug Fixes & Improvements",
         "- Improved performance of the auction related things."
     ],

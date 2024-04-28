@@ -30,6 +30,10 @@ register('gameLoad', () => {
     }, 5000);
 });
 
+register('gameUnload', () => {
+    auctions = [];
+});
+
 registerWhen(register('step', () => {
     if (allItems.length !== 0) {
         updateAuction();
@@ -166,7 +170,29 @@ const updateAuction = () => {
                 });
             });
         }).then(() => {
-            formatAllAuctions(tempAuctions);
+            new Thread(() => {
+                sendDebugMessage('&eFormatting auctions...');
+                const processStart = Date.now();
+                let formattedAuctions = [];
+                tempAuctions.forEach(a => {
+                    if (checkHasAttributes(a.item_name)) {
+                        formattedAuctions.push(formatAuction(a));
+                    } else {
+                        formattedAuctions.push(a);
+                    }
+                });
+                sendDebugMessage(`&eFormatted all auctions. Elapsed time: ${Date.now() - processStart}ms`);
+                sendDebugMessage('&eSorting auctions.');
+                const sortStart = Date.now();
+                auctions = formattedAuctions.sort((a, b) => {
+                    if (a.price < b.price) return -1;
+                    else if (a.price > b.price) return 1;
+                    return 0;
+                });
+                sendDebugMessage(`&eSorted auctions. Elapsed time: ${Date.now() - sortStart}ms`);
+                auctionUpdateTime = Date.now();
+                sendDebugMessage('&eUpdated auctions');
+            }).start();
         });
     });
 }
@@ -179,32 +205,6 @@ const checkHasAttributes = (itemName) => {
         }
     });
     return hasAttributes;
-}
-
-const formatAllAuctions = (tempAuctions) => {
-    new Thread(() => {
-        sendDebugMessage('&eFormatting auctions...');
-        const processStart = Date.now();
-        let formattedAuctions = [];
-        tempAuctions.forEach(a => {
-            if (checkHasAttributes(a.item_name)) {
-                formattedAuctions.push(formatAuction(a));
-            } else {
-                formattedAuctions.push(a);
-            }
-        });
-        sendDebugMessage(`&eFormatted all auctions. Elapsed time: ${Date.now() - processStart}ms`);
-        sendDebugMessage('&eSorting auctions.');
-        const sortStart = Date.now();
-        auctions = formattedAuctions.sort((a, b) => {
-            if (a.price < b.price) return -1;
-            else if (a.price > b.price) return 1;
-            return 0;
-        });
-        sendDebugMessage(`&eSorted auctions. Elapsed time: ${Date.now() - sortStart}ms`);
-        auctionUpdateTime = Date.now();
-        sendDebugMessage('&eUpdated auctions');
-    }).start();
 }
 
 const checkAttribute = (auction, attributeSearch) => {

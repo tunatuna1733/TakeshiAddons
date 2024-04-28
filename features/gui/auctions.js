@@ -32,8 +32,8 @@ let attributeLevel1 = '';
 let attributeId2 = '';
 let attributeLevel2 = '';
 
-const cardWidth = 200;
-const cardHeight = 150;
+const cardWidth = 150;
+const cardHeight = 100;
 
 export const openAuctionView = (itemId, attributeId1, attributeLevel1, attributeId2, attributeLevel2) => {
     itemId = itemId;
@@ -139,6 +139,39 @@ const createAuctionCard = (auctionData) => {
     return card;
 }
 
+const getRarityPrefix = (rarity) => {
+    let prefix = '&r';
+    switch (rarity) {
+        case 'COMMON':
+            prefix = '&f';
+            break;
+        case 'UNCOMMON':
+            prefix = '&a';
+            break;
+        case 'RARE':
+            prefix = '&9';
+            break;
+        case 'EPIC':
+            prefix = '&5';
+            break;
+        case 'LEGENDARY':
+            prefix = '&6';
+            break;
+        case 'MYTHIC':
+            prefix = '&d';
+            break;
+        case 'SPECIAL':
+            prefix = '&c';
+            break;
+        case 'VERY SPECIAL':
+            prefix = '&4';
+            break;
+        default:
+            break;
+    }
+    return prefix;
+}
+
 const createListPane = (window, auctionList) => {
     const pane = new ScrollComponent()
         .setX((0).pixels())
@@ -147,24 +180,75 @@ const createListPane = (window, auctionList) => {
         .setHeight((100).percent())
         .setChildOf(window);
 
-    let currentY = 0;
+    let horizontalCount = 1;
+    if (pane.getWidth() - cardWidth * 4 > 0) {
+        horizontalCount = 4;
+    } else if (pane.getWidth() - cardWidth * 3 > 0) {
+        horizontalCount = 3;
+    } else if (pane.getWidth() - cardWidth * 2 > 0) {
+        horizontalCount = 2;
+    }
+    const interval = (pane.getWidth() - cardWidth * horizontalCount) / (horizontalCount + 1);
+    let currentY = interval;
     auctionList.forEach((auction, index) => {
-        const x = pane.getWidth() - cardWidth * 4 > 0 ?
-            (pane.getWidth() - cardWidth * 4) * ((index % 4) + 1) + cardWidth * (index % 4) :
-            (pane.getWidth() - cardWidth * 3 > 0 ?
-                (pane.getWidth() - cardWidth * 3) * ((index % 3) + 1) + cardWidth * (index % 3) :
-                (pane.getWidth() - cardWidth * 2 > 0 ?
-                    (pane.getWidth() - cardWidth * 2) * ((index % 2) + 1) + cardWidth * (index % 2) :
-                    pane.getWidth() - cardWidth * 2
-                )
-            );
+        const x = interval * ((index % horizontalCount) + 1) + cardWidth * (index % horizontalCount);
+        const itemName = 'itemNameWithFormat' in auction ? auction.itemNameWithFormat : getRarityPrefix(auction.tier) + auction.itemName;
+        const priceText = formatNumToCoin(auction.price) + ' coins';
+
         const card = new UIRoundedRectangle(3)
             .setX(x.pixels())
             .setY(currentY.pixels())
-            .setWidth(cardWidth)
-            .setHeight(cardHeight)
-            .setChildOf(pane)
-    })
+            .setWidth(cardWidth.pixels())
+            .setHeight(cardHeight.pixels())
+            .setColor(new ConstantColorConstraint(new Color(70 / 255, 70 / 255, 70 / 255)))
+            .onMouseClick(() => {
+                const selection = new StringSelection(`/viewauction ${auction.uuid}`);
+                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, null);
+                EssentialNotifications.push('Command copied!', 'Viewauction command was copied to your clipboard', 3);
+            })
+            .onMouseEnter((comp) => {
+                animate(comp, (animation) => {
+                    animation.setColorAnimation(
+                        Animations.OUT_EXP,
+                        0.5,
+                        new ConstantColorConstraint(new Color(100 / 255, 100 / 255, 100 / 255))
+                    );
+                });
+            })
+            .onMouseLeave((comp) => {
+                animate(comp, (animation) => {
+                    animation.setColorAnimation(
+                        Animations.OUT_EXP,
+                        0.5,
+                        new ConstantColorConstraint(new Color(70 / 255, 70 / 255, 70 / 255))
+                    );
+                });
+            })
+            .setChildOf(pane);
+
+        new UIText(itemName)
+            .setX((5).percent())
+            .setY((5).percent())
+            .setChildOf(card);
+
+        if ('attributes' in auction) {
+            auction.attributes.forEach(attribute => {
+                new UIText(`${attribute.name} ${attribute.value}`)
+                    .setX((10).pixels())
+                    .setY(new SiblingConstraint())
+                    .setChildOf(card);
+            });
+        }
+
+        new UIText(priceText)
+            .setX((10).percent())
+            .setY(new AdditiveConstraint(new SiblingConstraint(), (5).pixels()))
+            .setColor(Color.YELLOW)
+            .setChildOf(card);
+
+        if (index % horizontalCount === horizontalCount - 1)
+            currentY += (cardHeight + interval);
+    });
 
     return pane;
 }
@@ -173,10 +257,10 @@ export const AuctionView = new JavaAdapter(WindowScreen, {
     init() {
         this.getWindow().clearChildren();
         const background = new UIRoundedRectangle(5)
-            .setX((Renderer.screen.getWidth() * 0.2).pixels())
-            .setY((Renderer.screen.getHeight() * 0.2).pixels())
-            .setWidth((Renderer.screen.getWidth() * 0.6).pixels())
-            .setHeight((Renderer.screen.getHeight() * 0.6).pixels())
+            .setX((Renderer.screen.getWidth() * 0.1).pixels())
+            .setY((Renderer.screen.getHeight() * 0.1).pixels())
+            .setWidth((Renderer.screen.getWidth() * 0.8).pixels())
+            .setHeight((Renderer.screen.getHeight() * 0.8).pixels())
             .setColor(new Color(40 / 255, 40 / 255, 40 / 255, 1))
             .setChildOf(this.getWindow());
 
@@ -199,6 +283,12 @@ export const AuctionView = new JavaAdapter(WindowScreen, {
             })
         }
         const priceData = getPriceData(itemId, isArmor, atQuery);
+        if (isArmor) {
+            createListPane(background, priceData[0][attributeId1]);
+        } else {
+            createListPane(background, priceData[attributeId1]);
+        }
+        /*
         let url = `https://skyblock-hono-production.up.railway.app/auctions?itemId=${itemId}`;
         if (attributeId1) url += `&attributeId1=${attributeId1}&attributeLevel1=${attributeLevel1}`;
         if (attributeId2) url += `&attributeId2=${attributeId2}&attributeLevel2=${attributeLevel2}`;
@@ -241,6 +331,7 @@ export const AuctionView = new JavaAdapter(WindowScreen, {
                 });
             }
         });
+        */
     }
 })
 

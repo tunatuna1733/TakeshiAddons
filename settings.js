@@ -640,6 +640,13 @@ class Settings {
     })
     corpselocation = false;
 
+    @SwitchProperty({
+        name: 'Show Chocolate egg locations',
+        category: 'Others',
+        subcategory: 'Chocolate'
+    })
+    chocolatelocation = false;
+
     constructor() {
         this.initialize(this);
         this.setCategoryDescription('HUD', 'A lot of Overlays');
