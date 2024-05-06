@@ -3,9 +3,7 @@ import { Promise } from "../../PromiseV2";
 import { SkyblockAttributes } from "../data/attributes";
 import { CHAT_PREFIX } from "../data/chat";
 import { KuudraItems } from "../data/kuudra_items";
-import settings from "../settings";
 import { sendDebugMessage } from "./debug";
-import { registerWhen } from "./register";
 
 const decoder = Java.type('java.util.Base64').getDecoder();
 const ByteArrayInputStream = Java.type('java.io.ByteArrayInputStream');
@@ -19,7 +17,9 @@ let auctions = [];
 let auctionUpdateTime = 0;
 
 let tempAuctions = [];
+let auctionCount = 0;
 let fetchStartTime = 0;
+let currentPage = 0;
 
 register('gameLoad', () => {
     updateItems();
@@ -30,7 +30,8 @@ register('gameLoad', () => {
             }
         });
         // updateAuction();
-        updateAuctionSync(0);
+        // updateAuctionSync(0);
+        updateAuctionFromApi();
     }, 5000);
 });
 
@@ -38,20 +39,22 @@ register('gameUnload', () => {
     auctions = [];
 });
 
-registerWhen(register('step', () => {
+register('step', () => {
     if (allItems.length !== 0) {
         // updateAuction();
-        updateAuctionSync(0);
+        // updateAuctionSync(0);
+        updateAuctionFromApi();
     } else {
         // ChatLib.chat('No item list. Updating...');
         updateItems();
     }
-}).setDelay(settings.auctioninterval * 60), () => settings.auctionfetch, { type: 'step', name: 'Auction Fetch' });
+}).setDelay(2 * 60);
 
 register('command', () => {
     if (allItems.length !== 0 && Date.now() - auctionUpdateTime > 2 * 60 * 1000) {
         // updateAuction();
-        updateAuctionSync(0);
+        // updateAuctionSync(0);
+        updateAuctionFromApi();
     } else {
         ChatLib.chat('No item list. Updating...');
         updateItems();
@@ -66,6 +69,10 @@ register('command', () => {
     ChatLib.chat(auctions.length);
     ChatLib.chat(JSON.stringify(auctions[100]));
 }).setCommandName('debugauctions');
+
+register('command', () => {
+    sendDebugMessage(currentPage.toString());
+}).setCommandName('debugcurrentpage');
 
 const updateItems = () => {
     ChatLib.chat('Fetching item data...');
@@ -135,12 +142,31 @@ const formatAuction = (rawAuction) => {
     return auctionData;
 }
 
+const updateAuctionFromApi = () => {
+    request({
+        url: 'https://skyblock-hono-production.up.railway.app/attributeitems',
+        headers: {
+            "User-Agent": "Mozilla/5.0 (ChatTriggers)",
+            "Content-Type": "application/json"
+        }
+    }).then(r => {
+        const response = r.data;
+        if (response.success === true) {
+            auctions = response.data;
+        }
+    });
+}
+
 const updateAuctionSync = (page) => {
     if (page === 0) {
         tempAuctions = [];
+        auctionCount = 0;
+        alluuids = [];
+        tempuuids = [];
         sendDebugMessage('&eStarted updating auctions.');
         fetchStartTime = Date.now();
     }
+    currentPage = page;
     request({
         url: `https://api.hypixel.net/v2/skyblock/auctions?page=${page}`,
         headers: {
@@ -152,12 +178,12 @@ const updateAuctionSync = (page) => {
         const response = r.data;
         const totalPages = response.totalPages;
         const lastUpdated = response.lastUpdated;
-        sendDebugMessage(`&eFetched auction page: ${page}/${totalPages}.`);
         let finished = false;
         // next request
         if (page + 1 < totalPages) updateAuctionSync(page + 1);
         else finished = true;
         // format
+        auctionCount += response.auctions.length;
         response.auctions.forEach(auction => {
             auction.lastUpdated = lastUpdated;
             if (auction.claimed === false &&
@@ -171,18 +197,25 @@ const updateAuctionSync = (page) => {
             }
         });
         if (finished) {
-            sendDebugMessage(`&eFetched and processed all auctions. Elapsed Time: ${Date.now() - fetchStartTime}ms`)
+            sendDebugMessage(`&eFetched and processed all auctions. Elapsed Time: ${Date.now() - fetchStartTime}ms`);
             setTimeout(() => {
-                sendDebugMessage('&eSorting auctions...');
-                const sortStartTime = Date.now();
-                tempAuctions.sort((a, b) => {
-                    if (a.price < b.price) return -1;
-                    else if (a.price > b.price) return 1;
-                    return 0;
+                sendDebugMessage('&eRegistered sort trigger.');
+                const sortTrigger = register('step', () => {
+                    sendDebugMessage(`&e${auctionCount}, ${tempAuctions.length}, ${totalPages - 1}, ${page}`);
+                    if (auctionCount === tempAuctions.length && totalPages - 1 === page) {
+                        sortTrigger.unregister();
+                        sendDebugMessage('&eSorting auctions...');
+                        const sortStartTime = Date.now();
+                        tempAuctions.sort((a, b) => {
+                            if (a.price < b.price) return -1;
+                            else if (a.price > b.price) return 1;
+                            return 0;
+                        });
+                        auctions = tempAuctions;
+                        tempAuctions = [];
+                        sendDebugMessage(`&eAuction sorted. Elapsed Time: ${Date.now() - sortStartTime}ms`);
+                    }
                 });
-                auctions = tempAuctions;
-                tempAuctions = [];
-                sendDebugMessage(`&eAuction sorted. Elapsed Time: ${Date.now() - sortStartTime}ms`);;
             }, 5000);
         }
     });

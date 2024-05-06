@@ -1,4 +1,8 @@
 {
+    "0.4.10": [
+        "# Bug Fixes & Improvements",
+        "- F**k auction fetcher."
+    ],
     "0.4.9": [
         "# Bug Fixes & Improvements",
         "- Fixed auction related things sometimes show inaccurate info.",

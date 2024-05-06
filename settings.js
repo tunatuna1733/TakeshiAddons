@@ -587,6 +587,7 @@ class Settings {
     })
     bonzophoenixtimer = false;
 
+    /*
     @SwitchProperty({
         name: 'Fetch auctions internally',
         description: 'Fetch all auctions with 5 mins interval(default).\n&cThis feature consumes a lot of memory so be careful!',
@@ -603,6 +604,7 @@ class Settings {
         max: 10,
     })
     auctioninterval = 5;
+    */
 
     @SwitchProperty({
         name: 'Mineshaft Notification',
