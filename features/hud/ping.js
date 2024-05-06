@@ -27,7 +27,7 @@ registerWhen(register('packetReceived', packet => {
 }).setFilteredClass(net.minecraft.network.play.server.S3FPacketCustomPayload), () => settings.pinghud, { type: 'step', name: 'Ping Hud' });
 
 registerWhen(register('renderOverlay', () => {
-    const pingText = ping < 130 ? `&ePing: &a${ping}` : (ping < 180 ? `&ePing: &6${ping}` : `&ePing: &4${ping}`);
+    const pingText = ping < 130 ? `&ePing: &a${ping}ms` : (ping < 180 ? `&ePing: &6${ping}ms` : `&ePing: &4${ping}ms`);
     pingHud.draw(pingText, false);
 }), () => settings.pinghud, { type: 'renderOverlay', name: 'Ping Hud' });
 

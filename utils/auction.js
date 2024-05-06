@@ -19,6 +19,7 @@ let auctions = [];
 let auctionUpdateTime = 0;
 
 let tempAuctions = [];
+let fetchStartTime = 0;
 
 register('gameLoad', () => {
     updateItems();
@@ -138,6 +139,7 @@ const updateAuctionSync = (page) => {
     if (page === 0) {
         tempAuctions = [];
         sendDebugMessage('&eStarted updating auctions.');
+        fetchStartTime = Date.now();
     }
     request({
         url: `https://api.hypixel.net/v2/skyblock/auctions?page=${page}`,
@@ -169,14 +171,21 @@ const updateAuctionSync = (page) => {
             }
         });
         if (finished) {
-            sendDebugMessage('&eSorting auctions...');
-            auctions = tempAuctions.sort((a, b) => {
-                if (a.price < b.price) return -1;
-                else if (a.price > b.price) return 1;
-                return 0;
-            });
+            sendDebugMessage(`&eFetched and processed all auctions. Elapsed Time: ${Date.now() - fetchStartTime}ms`)
+            setTimeout(() => {
+                sendDebugMessage('&eSorting auctions...');
+                const sortStartTime = Date.now();
+                tempAuctions.sort((a, b) => {
+                    if (a.price < b.price) return -1;
+                    else if (a.price > b.price) return 1;
+                    return 0;
+                });
+                auctions = tempAuctions;
+                tempAuctions = [];
+                sendDebugMessage(`&eAuction sorted. Elapsed Time: ${Date.now() - sortStartTime}ms`);;
+            }, 5000);
         }
-    })
+    });
 }
 
 const updateAuction = () => {

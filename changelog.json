@@ -1,4 +1,9 @@
 {
+    "0.4.9": [
+        "# Bug Fixes & Improvements",
+        "- Fixed auction related things sometimes show inaccurate info.",
+        "- Changed debug messages of the auction fetch feature to be more compact."
+    ],
     "0.4.8": [
         "# New Features",
         "- Added option to remove revenants visually.",
