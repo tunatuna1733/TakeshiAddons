@@ -1,7 +1,11 @@
 {
     "0.4.8": [
+        "# New Features",
+        "- Added option to remove revenants visually.",
+        "- Added Ping Display(Might be accurate than other mods).",
         "# Bug Fixes & Improvements",
-        "- Fixed Chocolate Egg Waypoint not loading eggs immediately after world load."
+        "- Fixed Chocolate Egg Waypoint not loading eggs immediately after world load.",
+        "- Decrease the lag while fetching auctions hopefully."
     ],
     "0.4.7": [
         "# New Features",

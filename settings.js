@@ -647,6 +647,29 @@ class Settings {
     })
     chocolatelocation = false;
 
+    @SwitchProperty({
+        name: 'Kuudra Hitbox',
+        description: 'Takeshi never lose',
+        category: 'Kuudra',
+        subcategory: 'Hitbox'
+    })
+    kuudrahitbox = false;
+
+    @SwitchProperty({
+        name: 'F Revenant minions',
+        category: 'Others',
+        subcategory: 'Revenant Minion'
+    })
+    norevminion = false;
+
+    @SwitchProperty({
+        name: 'Ping Display',
+        description: 'Might be accurate than other mods maybe.',
+        category: 'Others',
+        subcategory: 'Ping'
+    })
+    pinghud = false;
+
     constructor() {
         this.initialize(this);
         this.setCategoryDescription('HUD', 'A lot of Overlays');

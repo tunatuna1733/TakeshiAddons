@@ -26,6 +26,7 @@ import "./features/hud/kicked_timer";
 import "./features/hud/feeder";
 import "./features/hud/tablist";
 import "./features/hud/bonzo_and_phoenix";
+import "./features/hud/ping";
 
 import "./features/gui/attribute_lb";
 import "./features/gui/auctions";
@@ -58,6 +59,7 @@ import "./features/mining/powder";
 import "./features/mining/glacite";
 
 import "./features/misc/choco";
+import "./features/misc/norevminion";
 
 import "./utils/area";
 import "./utils/bestiary_settings";

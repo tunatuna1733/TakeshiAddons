@@ -18,6 +18,8 @@ let allItems = [];
 let auctions = [];
 let auctionUpdateTime = 0;
 
+let tempAuctions = [];
+
 register('gameLoad', () => {
     updateItems();
     setTimeout(() => {
@@ -26,7 +28,8 @@ register('gameLoad', () => {
                 attributeItems.push(i.name);
             }
         });
-        updateAuction();
+        // updateAuction();
+        updateAuctionSync(0);
     }, 5000);
 });
 
@@ -36,7 +39,8 @@ register('gameUnload', () => {
 
 registerWhen(register('step', () => {
     if (allItems.length !== 0) {
-        updateAuction();
+        // updateAuction();
+        updateAuctionSync(0);
     } else {
         // ChatLib.chat('No item list. Updating...');
         updateItems();
@@ -45,7 +49,8 @@ registerWhen(register('step', () => {
 
 register('command', () => {
     if (allItems.length !== 0 && Date.now() - auctionUpdateTime > 2 * 60 * 1000) {
-        updateAuction();
+        // updateAuction();
+        updateAuctionSync(0);
     } else {
         ChatLib.chat('No item list. Updating...');
         updateItems();
@@ -127,6 +132,51 @@ const formatAuction = (rawAuction) => {
         bin: rawAuction.bin
     }
     return auctionData;
+}
+
+const updateAuctionSync = (page) => {
+    if (page === 0) {
+        tempAuctions = [];
+        sendDebugMessage('&eStarted updating auctions.');
+    }
+    request({
+        url: `https://api.hypixel.net/v2/skyblock/auctions?page=${page}`,
+        headers: {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36",
+            "Content-Type": "application/json"
+        },
+        timeout: 3000
+    }).then((r) => {
+        const response = r.data;
+        const totalPages = response.totalPages;
+        const lastUpdated = response.lastUpdated;
+        sendDebugMessage(`&eFetched auction page: ${page}/${totalPages}.`);
+        let finished = false;
+        // next request
+        if (page + 1 < totalPages) updateAuctionSync(page + 1);
+        else finished = true;
+        // format
+        response.auctions.forEach(auction => {
+            auction.lastUpdated = lastUpdated;
+            if (auction.claimed === false &&
+                'bin' in auction &&
+                auction.bin === true &&
+                checkHasAttributes(auction.item_name)
+            ) {
+                tempAuctions.push(formatAuction(auction));
+            } else {
+                tempAuctions.push(auction);
+            }
+        });
+        if (finished) {
+            sendDebugMessage('&eSorting auctions...');
+            auctions = tempAuctions.sort((a, b) => {
+                if (a.price < b.price) return -1;
+                else if (a.price > b.price) return 1;
+                return 0;
+            });
+        }
+    })
 }
 
 const updateAuction = () => {

@@ -143,6 +143,11 @@ const defaultData = {
         x: 0.4,
         y: 0.2,
         scale: 3.5,
+    },
+    ping: {
+        x: 0,
+        y: 0.3,
+        scale: 1
     }
 };
 
