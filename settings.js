@@ -701,7 +701,6 @@ class Settings {
         this.addDependency('Always Warn', 'Spray Timer');
         this.addDependency('Tablist HUD Background Color', 'Tablist HUD Background');
         this.addDependency('Chest Highlight Color', 'Highlight Powder Chest');
-        this.addDependency('Auction fetch interval (min)', 'Fetch auctions internally');
         this.addDependency('Mineshaft mob box color', 'Draw mobs box in minechaft');
         this.addDependency('Announce mineshaft in pchat', 'Mineshaft Notification');
 

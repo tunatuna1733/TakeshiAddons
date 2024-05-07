@@ -1,4 +1,8 @@
 {
+    "0.4.11": [
+        "# Bug Fixes & Improvements",
+        "- Forgot to remove settings for auction fetch."
+    ],
     "0.4.10": [
         "# Bug Fixes & Improvements",
         "- F**k auction fetcher."
