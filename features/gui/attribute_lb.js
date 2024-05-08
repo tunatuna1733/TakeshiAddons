@@ -5,7 +5,7 @@ import getItemId from '../../utils/item_id';
 import { SkyblockAttributes } from '../../data/attributes';
 import getArmorType from '../../utils/armor_type';
 import formatNumToCoin from '../../utils/format_coin';
-import { getPriceData } from '../../utils/auction';
+import { getPriceData, getPureItemName } from '../../utils/auction';
 import { getMinAndSec } from '../../utils/time';
 const Color = Java.type('java.awt.Color');
 const UIItem = (item) => {
@@ -303,10 +303,13 @@ const createAuctionGui = (item) => {
 register('renderOverlay', () => {
     if (lbKey.isPressed()
         && Player.getHeldItem()
-        && Player.getHeldItem()?.getNBT()?.get('tag')?.get('ExtraAttributes')?.get('attributes')?.toObject()
     ) {
-        createAuctionGui(Player.getHeldItem());
-        guiOpen = true;
+        if (Player.getHeldItem().getNBT()?.get('tag')?.get('ExtraAttributes')?.get('attributes')?.toObject()) {
+            createAuctionGui(Player.getHeldItem());
+            guiOpen = true;
+        } else {
+            ChatLib.command(`ahs ${getPureItemName(getItemId(Player.getHeldItem()))}`);
+        }
     }
     if (guiOpen) {
         gui.open();
@@ -324,9 +327,13 @@ register('guiKey', (c, k, g) => {
     )
         if (k === lbKey.getKeyCode()) {
             const item = Client.currentGui.getSlotUnderMouse()?.getItem();
-            if (item && item.getNBT()?.get('tag')?.get('ExtraAttributes')?.get('attributes')?.toObject()) {
-                createAuctionGui(item);
-                guiOpen = true;
+            if (item) {
+                if (item.getNBT()?.get('tag')?.get('ExtraAttributes')?.get('attributes')?.toObject()) {
+                    createAuctionGui(item);
+                    guiOpen = true;
+                } else {
+                    ChatLib.command(`ahs ${getPureItemName(getItemId(item))}`);
+                }
             }
         }
 })

@@ -317,6 +317,14 @@ export const getAllItems = () => { return allItems };
 
 export const getAllAuctions = () => { return auctions };
 
+export const getPureItemName = (itemId) => {
+    let itemName = '';
+    allItems.forEach(item => {
+        if (item.id === itemId) itemName = item.name;
+    });
+    return itemName;
+}
+
 /*
     armor
      type

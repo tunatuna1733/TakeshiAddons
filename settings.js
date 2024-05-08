@@ -672,6 +672,23 @@ class Settings {
     })
     pinghud = false;
 
+    /*
+    @SwitchProperty({
+        name: 'Melody Announcement',
+        category: 'Dungeon',
+        subcategory: 'Melody'
+    })
+    melodyannounce = false;
+
+    @TextProperty({
+        name: 'Melody Text',
+        category: 'Dungeon',
+        subcategory: 'Melody',
+        placeholder: 'Melody!'
+    })
+    melodytext = 'Melody!';
+    */
+
     constructor() {
         this.initialize(this);
         this.setCategoryDescription('HUD', 'A lot of Overlays');

@@ -91,7 +91,7 @@ export const update = (manual = false) => {
     }
     if (latestVersion === '') return;
     try {
-        const downloadUrl = `https://github.com/tunatuna1733/TakeshiAddons/releases/download/${latestVersion}/TakeshiAddons.zip`.replace('https://', 'http://');    // workaround for wierd java 8 issue
+        const downloadUrl = `https://github.com/tunatuna1733/TakeshiAddons/releases/download/${latestVersion}/TakeshiAddons.zip`;
         FileUtilities.urlToFile(downloadUrl, './config/ChatTriggers/modules/TakeshiAddons.zip', 1000, 1000);
     } catch (e) {
         ChatLib.chat(`${CHAT_PREFIX} &c[ERROR]Connection timed out while downloading update.`);
