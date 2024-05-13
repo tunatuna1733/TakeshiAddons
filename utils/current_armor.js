@@ -10,8 +10,6 @@ register('step', () => {
     boots = Player.armor.getBoots();
 }).setFps(3);
 
-const getCurrentArmor = () => {
+export const getCurrentArmor = () => {
     return [helmet, chestplate, leggings, boots];
-}
-
-export default getCurrentArmor;
+};

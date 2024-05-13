@@ -86,14 +86,6 @@ class Settings {
     raghud = false;
 
     @SwitchProperty({
-        name: 'Ragnarock Axe hotbar only',
-        description: 'Only show when Ragnarock Axe is in hotbar',
-        category: 'HUD',
-        subcategory: 'RagAxe Cooldown'
-    })
-    raghotbar = true;
-
-    @SwitchProperty({
         name: 'Lifeline HUD',
         description: 'Display whether lifeline is active or not',
         category: 'HUD',
@@ -118,28 +110,12 @@ class Settings {
     reaperhud = false;
 
     @SwitchProperty({
-        name: 'Only show with Ragnarock Axe',
-        description: 'Only show when you have Ragnarock Axe in your inventory',
-        category: 'HUD',
-        subcategory: 'Reaper Armor Cooldown'
-    })
-    reaperrag = true;
-
-    @SwitchProperty({
         name: 'Last Breath Hit Count HUD',
         description: 'Display how many times you hit with Last Breath (Shows when you have Last Breath in your inventory) (Sometimes inaccurate zzz)',
         category: 'HUD',
         subcategory: 'Last Breath HUD'
     })
     lbhud = false;
-
-    @SwitchProperty({
-        name: 'Last Breath hotbar only',
-        description: 'Only show when Last Breath is in hotbar',
-        category: 'HUD',
-        subcategory: 'Last Breath HUD'
-    })
-    lbhotbar = true;
 
     @SliderProperty({
         name: 'Last Breath reset length',
@@ -276,14 +252,6 @@ class Settings {
         subcategory: 'Relic Waypoint'
     })
     relicwaypoint = false;
-
-    @SwitchProperty({
-        name: 'Soulflow HUD',
-        description: 'Shows your remaining soulflow.',
-        category: 'HUD',
-        subcategory: 'Soulflow'
-    })
-    soulflow = false;
 
     @SwitchProperty({
         name: 'Energized Chunk Warning',
@@ -532,16 +500,6 @@ class Settings {
     })
     feedertimer = false;
 
-    /*
-    @SwitchProperty({
-        name: 'Rend Arrows Count',
-        description: 'Shows how many arrows you pulled.',
-        category: 'Kuudra',
-        subcategory: 'Rend'
-    })
-    rendcount = false;
-    */
-
     @SwitchProperty({
         name: 'Tablist HUD Background',
         description: 'Enable this option to draw background behind tablist huds.',
@@ -586,25 +544,6 @@ class Settings {
         subcategory: 'Bonzo and Phoenix'
     })
     bonzophoenixtimer = false;
-
-    /*
-    @SwitchProperty({
-        name: 'Fetch auctions internally',
-        description: 'Fetch all auctions with 5 mins interval(default).\n&cThis feature consumes a lot of memory so be careful!',
-        category: 'Others',
-        subcategory: 'Auction'
-    })
-    auctionfetch = true;
-
-    @SliderProperty({
-        name: 'Auction fetch interval (min)',
-        category: 'Others',
-        subcategory: 'Auction',
-        min: 3,
-        max: 10,
-    })
-    auctioninterval = 5;
-    */
 
     @SwitchProperty({
         name: 'Mineshaft Notification',
@@ -672,22 +611,13 @@ class Settings {
     })
     pinghud = false;
 
-    /*
     @SwitchProperty({
-        name: 'Melody Announcement',
+        name: 'Leap Announce for P4',
+        description: 'Announce leap when you are a healer and leaped to bers in Storm phase.',
         category: 'Dungeon',
-        subcategory: 'Melody'
+        subcategory: 'Leap'
     })
-    melodyannounce = false;
-
-    @TextProperty({
-        name: 'Melody Text',
-        category: 'Dungeon',
-        subcategory: 'Melody',
-        placeholder: 'Melody!'
-    })
-    melodytext = 'Melody!';
-    */
+    healerleap = false;
 
     constructor() {
         this.initialize(this);
@@ -695,10 +625,7 @@ class Settings {
         this.setCategoryDescription('Dungeon', 'Dungeon related things');
         this.setCategoryDescription('WIP', 'Takeshi is working on it');
 
-        this.addDependency('Ragnarock Axe hotbar only', 'Ragnarock Axe Cooldown HUD');
         this.addDependency('Only show when in Kuudra\'s Hollow', 'Lifeline HUD');
-        this.addDependency('Only show with Ragnarock Axe', 'Reaper Armor Cooldown HUD');
-        this.addDependency('Last Breath hotbar only', 'Last Breath Hit Count HUD');
         this.addDependency('Last Breath reset length', 'Last Breath Hit Count HUD');
         this.addDependency('Terminal Waypoint Color', 'M7 Terminal Waypoint');
         this.addDependency('Inventory HUD Color', 'Inventory HUD');

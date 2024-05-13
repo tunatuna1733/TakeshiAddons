@@ -1,7 +1,7 @@
 import { CHAT_PREFIX } from "../../data/chat";
 import settings from "../../settings";
 import { data } from "../../utils/data";
-import { getCurrentClass, inF7, inM7, inMaxor } from "../../utils/dungeon";
+import { getCurrentClass, inF7, inGoldor, inM7, inMaxor } from "../../utils/dungeon";
 import { Hud } from "../../utils/hud";
 import hud_manager from "../../utils/hud_manager";
 import { registerWhen } from "../../utils/register";
@@ -27,7 +27,7 @@ const isGlitching = () => {
         getCurrentClass() === 'Healer' || getCurrentClass() === 'Mage'
     )) {
         return true;
-    } else if (inMaxor() && (
+    } else if (inGoldor() && (
         Player.getX() > 45 && Player.getX() < 65 &&
         Player.getY() > 110 && Player.getY() < 120 &&
         Player.getZ() > 50 && Player.getZ() < 120

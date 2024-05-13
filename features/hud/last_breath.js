@@ -30,7 +30,7 @@ registerWhen(register('step', () => {
             const hotbarItem = Player.getInventory().getStackInSlot(i);
             if (hotbarItem) {
                 try {
-                    const itemID = hotbarItem.getNBT().getCompoundTag('tag').getCompoundTag('ExtraAttributes').getString('id');
+                    const itemID = getItemId(hotbarItem);
                     if (itemID == 'LAST_BREATH' || itemID == 'STARRED_LAST_BREATH') lbIncludedInHotbar = true;
                 } catch (e) {
                     // maybe not skyblock item ?
@@ -54,7 +54,7 @@ registerWhen(register('step', () => {
 
 registerWhen(register(Java.type('net.minecraftforge.event.entity.player.ArrowNockEvent'), (e) => {
     if (Player.getHeldItem()) {
-        const heldItemID = Player.getHeldItem().getNBT().getCompoundTag('tag').getCompoundTag('ExtraAttributes').getString('id');
+        const heldItemID = getItemId(Player.getHeldItem());
         if (heldItemID === 'LAST_BREATH' || heldItemID === 'STARRED_LAST_BREATH') {
             isDuplex = false;
             Player.getHeldItem().getLore().forEach((lore) => {
@@ -70,7 +70,7 @@ registerWhen(register(Java.type('net.minecraftforge.event.entity.player.ArrowNoc
 
 registerWhen(register(Java.type('net.minecraftforge.event.entity.player.ArrowLooseEvent'), (e) => {
     if (Player.getHeldItem()) {
-        const heldItemID = Player.getHeldItem().getNBT().getCompoundTag('tag').getCompoundTag('ExtraAttributes').getString('id');
+        const heldItemID = getItemId(Player.getHeldItem());
         if (heldItemID === 'LAST_BREATH' || heldItemID === 'STARRED_LAST_BREATH') {
             lbShooting = true;
         }
@@ -116,11 +116,7 @@ registerWhen(register('renderOverlay', () => {
         lbHitCount = 0;
     }
     if (lbIncludedInInventory) {
-        if (settings.lbhotbar) {
-            if (lbIncludedInHotbar) {
-                lbHud.draw(`&6LastBreath: ${lbHitCount}`);
-            }
-        } else {
+        if (lbIncludedInHotbar) {
             lbHud.draw(`&6LastBreath: ${lbHitCount}`);
         }
     }

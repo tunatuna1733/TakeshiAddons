@@ -1,5 +1,5 @@
 import settings from "../../settings";
-import getCurrentArmor from "../../utils/current_armor";
+import { getCurrentArmor } from "../../utils/current_armor";
 import { data } from "../../utils/data";
 import { Hud } from "../../utils/hud";
 import hud_manager from "../../utils/hud_manager";
@@ -8,7 +8,9 @@ import { registerWhen } from "../../utils/register";
 const crimsonActionBarRegex = /(§6(§l)?[0-9]+ᝐ)(§r)?./gm;
 const terrorActionBarRegex = /(§6(§l)?[0-9]+⁑)(§r)?./gm;
 const stackRegex = /[1-4]\/4/;
-const stackExpireSec = [0, 5, 5, 8, 11];
+// Despite the lore of the tier 1 bonus says 4 secs of stack lifetime, 
+// it blows up immediately like 1s
+const stackExpireSec = [0, 1, 5, 8, 11];
 let crimsonStack = 0;
 let terrorStack = 0;
 let crimsonExpireSec = 0;

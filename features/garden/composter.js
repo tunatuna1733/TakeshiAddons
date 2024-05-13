@@ -20,6 +20,7 @@ let organicMatter = 0;
 let fuel = 0;
 let previousTablistEntries = [];
 
+// Credit: SkyHanni
 register('tick', () => {
     if (!isInSkyblock() || !inGarden() || !gardenData) return;
     const tablistEntries = TabList.getNames();
