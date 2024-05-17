@@ -31,27 +31,15 @@ registerWhen(register('actionBar', (msg) => {
 registerWhen(register('renderOverlay', () => {
     let cd = ((20 * 1000 - (Date.now() - lastUsed)) / 1000).toFixed(1);
     if (cd < 0) cd = 0;
-    if (settings.raghotbar === true) {
-        if (ragaxeIncluded) {
-            if (lastUsed === 0 || cd <= 0) {
-                ragHud.draw(`&6Ragnarock: &aREADY`);
-                isUsed = false;
-            } else if (cd < 17 && cd > 7 && isActive) {
-                ragHud.draw(`&6Ragnarock: &c${cd}s &aACTIVE`);
-            } else {
-                ragHud.draw(`&6Ragnarock: &c${cd}s`);
-                isActive = false;
-            }
-        }
-    }
-    else {
-        if (lastUsed === 0 || cd < 0) {
+    if (ragaxeIncluded) {
+        if (lastUsed === 0 || cd <= 0) {
             ragHud.draw(`&6Ragnarock: &aREADY`);
             isUsed = false;
-        } else if (cd > 10) {
+        } else if (cd < 17 && cd > 7 && isActive) {
             ragHud.draw(`&6Ragnarock: &c${cd}s &aACTIVE`);
         } else {
             ragHud.draw(`&6Ragnarock: &c${cd}s`);
+            isActive = false;
         }
     }
 }), () => settings.raghud, { type: 'renderOverlay', name: moduleName });

@@ -18,7 +18,7 @@ register('gameLoad', () => {
     }
 });
 
-// ref: ct module InventoryHUD
+// Credit: ct module InventoryHUD
 let item;
 registerWhen(register('renderOverlay', () => {
     if (inventoryRects.length !== 27 || !Player.getInventory() || !isInSkyblock()) return;

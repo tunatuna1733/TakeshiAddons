@@ -107,12 +107,12 @@ register('step', () => {
     });
 }).setDelay(1);
 
-register('command', () => {
+export const addCustomHud = () => {
     ChatLib.chat(`${CHAT_PREFIX} &aPlease select the tablist widget you want to add as a hud.`);
     categoryTexts.forEach(c => {
-        ChatLib.chat(new TextComponent(` &e${c}`).setClick('run_command', `/addcustomtablisthud ${c}`));
+        ChatLib.chat(new TextComponent(` &e${c}`).setClick('run_command', `/takeshiaddcustomtablisthud ${c}`));
     });
-}).setCommandName('addhud', true);
+};
 
 register('command', (...args) => {
     if (!args || typeof args === 'undefined') {
@@ -133,14 +133,14 @@ register('command', (...args) => {
         ChatLib.chat(`${CHAT_PREFIX} &aAdded &e${categoryName} &aas a hud!`);
         loadHuds();
     }
-}).setCommandName('addcustomtablisthud', true);
+}).setCommandName('takeshiaddcustomtablisthud', true);
 
-register('command', () => {
+export const removeCustomHud = () => {
     ChatLib.chat(`${CHAT_PREFIX} &aPlease select the hud you want to &c&lremove&r&a.`);
     customHudsData.data.forEach((h) => {
-        ChatLib.chat(new TextComponent(` &e${h.name}`).setClick('run_command', `/removecustomtablisthud ${h.name}`));
+        ChatLib.chat(new TextComponent(` &e${h.name}`).setClick('run_command', `/takeshiremovecustomtablisthud ${h.name}`));
     });
-}).setCommandName('removehud', true);
+}
 
 register('command', (...args) => {
     if (!args || typeof args === 'undefined') {
@@ -152,4 +152,4 @@ register('command', (...args) => {
     customHudsData.save();
     ChatLib.chat(`${CHAT_PREFIX} &cRemoved &e${categoryName} &cfrom huds.`);
     loadHuds();
-}).setCommandName('removecustomtablisthud', true);
+}).setCommandName('takeshiremovecustomtablisthud', true);

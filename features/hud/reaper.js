@@ -55,24 +55,12 @@ registerWhen(register('renderOverlay', () => {
     const cd = ((25 * 1000 - (Date.now() - reaperUsed)) / 1000).toFixed(1);
     if (cd < 25 - 6) isActive = false;
     if (reaperIncluded) {
-        if (settings.reaperrag === true) {
-            if (ragaxeIncluded) {
-                if (reaperUsed === 0 || cd < 0) {
-                    reaperHud.draw(`&6Reaper: &aREADY`);
-                } else if (isActive) {
-                    reaperHud.draw(`&6Reaper: &c${cd}s &aACTIVE`);
-                } else {
-                    reaperHud.draw(`&6Reaper: &c${cd}s`);
-                }
-            }
+        if (reaperUsed === 0 || cd < 0) {
+            reaperHud.draw(`&6Reaper: &aREADY`);
+        } else if (isActive) {
+            reaperHud.draw(`&6Reaper: &c${cd}s &aACTIVE`);
         } else {
-            if (reaperUsed === 0 || cd < 0) {
-                reaperHud.draw(`&6Reaper: &aREADY`);
-            } else if (isActive) {
-                reaperHud.draw(`&6Reaper: &c${cd}s &aACTIVE`);
-            } else {
-                reaperHud.draw(`&6Reaper: &c${cd}s`);
-            }
+            reaperHud.draw(`&6Reaper: &c${cd}s`);
         }
     }
 }), () => settings.reaperhud, { type: 'renderOverlay', name: moduleName });

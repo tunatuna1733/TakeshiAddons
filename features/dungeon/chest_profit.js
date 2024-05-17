@@ -62,7 +62,7 @@ registerWhen(register('postGuiRender', (x, y, gui) => {
                 rewardItems.push(Player.getContainer().getStackInSlot(i));
             }
         }
-        rewardItems.forEach((item, i) => {
+        rewardItems.forEach((item) => {
             const itemId = getItemId(item);
             if (item.getName().removeFormatting().includes('Shiny')) includeShiny = true;
             if (itemId === 'ENCHANTED_BOOK') {
@@ -125,7 +125,7 @@ registerWhen(register('postGuiRender', (x, y, gui) => {
             });
         }
     } else if (GuiChest.class.isInstance(gui) && Player.getContainer() && Player.getContainer().getName() === 'Master Mode Catacombs - Floor V') {
-        // its wierd that the name of the container is floor v ??? (looks like the limit of number of letters)
+        // its wierd that the name of the container is floor v ??? (looks like the limit of the number of letters)
         let rewardTexts = [];
         Player.getContainer().getItems().forEach((rewardChest) => {
             if (rewardChest) {

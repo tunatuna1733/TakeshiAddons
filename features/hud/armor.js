@@ -3,7 +3,7 @@ import { data } from "../../utils/data";
 import hud_manager from "../../utils/hud_manager";
 import { registerWhen } from "../../utils/register";
 import { ArmorHud } from "../../utils/armor_hud";
-import getCurrentArmor from "../../utils/current_armor";
+import { getCurrentArmor } from "../../utils/current_armor";
 
 const armorHud = new ArmorHud('armor', hud_manager, data);
 

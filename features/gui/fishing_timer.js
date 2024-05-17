@@ -12,7 +12,6 @@ const Color = Java.type('java.awt.Color');
 
 const EntityArmorStandClass = Java.type('net.minecraft.entity.item.EntityArmorStand').class;
 const EntityFishHookClass = Java.type('net.minecraft.entity.projectile.EntityFishHook').class;
-const EntityPlayerMP = Java.type('net.minecraft.entity.player.EntityPlayerMP');
 
 JFrame.setDefaultLookAndFeelDecorated(true);
 UIManager.setLookAndFeel(new MetalLookAndFeel());
@@ -89,6 +88,6 @@ register('renderWorld', () => {
     }
 });
 
-register('command', (args) => {
+export const openFishingTimer = () => {
     jFrame.setVisible(true);
-}).setCommandName('fishingtimer').setAliases(['fst']);
+};

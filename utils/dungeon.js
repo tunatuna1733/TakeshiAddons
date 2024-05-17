@@ -10,7 +10,7 @@ export const getLb = () => { return lb; };
 export const setSpray = (iceSprayHit) => { icespray = iceSprayHit; };
 export const getSpray = () => { return icespray; };
 
-export const getCurrentClass = () => {
+export const getCurrentClass = (name) => {
     if (!TabList) return '';
     const tabNames = TabList.getNames();
     const partyNumLine = tabNames.find((name) => name.includes('§r§b§lParty §r§f('));
@@ -19,7 +19,7 @@ export const getCurrentClass = () => {
         if (partyNumLine) {
             const partyNum = partyNumLine.match(/\d+/g)[0];
             for (let i = 0; i < partyNum; i++) {
-                if (tabNames[i * 4 + 1].removeFormatting().includes(Player.getName())) {
+                if (tabNames[i * 4 + 1].removeFormatting().includes(!name ? Player.getName() : name)) {
                     currentClass = tabNames[i * 4 + 1].removeFormatting().match(/\((\S+)\s+(\S+)\)/)[1];
                 }
             }
@@ -47,6 +47,13 @@ export const inMaxor = () => {
     if (bossName.removeFormatting().includes('Maxor')) return true;
     else return false;
 };
+
+export const inStorm = () => {
+    const bossName = BossStatus.field_82827_c;
+    if (!bossName) return false;
+    if (bossName.removeFormatting().includes('Storm')) return true;
+    else return false;
+}
 
 export const inGoldor = () => {
     const bossName = BossStatus.field_82827_c;

@@ -4,6 +4,7 @@ import { Hud } from "../../utils/hud";
 import hud_manager from "../../utils/hud_manager";
 import { registerWhen } from "../../utils/register";
 
+// Credit: https://discord.com/channels/119493402902528000/1109136691123454044/1228078055411417159
 const C17PacketCustomPayload = net.minecraft.network.play.client.C17PacketCustomPayload;
 const PacketBuffer = net.minecraft.network.PacketBuffer;
 const Unpooled = Java.type('io.netty.buffer.Unpooled');

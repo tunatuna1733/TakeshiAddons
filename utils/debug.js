@@ -3,11 +3,18 @@ import settings from "../settings";
 import { getCurrentArea, getCurrentZone } from "./area";
 import { bestiaryData } from "./data";
 import getItemId from "./item_id";
+import { registerWhen } from "./register";
 
 export const sendDebugMessage = (msg) => {
     if (settings.debugmode) {
         ChatLib.chat(`${CHAT_PREFIX} ${msg}`);
     }
+};
+
+export const createDebugCommand = (commandName, func) => {
+    registerWhen(register('command', func).setCommandName(commandName),
+        () => settings.debugmode,
+        { type: 'command', name: `${commandName} command` });
 };
 
 register('command', () => {
