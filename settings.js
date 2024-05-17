@@ -672,7 +672,7 @@ class Settings {
     })
     pinghud = false;
 
-    /*
+
     @SwitchProperty({
         name: 'Melody Announcement',
         category: 'Dungeon',
@@ -687,7 +687,7 @@ class Settings {
         placeholder: 'Melody!'
     })
     melodytext = 'Melody!';
-    */
+
 
     constructor() {
         this.initialize(this);

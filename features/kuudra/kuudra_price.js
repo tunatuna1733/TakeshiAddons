@@ -1,4 +1,3 @@
-import { request } from '../../../axios';
 import settings from '../../settings';
 import getArmorType from '../../utils/armor_type';
 import { SkyblockAttributes } from "../../data/attributes";
@@ -28,9 +27,10 @@ registerWhen(register('postGuiRender', () => {
         const guiLoaded = register('tick', () => {
             if (inventory.getStackInSlot(inventory.getSize() - 37) == null) return;
             guiLoaded.unregister();
+            const [x, y] = kuudraProfitHud.getCoords();
             display.clearLines();
-            display.setRenderX(data.kuudraprofit.x);
-            display.setRenderY(data.kuudraprofit.y);
+            display.setRenderX(x);
+            display.setRenderY(y);
             const rewardItem = inventory.getStackInSlot(11);
             if (!rewardItem) {
                 ChatLib.chat('Could not find the primary reward item');
@@ -69,11 +69,11 @@ registerWhen(register('postGuiRender', () => {
             const results = getPriceData(rewardItemId, armorType !== 'Unknown', attributeSearchQuery);
             display.clearLines();
             if (armorType !== 'Unknown') {
-                const typePrice1 = results[0][attributeId1][0]['price'] ? formatNumToCoin(results[0][attributeId1][0]['price']) : 'Unknown';
-                const typePrice2 = results[0][attributeId2][0]['price'] ? formatNumToCoin(results[0][attributeId2][0]['price']) : 'Unknown';
-                const exactPrice1 = results[1][attributeId1][0]['price'] ? formatNumToCoin(results[1][attributeId1][0]['price']) : 'Unknown';
-                const exactPrice2 = results[1][attributeId2][0]['price'] ? formatNumToCoin(results[1][attributeId2][0]['price']) : 'Unknown';
-                const exactBothPrice = results[1]['both'][0]['price'] ? formatNumToCoin(results[1]['both'][0]['price']) : 'Unknown';
+                const typePrice1 = results[0][attributeId1][0] && results[0][attributeId1][0]['price'] ? formatNumToCoin(results[0][attributeId1][0]['price']) : 'Unknown';
+                const typePrice2 = results[0][attributeId2][0] && results[0][attributeId2][0]['price'] ? formatNumToCoin(results[0][attributeId2][0]['price']) : 'Unknown';
+                const exactPrice1 = results[1][attributeId1][0] && results[1][attributeId1][0]['price'] ? formatNumToCoin(results[1][attributeId1][0]['price']) : 'Unknown';
+                const exactPrice2 = results[1][attributeId2][0] && results[1][attributeId2][0]['price'] ? formatNumToCoin(results[1][attributeId2][0]['price']) : 'Unknown';
+                const exactBothPrice = results[1]['both'][0] && results[1]['both'][0]['price'] ? formatNumToCoin(results[1]['both'][0]['price']) : 'Unknown';
                 display.addLines([
                     `${rewardItemName}\n`,
                     ` ${armorType} with ${attributeName1} ${attributeLevel1}\n`,

@@ -11,6 +11,7 @@ export const setSpray = (iceSprayHit) => { icespray = iceSprayHit; };
 export const getSpray = () => { return icespray; };
 
 export const getCurrentClass = () => {
+    if (!TabList) return '';
     const tabNames = TabList.getNames();
     const partyNumLine = tabNames.find((name) => name.includes('§r§b§lParty §r§f('));
     let currentClass = '';
