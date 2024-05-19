@@ -66,6 +66,7 @@ import "./utils/auction";
 import "./utils/debug";
 
 // import "./features/gui/attribute_search";
+import "./features/gui/attribute_price";
 
 import { CHAT_PREFIX } from "./data/chat";
 import { addCustomHud, loadHuds, removeCustomHud } from "./features/hud/tablist";

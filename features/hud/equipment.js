@@ -50,7 +50,7 @@ register('postGuiRender', () => {
         const guiLoaded = register('tick', () => {
             if (inventory.getStackInSlot(inventory.getSize() - 37) === null) return;
             guiLoaded.unregister();
-            saveEquipment();
+            saveEquipment(inventory);
             /*
             if (inventory.getStackInSlot(10) === null) data.equipment.slot1 = 'None';
             else {
