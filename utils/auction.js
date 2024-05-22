@@ -2,7 +2,7 @@ import { request } from "../../axios";
 import { Promise } from "../../PromiseV2";
 import { SkyblockAttributes } from "../data/attributes";
 import { CHAT_PREFIX } from "../data/chat";
-import { KuudraItems } from "../data/kuudra_items";
+import { CrimsonSetItems, KuudraItems } from "../data/kuudra_items";
 import { sendDebugMessage } from "./debug";
 
 const decoder = Java.type('java.util.Base64').getDecoder();
@@ -395,6 +395,58 @@ export const getPriceData = (itemId, isArmor, attributeSearchQuery) => {
         }
         return exactMatchResults;
     }
+}
+
+export const getSingleAttributeAuctions = (attributeId) => {
+    // armor
+    const armorKeys = ['HELMET', 'CHESTPLATE', 'LEGGINGS', 'BOOTS'];
+    const armorAuctions = {
+        HELMET: [],
+        CHESTPLATE: [],
+        LEGGINGS: [],
+        BOOTS: []
+    };
+    armorKeys.forEach(armor => {
+        armorAuctions[armor] = auctions.filter(a => {
+            return (
+                KuudraItems[armor].includes(a.itemId) &&
+                checkAttribute(a, { id: attributeId, value: 1 })
+            );
+        });
+    });
+
+    // molten set
+    const equipmentKeys = ['NECKLACE', 'CLOAK', 'BELT', 'BRACELET']
+    const moltenAuctions = {
+        NECKLACE: [],
+        CLOAK: [],
+        BELT: [],
+        BRACELET: []
+    };
+    equipmentKeys.forEach(piece => {
+        moltenAuctions[piece] = auctions.filter(a => {
+            return (
+                KuudraItems[piece].includes(a.itemId) &&
+                checkAttribute(a, { id: attributeId, value: 1 })
+            );
+        });
+    });
+
+    // crimson / vanquished set
+    const vanqAuctions = {
+        NECKLACE: [],
+        CLOAK: [],
+        BELT: [],
+        BRACELET: []
+    };
+    equipmentKeys.forEach(piece => {
+        vanqAuctions[piece] = auctions.filter(a => {
+            return (
+                CrimsonSetItems[piece].includes(a.itemId) &&
+                checkAttribute(a, { id: attributeId, value: 1 })
+            );
+        });
+    });
 }
 
 register('command', (itemId, attributeId1, attributeLevel1, attributeId2, attributeLevel2) => {

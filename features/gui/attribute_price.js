@@ -272,16 +272,9 @@ class AuctionList {
                 currentY += (cardHeight + interval);
         })
     }
-
-    reload = () => {
-        if (selectedOption === this.title && selectedLevel === this.level) {
-            this.scrollElement.unhide();
-        } else {
-            this.scrollElement.hide();
-        }
-    }
 }
 
+// main container which means the ui without top tabs
 class AuctionPane {
     constructor(parent, title) {
         this.title = title;
@@ -292,7 +285,7 @@ class AuctionPane {
             .setHeight((100).percent())
             .onMouseClick((_, __) => {
                 tabs.forEach(t => t.reload());
-                auctionLists.forEach(a => a.reload());
+                ChatLib.chat(tabLevels.length);
             })
             .setChildOf(parent);
 
@@ -307,22 +300,22 @@ class AuctionPane {
             .setHeight((100).percent())
             .setChildOf(this.element);
 
-        const auctions = [];   // make this const with '?' operator
-        // request using title
-
         const tabLevels = this.title === 'Shards' ? [1, 2, 3] : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         const tabs = [];
-        const auctionLists = [];
         tabLevels.forEach((level, i) => {
             tabs.push(
                 new LevelTabButton(this.element, level)
                     .setCoords(0, height / tabLevels.length * i)
                     .setSize(width * 0.1, height / tabLevels.length)
             );
-            auctionLists.push(
-                new AuctionList(this.listElement, this.title, level, auctions)
-            );
         });
+    }
+
+    reload = () => {
+        this.listElement.removeChildren();
+        const auctions = [];   // make this const with '?' operator
+        // request using title
+        new AuctionList(this.listElement, this.title, selectedLevel, auctions);
     }
 }
 
@@ -340,6 +333,7 @@ const createAttributePriceGui = (window) => {
         .setColor(backgroundColor)
         .onMouseClick((_, __) => {
             tabs.forEach(t => t.reload());
+            ChatLib.chat(`${selectedOption}, ${selectedLevel}`);
         })
         .enableEffect(new StencilEffect())
         .setChildOf(window);
