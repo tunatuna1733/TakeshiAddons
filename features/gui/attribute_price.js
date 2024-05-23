@@ -13,6 +13,7 @@ import {
     animate
 } from "../../../Elementa";
 import { CHAT_PREFIX } from "../../data/chat";
+import { getSingleAttributeAuctions } from "../../utils/auction";
 
 const Color = Java.type('java.awt.Color');
 
@@ -23,6 +24,8 @@ const selectedBlurBackgroundColor = new Color(80 / 255, 80 / 255, 80 / 255, 1)
 let selectedOption = '';
 let selectedLevel = 1;
 let attributeId1 = '', attributeId2 = '';
+
+let filteredAuctions = {};
 
 class TabButton {
     constructor(parent, text) {
@@ -197,7 +200,7 @@ class AuctionList {
         this.title = title;
         this.level = level;
 
-        this.scrollElement = new ScrollComponent()
+        this.scrollElement = new ScrollComponent('Nothing here :(')
             .setX((0).pixels())
             .setY((0).pixels())
             .setWidth((100).percent())
@@ -319,55 +322,90 @@ class AuctionPane {
     }
 }
 
-const createAttributePriceGui = (window) => {
-    const screenWidth = Renderer.screen.getWidth();
-    const screenHeight = Renderer.screen.getHeight();
-    const width = screenWidth * 0.6;
-    const height = screenHeight * 0.6;
-    window.clearChildren();
-    const background = new UIRoundedRectangle(5)
-        .setX((screenWidth * 0.2).pixels())
-        .setY((screenHeight * 0.2).pixels())
-        .setWidth(width.pixels())
-        .setHeight(height.pixels())
-        .setColor(backgroundColor)
-        .onMouseClick((_, __) => {
-            tabs.forEach(t => t.reload());
-            ChatLib.chat(`${selectedOption}, ${selectedLevel}`);
-        })
-        .enableEffect(new StencilEffect())
-        .setChildOf(window);
+class AttributePriceGui {
+    constructor(window) {
+        this.window = window;
+        const screenWidth = Renderer.screen.getWidth();
+        const screenHeight = Renderer.screen.getHeight();
+        const width = screenWidth * 0.6;
+        const height = screenHeight * 0.6;
+        this.window.clearChildren();
+        const background = new UIRoundedRectangle(5)
+            .setX((screenWidth * 0.2).pixels())
+            .setY((screenHeight * 0.2).pixels())
+            .setWidth(width.pixels())
+            .setHeight(height.pixels())
+            .setColor(backgroundColor)
+            .onMouseClick((_, __) => {
+                // for rendering
+                this.tabs.forEach(t => t.reload());
+                this.levelTabs.forEach(t => t.reload());
+                // for auction list
+                this.reloadTab();
+            })
+            .enableEffect(new StencilEffect())
+            .setChildOf(this.window);
 
-    const listArea = new UIContainer()
-        .setX((0).pixels())
-        .setY((10).percent())
-        .setWidth((100).percent())
-        .setHeight((90).percent())
-        .setChildOf(background);
+        this.listArea = new UIContainer()
+            .setX((0).pixels())
+            .setY((10).percent())
+            .setWidth((100).percent())
+            .setHeight((90).percent())
+            .setChildOf(background);
 
-    const tabTexts = [
-        'Armor',
-        'Molten',
-        'Crimson',
-        'Fishing Armor',
-        'Rods',
-        'Shards'
-    ];
+        this.auctionArea = new UIContainer()
+            .setX((10).percent())
+            .setY((100).percent())
+            .setWidth((90).percent())
+            .setHeight((100).percent())
+            .setChildOf(this.listArea);
 
-    const tabs = [];
-    tabTexts.forEach((text, i) => {
-        tabs.push(
-            new TabButton(background, text)
-                .setCoords(i * (1 / tabTexts.length) * width, 0)
-                .setSize((1 / tabTexts.length) * width, height * 0.1)
-        );
-        new AuctionPane(listArea, text);
-    });
+        if (attributeId2 === '') {
+            filteredAuctions = getSingleAttributeAuctions(attributeId1);
+        } else {
+            // fetch combination
+        }
+
+        const tabTexts = [
+            'Armor',
+            'Molten',
+            'Crimson',
+            'Magmalord',
+            'Rods',
+            'Shards'
+        ];
+
+        this.tabs = [];
+        tabTexts.forEach((text, i) => {
+            tabs.push(
+                new TabButton(background, text)
+                    .setCoords(i * (1 / tabTexts.length) * width, 0)
+                    .setSize((1 / tabTexts.length) * width, height * 0.1)
+            );
+            // new AuctionPane(listArea, text);
+        });
+    }
+
+    reloadTab = () => {
+        const width = this.listArea.getWidth();
+        const height = this.listArea.getHeight();
+        // remove all elements
+        this.listArea.removeChildren();
+        // render level tabs
+        const tabLevels = this.title === 'Shards' ? [1, 2, 3] : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        this.levelTabs = tabLevels.map(l => {
+            return new LevelTabButton(this.listArea, l)
+                .setCoords(0, height / tabLevels.length * i)
+                .setSize(width * 0.1, height / tabLevels.length);
+        });
+        // render actual auction list
+        new AuctionList(this.auctionArea, selectedOption, selectedLevel);
+    }
 }
 
 const AttributePrice = new JavaAdapter(WindowScreen, {
     init() {
-        createAttributePriceGui(this.getWindow());
+        new AttributePriceGui(this.getWindow());
     }
 });
 

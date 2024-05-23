@@ -447,6 +447,55 @@ export const getSingleAttributeAuctions = (attributeId) => {
             );
         });
     });
+
+    // magmalord armor
+    const magmalordAuctions = {
+        HELMET: [],
+        CHESTPLATE: [],
+        LEGGINGS: [],
+        BOOTS: []
+    };
+    armorKeys.forEach(piece => {
+        magmalordAuctions[piece] = auctions.filter(a => {
+            return (
+                a.itemId === `MAGMALORD_${piece}` &&
+                checkAttribute(a, { id: attributeId, value: 1 })
+            );
+        });
+    });
+
+    // rods
+    const rodKeys = ['MAGMA', 'INFERNO', 'HELLFIRE'];
+    const rodAuctions = {
+        MAGMA: [],
+        INFERNO: [],
+        HELLFIRE: []
+    };
+    rodKeys.forEach(rod => {
+        rodAuctions[rod] = auctions.filter(a => {
+            return (
+                a.itemId === `${rod}_ROD` &&
+                checkAttribute(a, { id: attributeId, value: 1 })
+            );
+        });
+    });
+
+    // shards
+    const shardAuctions = auctions.filter(a => {
+        return (
+            a.itemId === 'ATTRIBUTE_SHARD' &&
+            checkAttribute(a, { id: attributeId, value: 1 })
+        );
+    });
+
+    return {
+        armor: armorAuctions,
+        molten: moltenAuctions,
+        crimson: vanqAuctions,
+        magmalord: magmalordAuctions,
+        rods: rodAuctions,
+        shards: shardAuctions
+    };
 }
 
 register('command', (itemId, attributeId1, attributeLevel1, attributeId2, attributeLevel2) => {
