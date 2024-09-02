@@ -41,6 +41,7 @@ import "./features/dungeon/ice_spray";
 import "./features/dungeon/broadcast_debuff";
 import "./features/dungeon/chest_profit";
 import "./features/dungeon/melody";
+import "./features/dungeon/starmob";
 
 import "./features/kuudra/dropship";
 import "./features/kuudra/energized_chunk";
@@ -79,83 +80,83 @@ bestiaryData.autosave();
 customHudsData.autosave();
 
 register('gameLoad', () => {
-    if (!data.first) {
-        ChatLib.command('takeshi resetloc', true);
-        data.first = true;
-        data.save();
-        ChatLib.chat('&a-------------------------------------');
-        ChatLib.chat('      &bWelcome to &dTakeshiAddons!');
-        ChatLib.chat('&a Type /takeshi to open settings');
-        ChatLib.chat('&a-------------------------------------');
-    }
-    if (!data.helpPrinted) {
-        ChatLib.command('takeshi help', true);
-        data.helpPrinted = true;
-        data.save();
-    }
-    const currentVersion = getCurrentVersion();
-    if (currentVersion !== data.version) {
-        data.version = currentVersion;
-        data.save();
-        printChangelog(currentVersion);
-    }
+  if (!data.first) {
+    ChatLib.command('takeshi resetloc', true);
+    data.first = true;
+    data.save();
+    ChatLib.chat('&a-------------------------------------');
+    ChatLib.chat('      &bWelcome to &dTakeshiAddons!');
+    ChatLib.chat('&a Type /takeshi to open settings');
+    ChatLib.chat('&a-------------------------------------');
+  }
+  if (!data.helpPrinted) {
+    ChatLib.command('takeshi help', true);
+    data.helpPrinted = true;
+    data.save();
+  }
+  const currentVersion = getCurrentVersion();
+  if (currentVersion !== data.version) {
+    data.version = currentVersion;
+    data.save();
+    printChangelog(currentVersion);
+  }
 });
 
 register('guiClosed', (event) => {
-    if (event.toString().includes("vigilance")) {
-        setRegisters();
-        loadHuds();
-    }
+  if (event.toString().includes("vigilance")) {
+    setRegisters();
+    loadHuds();
+  }
 });
 
 register('gameUnload', () => {
-    data.save();
-    gardenData.save();
+  data.save();
+  gardenData.save();
 });
 
 register('command', (args) => {
-    if (!args) {
-        settings.openGUI();
-    } else if (args == 'movehud') {
-        hud_manager.openGui();
-    } else if (args == 'resetloc') {
-        resetData();
-    } else if (args == 'help') {
-        printHelp();
-    } else if (args == 'update') {
-        update(true);
-    } else if (args == 'forceupdate') {
-        update();
-    } else if (args == 'troll') {
-        ChatLib.command('pc !ptme');
-        Thread.sleep(1000);
-        ChatLib.command('play arcade_dropper');
-    } else if (args == 'reload') {
-        ChatLib.chat(`${CHAT_PREFIX} &eReloading TakeshiAddons...`);
-        setRegisters();
-        ChatLib.chat(`${CHAT_PREFIX} &eReload completed!`);
-    } else if (args == 'scoreboardcopy' || args == 'sc') {
-        const lines = Scoreboard.getLines(false);
-        lines.map((line) => {
-            ChatLib.chat(`${line.getName().removeFormatting().replace(/[^\x00-\x7F]/g, "")}`);
-        });
-    } else if (args == 'copypurse' || args == 'cpp' || args == 'cp') {
-        let copied = false;
-        const lines = Scoreboard.getLines(false);
-        lines.map((line) => {
-            if (line.getName().includes('Piggy') || line.getName().includes('Purse')) {
-                const selection = new StringSelection(ChatLib.removeFormatting(line.getName()).replace(/[^\x00-\x7F]/g, ""));
-                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, null);
-                EssentialNotifications.push('Purse copied!', 'Copied your purse to your clipboard.', 3);
-                copied = true;
-            }
-        });
-        if (!copied) ChatLib.chat(`${CHAT_PREFIX} &cFailed to copy your purse :(`);
-    } else if (args == 'addhud') {
-        addCustomHud();
-    } else if (args == 'removehud') {
-        removeCustomHud();
-    } else if (args == 'fishingtimer' || args == 'fst') {
-        openFishingTimer();
-    }
+  if (!args) {
+    settings.openGUI();
+  } else if (args == 'movehud') {
+    hud_manager.openGui();
+  } else if (args == 'resetloc') {
+    resetData();
+  } else if (args == 'help') {
+    printHelp();
+  } else if (args == 'update') {
+    update(true);
+  } else if (args == 'forceupdate') {
+    update();
+  } else if (args == 'troll') {
+    ChatLib.command('pc !ptme');
+    Thread.sleep(1000);
+    ChatLib.command('play arcade_dropper');
+  } else if (args == 'reload') {
+    ChatLib.chat(`${CHAT_PREFIX} &eReloading TakeshiAddons...`);
+    setRegisters();
+    ChatLib.chat(`${CHAT_PREFIX} &eReload completed!`);
+  } else if (args == 'scoreboardcopy' || args == 'sc') {
+    const lines = Scoreboard.getLines(false);
+    lines.map((line) => {
+      ChatLib.chat(`${line.getName().removeFormatting().replace(/[^\x00-\x7F]/g, "")}`);
+    });
+  } else if (args == 'copypurse' || args == 'cpp' || args == 'cp') {
+    let copied = false;
+    const lines = Scoreboard.getLines(false);
+    lines.map((line) => {
+      if (line.getName().includes('Piggy') || line.getName().includes('Purse')) {
+        const selection = new StringSelection(ChatLib.removeFormatting(line.getName()).replace(/[^\x00-\x7F]/g, ""));
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, null);
+        EssentialNotifications.push('Purse copied!', 'Copied your purse to your clipboard.', 3);
+        copied = true;
+      }
+    });
+    if (!copied) ChatLib.chat(`${CHAT_PREFIX} &cFailed to copy your purse :(`);
+  } else if (args == 'addhud') {
+    addCustomHud();
+  } else if (args == 'removehud') {
+    removeCustomHud();
+  } else if (args == 'fishingtimer' || args == 'fst') {
+    openFishingTimer();
+  }
 }).setCommandName('takeshi', true).setAliases(['takeshiaddons']);

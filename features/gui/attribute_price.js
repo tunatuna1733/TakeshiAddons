@@ -21,7 +21,7 @@ const backgroundColor = new Color(40 / 255, 40 / 255, 40 / 255, 1);
 const selectedBackgroundColor = new Color(60 / 255, 60 / 255, 60 / 255, 1);
 const selectedBlurBackgroundColor = new Color(80 / 255, 80 / 255, 80 / 255, 1)
 
-let selectedOption = '';
+let selectedOption = 'Armor';
 let selectedLevel = 1;
 let attributeId1 = '', attributeId2 = '';
 
@@ -376,24 +376,27 @@ class AttributePriceGui {
         ];
 
         this.tabs = [];
+        this.levelTabs = [];
         tabTexts.forEach((text, i) => {
-            tabs.push(
+            this.tabs.push(
                 new TabButton(background, text)
                     .setCoords(i * (1 / tabTexts.length) * width, 0)
                     .setSize((1 / tabTexts.length) * width, height * 0.1)
             );
             // new AuctionPane(listArea, text);
         });
+
+        this.reloadTab();
     }
 
     reloadTab = () => {
         const width = this.listArea.getWidth();
         const height = this.listArea.getHeight();
         // remove all elements
-        this.listArea.removeChildren();
+        this.listArea.clearChildren();
         // render level tabs
         const tabLevels = this.title === 'Shards' ? [1, 2, 3] : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        this.levelTabs = tabLevels.map(l => {
+        this.levelTabs = tabLevels.map((l, i) => {
             return new LevelTabButton(this.listArea, l)
                 .setCoords(0, height / tabLevels.length * i)
                 .setSize(width * 0.1, height / tabLevels.length);

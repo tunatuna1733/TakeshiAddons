@@ -100,13 +100,13 @@ register('postGuiRender', () => {
             const fuelUpgrade = decodeNumeral(fuelUpgradeItem.getName().removeFormatting().replace('Fuel Cap ', ''));
             const organicUpgrade = decodeNumeral(organicUpgradeItem.getName().removeFormatting().replace('Organic Matter Cap ', ''));
             const costUpgrade = decodeNumeral(costUpgradeItem.getName().removeFormatting().replace('Cost Reduction ', ''));
-            if (speedUpgrade == null) gardenData.upgrades.speed = speedUpgradeItem.getName().removeFormatting().replace('Composter Speed ', '');
+            if (speedUpgrade == null) gardenData.upgrades.speed = 0;
             else gardenData.upgrades.speed = speedUpgrade;
-            if (fuelUpgrade == null) gardenData.upgrades.fuel = fuelUpgradeItem.getName().removeFormatting().replace('Fuel Cap ', '');
+            if (fuelUpgrade == null) gardenData.upgrades.fuel = 0;
             else gardenData.upgrades.fuel = fuelUpgrade;
-            if (organicUpgrade == null) gardenData.upgrades.organic = organicUpgradeItem.getName().removeFormatting().replace('Organic Matter Cap ', '');
+            if (organicUpgrade == null) gardenData.upgrades.organic = 0;
             else gardenData.upgrades.organic = organicUpgrade;
-            if (costUpgrade == null) gardenData.upgrades.cost = costUpgradeItem.getName().removeFormatting().replace('Cost Reduction ', '');
+            if (costUpgrade == null) gardenData.upgrades.cost = 0;
             else gardenData.upgrades.cost = costUpgrade;
             gardenData.save();
         });

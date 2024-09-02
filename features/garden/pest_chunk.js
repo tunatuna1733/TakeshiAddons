@@ -1,5 +1,5 @@
 import settings from "../../settings";
-import { getCurrentArea, getCurrentZone } from "../../utils/area";
+import { getCurrentArea } from "../../utils/area";
 import { data, gardenData } from "../../utils/data";
 import { Hud } from "../../utils/hud";
 import hud_manager from "../../utils/hud_manager";
@@ -14,15 +14,43 @@ const plotSize = 96;
 const bottomY = 68;
 const topY = 100;
 let buttons = [];
-let scoreChecked = false;
-let lastPestAddTime = 0;
-let pestCount = 0;
+// let scoreChecked = false;
+// let lastPestAddTime = 0;
+// let pestCount = 0;
 let plotButtons = [];
 let lastCommand = 0;
 
 const pestHud = new Hud('pests', 'Pest Display', hud_manager, data);
 
-const generateButtons = (plots, x, y) => {
+const plotNumberTable = [
+    [21, 13, 9, 14, 22],
+    [15, 5, 1, 6, 16],
+    [10, 2, 0, 3, 11],
+    [17, 7, 4, 8, 18],
+    [23, 19, 12, 20, 24]
+];
+
+const convertPlotNumber = (rawPlotNum) => {
+    let x = 0, y = 0;
+    plotNumberTable.forEach((plots, i) => {
+        plots.forEach((p, j) => {
+            if (p === rawPlotNum) {
+                x = j; y = i;
+            }
+        });
+    });
+    return [x, y];
+}
+
+const getPlotName = (x, y) => {
+    let plotName = '';
+    gardenData.plotData.forEach(p => {
+        if (p.x === x && p.y === y) plotName = p.name;
+    });
+    return plotName;
+}
+
+const generateButtons = (plots) => {
     buttons = [];
     plots.forEach((p, i) => {
         const button = new GuiButton(i, 10, 10, 20, 20, 'TP');
@@ -38,6 +66,8 @@ register('gameLoad', () => {
     generateButtons(gardenData.plotData);
 });
 
+/*
+we no longer need to track chat messages ig
 register('chat', (a, num, name) => {
     const amount = parseInt(num);
     let found = false;
@@ -72,7 +102,41 @@ register('chat', (a, name) => {
     }
     lastPestAddTime = Date.now();
 }).setChatCriteria('${a}! A Pest has appeared in Plot - ${name}!').setContains();
+*/
 
+registerWhen(register('step', () => {
+    try {
+        if (!World.isLoaded() || !TabList) return;
+        const tabNames = TabList.getNames();
+        if (!tabNames) return;
+        tabNames.forEach(name => {
+            // TODO: get plot numbers and convert them to push to pest list
+            if (name.removeFormatting().includes('Plots:')) {
+                pestList = [];
+                const plotNums = name.removeFormatting()
+                    .replace(' ', '')
+                    .replace('Plots:', '')
+                    .split(',')
+                    .map(p => parseInt(p));
+                plotNums.forEach(rawPlotNum => {
+                    const [x, y] = convertPlotNumber(rawPlotNum);
+                    const plotName = getPlotName(x, y);
+                    pestList.push({
+                        name: plotName,
+                        amount: 1
+                    });
+                });
+            }
+            if (name.removeFormatting().includes('Alive: 0')) {
+                pestList = [];
+            }
+        });
+    } catch (e) {
+        // might be nullptr exception
+    }
+}).setDelay(1), () => getCurrentArea() === 'Garden', { type: 'step', name: 'Pest Update' });
+
+// scan plot gui
 register('postGuiRender', () => {
     const inventory = Player.getContainer();
     if (!guiOpen && inventory && inventory.getName() === 'Configure Plots') {
@@ -107,6 +171,7 @@ register('postGuiRender', () => {
     }
 });
 
+/*
 register('step', () => {
     if (Date.now() - lastPestAddTime > 1000) {
         if ((getCurrentZone().includes('The Garden') && !getCurrentZone().includes('x')) || getCurrentZone().includes('Plot - ')) {
@@ -120,7 +185,9 @@ register('step', () => {
         }
     }
 }).setDelay(1);
+*/
 
+// Tesselator things
 registerWhen(register('renderWorld', () => {
     const heldItem = Player.getHeldItem();
     if (!heldItem) return;
@@ -209,7 +276,9 @@ registerWhen(register('renderWorld', () => {
     });
 }), () => settings.pestarea && getCurrentArea() === 'Garden', { type: 'renderWorld', name: 'Pest Area' });
 
+
 registerWhen(register('renderOverlay', () => {
+    /* we no longer need to scan kills
     if (getCurrentZone().includes('The Garden') && getCurrentZone().includes('x')) {
         const amount = parseInt(getCurrentZone().match(/\d/g)[0]);
         if (amount < pestCount) {
@@ -243,6 +312,7 @@ registerWhen(register('renderOverlay', () => {
         }
         pestCount = amount;
     }
+    */
 
     let lines = '&aPests';
     pestList.forEach((p) => {
@@ -251,6 +321,7 @@ registerWhen(register('renderOverlay', () => {
     if (pestList.length !== 0)
         pestHud.draw(lines);
 }), () => settings.pestarea && getCurrentArea() === 'Garden', { type: 'renderOverlay', name: 'Pest Area' });
+
 
 registerWhen(register('guiRender', (mx, my, gui) => {
     if (Java.type('net.minecraft.client.gui.inventory.GuiInventory').class.isInstance(gui)) {
@@ -359,6 +430,7 @@ registerWhen(register('guiMouseClick', (mx, my, mb, gui) => {
 }), () => settings.pestmap && getCurrentArea() === 'Garden', { type: 'guiMouseClick', name: 'Pest Map' });
 
 registerWhen(register('guiClosed', (gui) => {
+    guiOpen = false;
     if (Java.type('net.minecraft.client.gui.GuiChat').class.isInstance(gui)) {
         buttons.forEach((b) => {
             b.button.field_146125_m = false;

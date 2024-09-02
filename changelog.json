@@ -1,4 +1,15 @@
 {
+    "0.4.14": [
+        "# Bug Fixes & Improvements",
+        "- I don't remember.",
+        "- I forgot to release 0.4.13.",
+        "# New Features",
+        "- Added Star Mob ESP."
+    ],
+    "0.4.13": [
+        "# Bug Fixes & Improvements",
+        "- Changed the pest related things to use tablist info."
+    ],
     "0.4.12": [
         "# Bug Fixes & Improvements",
         "- Made using attribute lbin keybind for normal items to open auction of the item.",
