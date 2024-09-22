@@ -1,4 +1,11 @@
 {
+    "0.4.15": [
+        "# Bug Fixes & Improvements",
+        "- Improved Star Mob ESP performance.",
+        "- Hopefully fixed custom hud not shown on launch.",
+        "- Zed editor f**ked the formatting.",
+        "- Partially fixed kuudra price things, gonna rework though."
+    ],
     "0.4.14": [
         "# Bug Fixes & Improvements",
         "- I don't remember.",

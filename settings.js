@@ -1,4 +1,3 @@
-// @ts-ignore
 import { m7NotRNGLootNames } from "./data/m7loot";
 import { @Vigilant,
   @SwitchProperty,

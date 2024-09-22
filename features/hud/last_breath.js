@@ -1,10 +1,10 @@
-import settings from "../../settings";
-import { data } from "../../utils/data";
-import { setLb } from "../../utils/dungeon";
-import { Hud } from "../../utils/hud";
-import hud_manager from "../../utils/hud_manager";
-import getItemId from "../../utils/item_id";
-import { registerWhen } from "../../utils/register";
+import settings from '../../settings';
+import { data } from '../../utils/data';
+import { setLb } from '../../utils/dungeon';
+import { Hud } from '../../utils/hud';
+import hud_manager from '../../utils/hud_manager';
+import getItemId from '../../utils/item_id';
+import { registerWhen } from '../../utils/register';
 
 const lbHud = new Hud('lastbreath', '&6LastBreath: 0', hud_manager, data);
 
@@ -22,111 +22,149 @@ let lbShotUnix = [];
 let lbRecordStart = 0;
 let isRecording = false;
 
-registerWhen(register('step', () => {
+registerWhen(
+  register('step', () => {
     lbIncludedInHotbar = false;
     lbIncludedInInventory = false;
     if (Player.getInventory() !== null) {
-        for (let i = 0; i < 9; i++) {
-            const hotbarItem = Player.getInventory().getStackInSlot(i);
-            if (hotbarItem) {
-                try {
-                    const itemID = getItemId(hotbarItem);
-                    if (itemID == 'LAST_BREATH' || itemID == 'STARRED_LAST_BREATH') lbIncludedInHotbar = true;
-                } catch (e) {
-                    // maybe not skyblock item ?
-                }
+      for (let i = 0; i < 9; i++) {
+        const hotbarItem = Player.getInventory().getStackInSlot(i);
+        if (hotbarItem) {
+          try {
+            const itemID = getItemId(hotbarItem);
+            if (itemID == 'LAST_BREATH' || itemID == 'STARRED_LAST_BREATH')
+              lbIncludedInHotbar = true;
+          } catch (e) {
+            // maybe not skyblock item ?
+          }
+        }
+      }
+      try {
+        Player.getInventory()
+          .getItems()
+          .forEach((item) => {
+            if (item) {
+              try {
+                const itemID = getItemId(item);
+                if (itemID == 'LAST_BREATH' || itemID == 'STARRED_LAST_BREATH')
+                  lbIncludedInInventory = true;
+              } catch (e) {
+                // maybe not skyblock item ?
+              }
             }
-        }
-        try {
-            Player.getInventory().getItems().forEach((item) => {
-                if (item) {
-                    try {
-                        const itemID = getItemId(item);
-                        if (itemID == 'LAST_BREATH' || itemID == 'STARRED_LAST_BREATH') lbIncludedInInventory = true;
-                    } catch (e) {
-                        // maybe not skyblock item ?
-                    }
-                }
-            });
-        } catch (e) { }
+          });
+      } catch (e) {}
     }
-}).setDelay(1), () => settings.lbhud, { type: 'step', name: moduleName });
+  }).setDelay(1),
+  () => settings.lbhud,
+  { type: 'step', name: moduleName }
+);
 
-registerWhen(register(Java.type('net.minecraftforge.event.entity.player.ArrowNockEvent'), (e) => {
-    if (Player.getHeldItem()) {
+registerWhen(
+  register(
+    Java.type('net.minecraftforge.event.entity.player.ArrowNockEvent'),
+    (e) => {
+      if (Player.getHeldItem()) {
         const heldItemID = getItemId(Player.getHeldItem());
-        if (heldItemID === 'LAST_BREATH' || heldItemID === 'STARRED_LAST_BREATH') {
-            isDuplex = false;
-            Player.getHeldItem().getLore().forEach((lore) => {
-                // ik that this event will be also triggered with duplex nock
-                // so this will actually double the amount of shot
-                // but we actually cannot detect if the arrows bounce
-                // so i remain it bugged :(
-                if (lore.includes('Duplex')) isDuplex = true;
+        if (
+          heldItemID === 'LAST_BREATH' ||
+          heldItemID === 'STARRED_LAST_BREATH'
+        ) {
+          isDuplex = false;
+          Player.getHeldItem()
+            .getLore()
+            .forEach((lore) => {
+              // ik that this event will be also triggered with duplex nock
+              // so this will actually double the amount of shot
+              // but we actually cannot detect if the arrows bounce
+              // so i remain it bugged :(
+              if (lore.includes('Duplex')) isDuplex = true;
             });
         }
+      }
     }
-}), () => settings.lbhud, { type: 'ArrowNockEvent', name: moduleName });
+  ),
+  () => settings.lbhud,
+  { type: 'ArrowNockEvent', name: moduleName }
+);
 
-registerWhen(register(Java.type('net.minecraftforge.event.entity.player.ArrowLooseEvent'), (e) => {
-    if (Player.getHeldItem()) {
+registerWhen(
+  register(
+    Java.type('net.minecraftforge.event.entity.player.ArrowLooseEvent'),
+    (e) => {
+      if (Player.getHeldItem()) {
         const heldItemID = getItemId(Player.getHeldItem());
-        if (heldItemID === 'LAST_BREATH' || heldItemID === 'STARRED_LAST_BREATH') {
-            lbShooting = true;
+        if (
+          heldItemID === 'LAST_BREATH' ||
+          heldItemID === 'STARRED_LAST_BREATH'
+        ) {
+          lbShooting = true;
         }
+      }
     }
-}), () => settings.lbhud, { type: 'ArrowLooseEvent', name: moduleName });
+  ),
+  () => settings.lbhud,
+  { type: 'ArrowLooseEvent', name: moduleName }
+);
 
-registerWhen(register('soundPlay', (position, name) => {
+registerWhen(
+  register('soundPlay', (position, name) => {
     if (name === 'random.bow') {
-        const current = Date.now();
-        if (lbShooting) {
-            if (!isDuplex) {
-                lbShotCount++;
-                lbShooting = false;
-                lbShotUnix.push(current);
-            } else {
-                lbShotCount += 2;
-                lbShooting = false;
-                lbShotUnix.push(current);
-                lbShotUnix.push(current);
-            }
+      const current = Date.now();
+      if (lbShooting) {
+        if (!isDuplex) {
+          lbShotCount++;
+          lbShooting = false;
+          lbShotUnix.push(current);
+        } else {
+          lbShotCount += 2;
+          lbShooting = false;
+          lbShotUnix.push(current);
+          lbShotUnix.push(current);
         }
+      }
     }
     if (name === 'random.successful_hit' || name === 'tile.piston.in') {
-        if (lbShotCount > 0) {
-            lbShotCount--;
-            lbHitCount++;
-            lbShotUnix.splice(0, 1);
-            if (!isRecording) {
-                isRecording = true;
-                lbRecordStart = Date.now();
-            }
+      if (lbShotCount > 0) {
+        lbShotCount--;
+        lbHitCount++;
+        lbShotUnix.splice(0, 1);
+        if (!isRecording) {
+          isRecording = true;
+          lbRecordStart = Date.now();
         }
+      }
     }
-}), () => settings.lbhud, { type: 'soundPlay', name: moduleName });
+  }),
+  () => settings.lbhud,
+  { type: 'soundPlay', name: moduleName }
+);
 
-registerWhen(register('renderOverlay', () => {
+registerWhen(
+  register('renderOverlay', () => {
     const current = Date.now();
-    lbShotUnix = lbShotUnix.filter(l => current - l < 4 * 1000);
+    lbShotUnix = lbShotUnix.filter((l) => current - l < 4 * 1000);
     lbShotCount = lbShotUnix.length;
     if (current - lbRecordStart > settings.lbreset * 1000) {
-        lbRecordStart = 0;
-        isRecording = false;
-        lbHitCount = 0;
+      lbRecordStart = 0;
+      isRecording = false;
+      lbHitCount = 0;
     }
     if (lbIncludedInInventory) {
-        if (lbIncludedInHotbar) {
-            lbHud.draw(`&6LastBreath: ${lbHitCount}`);
-        }
+      if (lbIncludedInHotbar) {
+        lbHud.draw(`&6LastBreath: ${lbHitCount}`);
+      }
     }
     setLb(lbHitCount);
-}), () => settings.lbhud, { type: 'renderOverlay', name: moduleName });
+  }),
+  () => settings.lbhud,
+  { type: 'renderOverlay', name: moduleName }
+);
 
 register('worldUnload', () => {
-    lbShooting = false;
-    isDuplex = false;
-    lbShotCount = 0;
-    lbHitCount = 0;
-    lbShotUnix = [];
+  lbShooting = false;
+  isDuplex = false;
+  lbShotCount = 0;
+  lbHitCount = 0;
+  lbShotUnix = [];
 });

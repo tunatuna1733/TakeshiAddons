@@ -1,156 +1,219 @@
-import { CHAT_PREFIX } from "../data/chat";
-import settings from "../settings";
-import { getCurrentArea, getCurrentZone } from "./area";
-import { bestiaryData } from "./data";
-import getItemId from "./item_id";
-import { registerWhen } from "./register";
+import { CHAT_PREFIX } from '../data/chat';
+import settings from '../settings';
+import { getCurrentArea, getCurrentZone } from './area';
+import { bestiaryData } from './data';
+import getItemId from './item_id';
+import { registerWhen } from './register';
 
 export const sendDebugMessage = (msg) => {
-    if (settings.debugmode) {
-        ChatLib.chat(`${CHAT_PREFIX} ${msg}`);
-    }
+  if (settings.debugmode) {
+    ChatLib.chat(`${CHAT_PREFIX} ${msg}`);
+  }
 };
 
 export const createDebugCommand = (commandName, func) => {
-    registerWhen(register('command', func).setCommandName(commandName),
-        () => settings.debugmode,
-        { type: 'command', name: `${commandName} command` });
+  registerWhen(
+    register('command', func).setCommandName(commandName),
+    () => settings.debugmode,
+    { type: 'command', name: `${commandName} command` }
+  );
 };
 
-register('command', () => {
-    const pestNames = ['Beetle', 'Cricket', 'Fly', 'Locust', 'Mite', 'Mosquito', 'Moth', 'Rat', 'Slug', 'Earthworm'];
-    const isPest = (name) => {
-        // Pest Icon: ൠ
-        let isPestName = false;
-        pestNames.forEach((pest) => {
-            if (name.includes(pest)) isPestName = true;
-        });
-        if (isPestName) {
-            if (name.includes('❤')) return true;
-            else return false;
-        } else return false;
-    }
-    World.getAllEntitiesOfType(Java.type('net.minecraft.entity.item.EntityArmorStand').class).forEach((armorStand) => {
-        ChatLib.chat(`${armorStand.getName()}, ${isPest(armorStand.getName().removeFormatting())}`);
-        ChatLib.chat(`${armorStand.getX()}, ${armorStand.getY()}, ${armorStand.getZ()}, ${armorStand.getWidth()}, ${armorStand.getHeight()}`);
+/*
+register("command", () => {
+  const pestNames = [
+    "Beetle",
+    "Cricket",
+    "Fly",
+    "Locust",
+    "Mite",
+    "Mosquito",
+    "Moth",
+    "Rat",
+    "Slug",
+    "Earthworm",
+  ];
+  const isPest = (name) => {
+    // Pest Icon: ൠ
+    let isPestName = false;
+    pestNames.forEach((pest) => {
+      if (name.includes(pest)) isPestName = true;
     });
-}).setCommandName('debugarmorstands');
+    if (isPestName) {
+      if (name.includes("❤")) return true;
+      else return false;
+    } else return false;
+  };
+  World.getAllEntitiesOfType(
+    Java.type("net.minecraft.entity.item.EntityArmorStand").class,
+  ).forEach((armorStand) => {
+    ChatLib.chat(
+      `${armorStand.getName()}, ${isPest(armorStand.getName().removeFormatting())}`,
+    );
+    ChatLib.chat(
+      `${armorStand.getX()}, ${armorStand.getY()}, ${armorStand.getZ()}, ${armorStand.getWidth()}, ${armorStand.getHeight()}`,
+    );
+  });
+}).setCommandName("debugarmorstands");
 
-register('command', () => {
-    World.getAllEntitiesOfType(Java.type('net.minecraft.entity.item.EntityArmorStand').class).forEach((armorStand) => {
-        const entity = new EntityLivingBase(armorStand.getEntity());
-        const headNBT = entity.getItemInSlot(4)?.getRawNBT();
-        ChatLib.chat(headNBT);
-        const itemId = getItemId(entity.getItemInSlot(4));
-        ChatLib.chat(itemId);
+register("command", () => {
+  World.getAllEntitiesOfType(
+    Java.type("net.minecraft.entity.item.EntityArmorStand").class,
+  ).forEach((armorStand) => {
+    const entity = new EntityLivingBase(armorStand.getEntity());
+    const headNBT = entity.getItemInSlot(4)?.getRawNBT();
+    ChatLib.chat(headNBT);
+    const itemId = getItemId(entity.getItemInSlot(4));
+    ChatLib.chat(itemId);
+  });
+}).setCommandName("debugarmorstandheads");
+
+register("command", () => {
+  const mapItem = Player.getInventory().getStackInSlot(8);
+  if (mapItem) {
+    ChatLib.chat(mapItem.getNBT());
+  }
+}).setCommandName("debugmapitemnbt");
+
+register("command", () => {
+  World.getAllEntitiesOfType(
+    Java.type("net.minecraft.entity.passive.EntityPig").class,
+  ).forEach((e) => {
+    const entity = new EntityLivingBase(e.getEntity());
+    ChatLib.chat(entity.toString());
+    ChatLib.chat(entity.getWidth());
+    ChatLib.chat(entity.getHeight());
+  });
+}).setCommandName("debuglavaseacreature");
+
+register("command", () => {
+  ChatLib.chat(getCurrentArea());
+  ChatLib.chat(getCurrentZone());
+}).setCommandName("debugcurrentarea");
+
+register("command", () => {
+  World.getAllEntitiesOfType(
+    Java.type("net.minecraft.entity.monster.EntityZombie").class,
+  ).forEach((zombie) => {
+    const entity = new EntityLivingBase(zombie.getEntity());
+    const headItem = entity.getItemInSlot(4);
+    const chestplateItem = entity.getItemInSlot(3);
+    const leggingsItem = entity.getItemInSlot(2);
+    const bootsItem = entity.getItemInSlot(1);
+    ChatLib.chat(headItem?.getName());
+    ChatLib.chat(chestplateItem?.getName());
+    ChatLib.chat(leggingsItem?.getName());
+    ChatLib.chat(bootsItem?.getName());
+  });
+}).setCommandName("debugmonsterarmor");
+
+register("command", () => {
+  World.getAllEntitiesOfType(
+    Java.type("net.minecraft.entity.passive.EntityWolf").class,
+  ).forEach((wolf) => {
+    const growingAge = wolf.getEntity().func_70874_b();
+    ChatLib.chat(
+      `${wolf.toString()}, ${wolf.getEntity().func_110143_aJ()}, ${wolf.getEntity().func_110138_aP()}`,
+    );
+  });
+}).setCommandName("debugwolf");
+
+register("command", () => {
+  World.getAllEntitiesOfType(
+    Java.type("net.minecraft.entity.monster.EntitySpider").class,
+  ).forEach((s) => {
+    ChatLib.chat(
+      `${s.toString()}, ${s.getEntity().func_110143_aJ()}, ${s.getEntity().func_110138_aP()}`,
+    );
+  });
+}).setCommandName("debugspider");
+
+register("command", () => {
+  World.getAllEntitiesOfType(
+    Java.type("net.minecraft.entity.monster.EntityBlaze").class,
+  ).forEach((e) => {
+    ChatLib.chat(
+      `${e.toString()}, ${e.getEntity().func_110143_aJ()}, ${e.getEntity().func_110138_aP()}`,
+    );
+  });
+}).setCommandName("debugblaze");
+
+register("command", () => {
+  World.getAllEntitiesOfType(
+    Java.type("net.minecraft.entity.monster.EntityMagmaCube").class,
+  ).forEach((e) => {
+    ChatLib.chat(
+      `${e.toString()}, ${e.getEntity().func_110143_aJ()}, ${e.getEntity().func_110138_aP()}, ${e.getEntity().field_70153_n}`,
+    );
+  });
+}).setCommandName("debugmagmacube");
+
+register("command", () => {
+  World.getAllEntitiesOfType(
+    Java.type("net.minecraft.entity.monster.EntitySkeleton").class,
+  ).forEach((e) => {
+    ChatLib.chat(
+      `${e.toString()}, ${e.getEntity().func_110143_aJ()}, ${e.getEntity().func_110138_aP()}, ${e.getEntity().func_82150_aj()}, ${e.getEntity().func_82202_m()}`,
+    );
+  });
+}).setCommandName("debugskeleton");
+
+register("command", () => {
+  World.getAllEntitiesOfType(
+    Java.type("net.minecraft.entity.monster.EntityEnderman").class,
+  ).forEach((e) => {
+    ChatLib.chat(
+      `${e.toString()}, ${e.getEntity().func_110143_aJ()}, ${e.getEntity().func_110138_aP()}`,
+    );
+  });
+}).setCommandName("debugenderman");
+
+register("command", () => {
+  World.getAllEntitiesOfType(
+    Java.type("net.minecraft.entity.passive.EntityMooshroom").class,
+  ).forEach((e) => {
+    ChatLib.chat(
+      `${e.toString()}, ${e.getEntity().func_110143_aJ()}, ${e.getEntity().func_110138_aP()}`,
+    );
+  });
+}).setCommandName("debugmooshroom");
+
+register("command", () => {
+  World.getAllEntitiesOfType(
+    Java.type("net.minecraft.entity.player.EntityPlayer").class,
+  ).forEach((e) => {
+    ChatLib.chat(
+      `${e.toString()}, ${e.getEntity().func_110143_aJ()}, ${e.getEntity().func_110138_aP()}`,
+    );
+    ChatLib.chat(e.getEntity().func_174819_aU() || "");
+  });
+}).setCommandName("debugplayer");
+
+register("command", () => {
+  bestiaryData.data.forEach((b) => {
+    ChatLib.chat(`&a----------------------------------------`);
+    Object.keys(b).forEach((k) => {
+      ChatLib.chat(`&6${k}&a: ${b[k]}`);
     });
-}).setCommandName('debugarmorstandheads');
+  });
+}).setCommandName("debugprintbe");
 
-register('command', () => {
-    const mapItem = Player.getInventory().getStackInSlot(8);
-    if (mapItem) {
-        ChatLib.chat(mapItem.getNBT());
-    }
-}).setCommandName('debugmapitemnbt');
+register("command", () => {
+  World.getAllEntitiesOfType(
+    Java.type("net.minecraft.entity.projectile.EntityArrow").class,
+  ).forEach((e) => {
+    ChatLib.chat(e.getEntity().field_70159_w);
+  });
+}).setCommandName("debugarrow");
 
-register('command', () => {
-    World.getAllEntitiesOfType(Java.type('net.minecraft.entity.passive.EntityPig').class).forEach((e) => {
-        const entity = new EntityLivingBase(e.getEntity());
-        ChatLib.chat(entity.toString());
-        ChatLib.chat(entity.getWidth());
-        ChatLib.chat(entity.getHeight());
-    })
-}).setCommandName('debuglavaseacreature');
-
-register('command', () => {
-    ChatLib.chat(getCurrentArea());
-    ChatLib.chat(getCurrentZone());
-}).setCommandName('debugcurrentarea');
-
-register('command', () => {
-    World.getAllEntitiesOfType(Java.type('net.minecraft.entity.monster.EntityZombie').class).forEach((zombie) => {
-        const entity = new EntityLivingBase(zombie.getEntity());
-        const headItem = entity.getItemInSlot(4);
-        const chestplateItem = entity.getItemInSlot(3);
-        const leggingsItem = entity.getItemInSlot(2);
-        const bootsItem = entity.getItemInSlot(1);
-        ChatLib.chat(headItem?.getName());
-        ChatLib.chat(chestplateItem?.getName());
-        ChatLib.chat(leggingsItem?.getName());
-        ChatLib.chat(bootsItem?.getName());
-    });
-}).setCommandName('debugmonsterarmor');
-
-register('command', () => {
-    World.getAllEntitiesOfType(Java.type('net.minecraft.entity.passive.EntityWolf').class).forEach((wolf) => {
-        const growingAge = wolf.getEntity().func_70874_b();
-        ChatLib.chat(`${wolf.toString()}, ${wolf.getEntity().func_110143_aJ()}, ${wolf.getEntity().func_110138_aP()}`);
-    });
-}).setCommandName('debugwolf');
-
-register('command', () => {
-    World.getAllEntitiesOfType(Java.type('net.minecraft.entity.monster.EntitySpider').class).forEach((s) => {
-        ChatLib.chat(`${s.toString()}, ${s.getEntity().func_110143_aJ()}, ${s.getEntity().func_110138_aP()}`);
-    });
-}).setCommandName('debugspider');
-
-register('command', () => {
-    World.getAllEntitiesOfType(Java.type('net.minecraft.entity.monster.EntityBlaze').class).forEach((e) => {
-        ChatLib.chat(`${e.toString()}, ${e.getEntity().func_110143_aJ()}, ${e.getEntity().func_110138_aP()}`);
-    });
-}).setCommandName('debugblaze');
-
-register('command', () => {
-    World.getAllEntitiesOfType(Java.type('net.minecraft.entity.monster.EntityMagmaCube').class).forEach((e) => {
-        ChatLib.chat(`${e.toString()}, ${e.getEntity().func_110143_aJ()}, ${e.getEntity().func_110138_aP()}, ${e.getEntity().field_70153_n}`);
-    })
-}).setCommandName('debugmagmacube');
-
-register('command', () => {
-    World.getAllEntitiesOfType(Java.type('net.minecraft.entity.monster.EntitySkeleton').class).forEach((e) => {
-        ChatLib.chat(`${e.toString()}, ${e.getEntity().func_110143_aJ()}, ${e.getEntity().func_110138_aP()}, ${e.getEntity().func_82150_aj()}, ${e.getEntity().func_82202_m()}`);
-    });
-}).setCommandName('debugskeleton');
-
-register('command', () => {
-    World.getAllEntitiesOfType(Java.type('net.minecraft.entity.monster.EntityEnderman').class).forEach((e) => {
-        ChatLib.chat(`${e.toString()}, ${e.getEntity().func_110143_aJ()}, ${e.getEntity().func_110138_aP()}`);
-    });
-}).setCommandName('debugenderman');
-
-register('command', () => {
-    World.getAllEntitiesOfType(Java.type('net.minecraft.entity.passive.EntityMooshroom').class).forEach((e) => {
-        ChatLib.chat(`${e.toString()}, ${e.getEntity().func_110143_aJ()}, ${e.getEntity().func_110138_aP()}`);
-    });
-}).setCommandName('debugmooshroom');
-
-register('command', () => {
-    World.getAllEntitiesOfType(Java.type('net.minecraft.entity.player.EntityPlayer').class).forEach((e) => {
-        ChatLib.chat(`${e.toString()}, ${e.getEntity().func_110143_aJ()}, ${e.getEntity().func_110138_aP()}`);
-        ChatLib.chat(e.getEntity().func_174819_aU() || '');
-    });
-}).setCommandName('debugplayer');
-
-register('command', () => {
-    bestiaryData.data.forEach((b) => {
-        ChatLib.chat(`&a----------------------------------------`);
-        Object.keys(b).forEach((k) => {
-            ChatLib.chat(`&6${k}&a: ${b[k]}`);
-        });
-    });
-}).setCommandName('debugprintbe');
-
-register('command', () => {
-    World.getAllEntitiesOfType(Java.type('net.minecraft.entity.projectile.EntityArrow').class).forEach((e) => {
-        ChatLib.chat(e.getEntity().field_70159_w);
-    });
-}).setCommandName('debugarrow');
-
-register('command', () => {
-    World.getAllTileEntitiesOfType(Java.type('net.minecraft.tileentity.TileEntitySkull').class).forEach(e => {
-        ChatLib.chat(e.tileEntity.serializeNBT().toString());
-    })
-}).setCommandName('debugtileentities');
+register("command", () => {
+  World.getAllTileEntitiesOfType(
+    Java.type("net.minecraft.tileentity.TileEntitySkull").class,
+  ).forEach((e) => {
+    ChatLib.chat(e.tileEntity.serializeNBT().toString());
+  });
+}).setCommandName("debugtileentities");
+*/
 
 /*
 register('soundPlay', () => {

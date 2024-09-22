@@ -1,9 +1,9 @@
-import settings from "../../settings";
-import { data } from "../../utils/data";
-import { Hud } from "../../utils/hud";
-import hud_manager from "../../utils/hud_manager";
-import getItemId from "../../utils/item_id";
-import { registerWhen } from "../../utils/register";
+import settings from '../../settings';
+import { data } from '../../utils/data';
+import { Hud } from '../../utils/hud';
+import hud_manager from '../../utils/hud_manager';
+import getItemId from '../../utils/item_id';
+import { registerWhen } from '../../utils/register';
 
 let guiOpened = false;
 
@@ -11,47 +11,57 @@ const eqHud = new Hud('equipment', 'None\nNone\nNone\nNone', hud_manager, data);
 
 const moduleName = 'Equipment HUD';
 
-registerWhen(register('renderOverlay', () => {
-    eqHud.draw(`${data.equipment.slot1}\n${data.equipment.slot2}\n${data.equipment.slot3}\n${data.equipment.slot4}`);
-}), () => settings.equipmenthud, { type: 'renderOverlay', name: moduleName });
+registerWhen(
+  register('renderOverlay', () => {
+    eqHud.draw(
+      `${data.equipment.slot1}\n${data.equipment.slot2}\n${data.equipment.slot3}\n${data.equipment.slot4}`
+    );
+  }),
+  () => settings.equipmenthud,
+  { type: 'renderOverlay', name: moduleName }
+);
 
 const equipmentSlotNums = new Map([
-    [1, 10],
-    [2, 19],
-    [3, 28],
-    [4, 37]
+  [1, 10],
+  [2, 19],
+  [3, 28],
+  [4, 37],
 ]); // { order: slot number }
 
 /**
  * Scans equipment and save them.
  * @param {Inventory} inventory
- * @param {number} slotNum 
+ * @param {number} slotNum
  */
 const saveEquipment = (inventory) => {
-    equipmentSlotNums.forEach((slotNum, order) => {
-        const item = inventory.getStackInSlot(slotNum);
-        if (item === null) data.equipment[`slot${order}`] = 'None';
-        else if (item.getName().removeFormatting().includes('Empty')) {
-            // Empty Slot
-            data.equipment[`slot${order}`] = 'None';
-            data.equipment[`id${order}`] = 'UNKNOWN_ITEM';
-        } else {
-            data.equipment[`slot${order}`] = item.getName();
-            data.equipment[`id${order}`] = getItemId(item);
-        }
-    });
-    data.save();
-}
+  equipmentSlotNums.forEach((slotNum, order) => {
+    const item = inventory.getStackInSlot(slotNum);
+    if (item === null) data.equipment[`slot${order}`] = 'None';
+    else if (item.getName().removeFormatting().includes('Empty')) {
+      // Empty Slot
+      data.equipment[`slot${order}`] = 'None';
+      data.equipment[`id${order}`] = 'UNKNOWN_ITEM';
+    } else {
+      data.equipment[`slot${order}`] = item.getName();
+      data.equipment[`id${order}`] = getItemId(item);
+    }
+  });
+  data.save();
+};
 
 register('postGuiRender', () => {
-    const inventory = Player.getContainer();
-    if (!guiOpened && inventory && inventory?.getName().includes('Your Equipment and Stats')) {
-        guiOpened = true;
-        const guiLoaded = register('tick', () => {
-            if (inventory.getStackInSlot(inventory.getSize() - 37) === null) return;
-            guiLoaded.unregister();
-            saveEquipment(inventory);
-            /*
+  const inventory = Player.getContainer();
+  if (
+    !guiOpened &&
+    inventory &&
+    inventory?.getName().includes('Your Equipment and Stats')
+  ) {
+    guiOpened = true;
+    const guiLoaded = register('tick', () => {
+      if (inventory.getStackInSlot(inventory.getSize() - 37) === null) return;
+      guiLoaded.unregister();
+      saveEquipment(inventory);
+      /*
             if (inventory.getStackInSlot(10) === null) data.equipment.slot1 = 'None';
             else {
                 data.equipment.slot1 = inventory.getStackInSlot(10).getName();
@@ -106,10 +116,10 @@ register('postGuiRender', () => {
             }
             data.save();
             */
-        });
-    }
+    });
+  }
 });
 
 register('guiClosed', () => {
-    guiOpened = false;
+  guiOpened = false;
 });

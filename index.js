@@ -1,77 +1,93 @@
 /// <reference types="../CTAutocomplete" />
 /// <reference lib="es2022" />
 
-import { getCurrentVersion, printChangelog, printHelp, update } from "./utils/update";
-import { bestiaryData, customHudsData, data, gardenData, inventoryData, resetData } from "./utils/data";
-import settings from "./settings";
-import { setRegisters } from "./utils/register";
-import hud_manager from "./utils/hud_manager";
+import {
+  getCurrentVersion,
+  printChangelog,
+  printHelp,
+  update,
+} from './utils/update';
+import {
+  bestiaryData,
+  customHudsData,
+  data,
+  gardenData,
+  inventoryData,
+  resetData,
+} from './utils/data';
+import settings from './settings';
+import { setRegisters } from './utils/register';
+import hud_manager from './utils/hud_manager';
 const Toolkit = Java.type('java.awt.Toolkit');
 const StringSelection = Java.type('java.awt.datatransfer.StringSelection');
 const EssentialAPI = Java.type('gg.essential.api.EssentialAPI');
 const EssentialNotifications = EssentialAPI.getNotifications();
 
-import "./features/hud/armor";
-import "./features/hud/equipment";
-import "./features/hud/kuudra_armor_stack";
-import "./features/hud/reforge";
-import "./features/hud/ragnarock";
-import "./features/hud/lifeline";
-import "./features/hud/reaper";
-import "./features/hud/last_breath";
-import "./features/hud/flare";
-import "./features/hud/inventory";
-import "./features/hud/kicked_timer";
-import "./features/hud/feeder";
-import "./features/hud/tablist";
-import "./features/hud/bonzo_and_phoenix";
-import "./features/hud/ping";
+import './features/hud/armor';
+import './features/hud/equipment';
+import './features/hud/kuudra_armor_stack';
+import './features/hud/reforge';
+import './features/hud/ragnarock';
+import './features/hud/lifeline';
+import './features/hud/reaper';
+import './features/hud/last_breath';
+import './features/hud/flare';
+import './features/hud/inventory';
+import './features/hud/kicked_timer';
+import './features/hud/feeder';
+import './features/hud/tablist';
+import './features/hud/bonzo_and_phoenix';
+import './features/hud/ping';
 
-import "./features/gui/attribute_lb";
-import "./features/gui/auctions";
-import "./features/gui/fishing_timer";
-import "./features/gui/remember_inv";
-import "./features/gui/sea_creature_detector";
-import "./features/gui/bestiary_box";
+import './features/gui/attribute_lb';
+import './features/gui/auctions';
+import './features/gui/fishing_timer';
+import './features/gui/remember_inv';
+import './features/gui/sea_creature_detector';
+import './features/gui/bestiary_box';
 
-import "./features/dungeon/terminal";
-import "./features/dungeon/relic";
-import "./features/dungeon/chest_glitch";
-import "./features/dungeon/ice_spray";
-import "./features/dungeon/broadcast_debuff";
-import "./features/dungeon/chest_profit";
-import "./features/dungeon/melody";
-import "./features/dungeon/starmob";
+import './features/dungeon/terminal';
+import './features/dungeon/relic';
+import './features/dungeon/chest_glitch';
+import './features/dungeon/ice_spray';
+import './features/dungeon/broadcast_debuff';
+import './features/dungeon/chest_profit';
+import './features/dungeon/melody';
+import './features/dungeon/starmob';
 
-import "./features/kuudra/dropship";
-import "./features/kuudra/energized_chunk";
-import "./features/kuudra/kuudra_price";
+import './features/kuudra/dropship';
+import './features/kuudra/energized_chunk';
+import './features/kuudra/kuudra_price';
 
-import "./features/garden/composter";
-import "./features/garden/pest_box";
-import "./features/garden/spray";
-import "./features/garden/pest_chunk";
-import "./features/garden/pest_title";
+import './features/garden/composter';
+import './features/garden/pest_box';
+import './features/garden/spray';
+import './features/garden/pest_chunk';
+import './features/garden/pest_title';
 
-import "./features/nether/ashfang";
+import './features/nether/ashfang';
 
-import "./features/mining/powder";
-import "./features/mining/glacite";
+import './features/mining/powder';
+import './features/mining/glacite';
 
-import "./features/misc/choco";
-import "./features/misc/norevminion";
+import './features/misc/choco';
+import './features/misc/norevminion';
 
-import "./utils/area";
-import "./utils/bestiary_settings";
-import "./utils/auction";
-import "./utils/debug";
+import './utils/area';
+import './utils/bestiary_settings';
+import './utils/auction';
+import './utils/debug';
 
 // import "./features/gui/attribute_search";
-import "./features/gui/attribute_price";
+import './features/gui/attribute_price';
 
-import { CHAT_PREFIX } from "./data/chat";
-import { addCustomHud, loadHuds, removeCustomHud } from "./features/hud/tablist";
-import { openFishingTimer } from "./features/gui/fishing_timer";
+import { CHAT_PREFIX } from './data/chat';
+import {
+  addCustomHud,
+  loadHuds,
+  removeCustomHud,
+} from './features/hud/tablist';
+import { openFishingTimer } from './features/gui/fishing_timer';
 
 data.autosave();
 gardenData.autosave();
@@ -103,7 +119,7 @@ register('gameLoad', () => {
 });
 
 register('guiClosed', (event) => {
-  if (event.toString().includes("vigilance")) {
+  if (event.toString().includes('vigilance')) {
     setRegisters();
     loadHuds();
   }
@@ -138,16 +154,32 @@ register('command', (args) => {
   } else if (args == 'scoreboardcopy' || args == 'sc') {
     const lines = Scoreboard.getLines(false);
     lines.map((line) => {
-      ChatLib.chat(`${line.getName().removeFormatting().replace(/[^\x00-\x7F]/g, "")}`);
+      ChatLib.chat(
+        `${line
+          .getName()
+          .removeFormatting()
+          .replace(/[^\x00-\x7F]/g, '')}`
+      );
     });
   } else if (args == 'copypurse' || args == 'cpp' || args == 'cp') {
     let copied = false;
     const lines = Scoreboard.getLines(false);
     lines.map((line) => {
-      if (line.getName().includes('Piggy') || line.getName().includes('Purse')) {
-        const selection = new StringSelection(ChatLib.removeFormatting(line.getName()).replace(/[^\x00-\x7F]/g, ""));
-        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, null);
-        EssentialNotifications.push('Purse copied!', 'Copied your purse to your clipboard.', 3);
+      if (
+        line.getName().includes('Piggy') ||
+        line.getName().includes('Purse')
+      ) {
+        const selection = new StringSelection(
+          ChatLib.removeFormatting(line.getName()).replace(/[^\x00-\x7F]/g, '')
+        );
+        Toolkit.getDefaultToolkit()
+          .getSystemClipboard()
+          .setContents(selection, null);
+        EssentialNotifications.push(
+          'Purse copied!',
+          'Copied your purse to your clipboard.',
+          3
+        );
         copied = true;
       }
     });
@@ -159,4 +191,6 @@ register('command', (args) => {
   } else if (args == 'fishingtimer' || args == 'fst') {
     openFishingTimer();
   }
-}).setCommandName('takeshi', true).setAliases(['takeshiaddons']);
+})
+  .setCommandName('takeshi', true)
+  .setAliases(['takeshiaddons']);
