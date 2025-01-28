@@ -50,30 +50,6 @@ register('step', () => {
   }
 }).setDelay(2 * 60);
 
-register('command', () => {
-  if (allItems.length !== 0 && Date.now() - auctionUpdateTime > 2 * 60 * 1000) {
-    // updateAuction();
-    // updateAuctionSync(0);
-    updateAuctionFromApi();
-  } else {
-    ChatLib.chat('No item list. Updating...');
-    updateItems();
-  }
-}).setCommandName('debugrefreshauctions');
-
-register('command', () => {
-  ChatLib.chat(JSON.stringify(attributeItems));
-}).setCommandName('debugattributeitems');
-
-register('command', () => {
-  ChatLib.chat(auctions.length);
-  ChatLib.chat(JSON.stringify(auctions[100]));
-}).setCommandName('debugauctions');
-
-register('command', () => {
-  sendDebugMessage(currentPage.toString());
-}).setCommandName('debugcurrentpage');
-
 const updateItems = () => {
   ChatLib.chat('Fetching item data...');
   request({
@@ -106,14 +82,10 @@ const decode = (itemByte) => {
 
 // Credit: Volcaddons
 const formatAuction = (rawAuction) => {
-  const nbtData = new NBTTagCompound(
-    decode(rawAuction.item_bytes).func_150305_b(0)
-  ).getCompoundTag('tag');
+  const nbtData = new NBTTagCompound(decode(rawAuction.item_bytes).func_150305_b(0)).getCompoundTag('tag');
   const extraAttributes = nbtData.getCompoundTag('ExtraAttributes');
   const itemId = extraAttributes.getString('id');
-  const itemNameWithFormat = nbtData
-    .getCompoundTag('display')
-    .getString('Name');
+  const itemNameWithFormat = nbtData.getCompoundTag('display').getString('Name');
   const itemData = allItems.find((i) => i.id === itemId);
   const attributes = extraAttributes.getCompoundTag('attributes').toObject();
   const attributeNames = Object.keys(attributes);
@@ -148,7 +120,7 @@ const formatAuction = (rawAuction) => {
 
 const updateAuctionFromApi = () => {
   request({
-    url: 'https://skyblock-hono-production.up.railway.app/attributeitems',
+    url: 'https://skyblock.tunatuna.dev/attributeitems',
     headers: {
       'User-Agent': 'Mozilla/5.0 (ChatTriggers)',
       'Content-Type': 'application/json',
@@ -203,15 +175,11 @@ const updateAuctionSync = (page) => {
       }
     });
     if (finished) {
-      sendDebugMessage(
-        `&eFetched and processed all auctions. Elapsed Time: ${Date.now() - fetchStartTime}ms`
-      );
+      sendDebugMessage(`&eFetched and processed all auctions. Elapsed Time: ${Date.now() - fetchStartTime}ms`);
       setTimeout(() => {
         sendDebugMessage('&eRegistered sort trigger.');
         const sortTrigger = register('step', () => {
-          sendDebugMessage(
-            `&e${auctionCount}, ${tempAuctions.length}, ${totalPages - 1}, ${page}`
-          );
+          sendDebugMessage(`&e${auctionCount}, ${tempAuctions.length}, ${totalPages - 1}, ${page}`);
           if (auctionCount === tempAuctions.length && totalPages - 1 === page) {
             sortTrigger.unregister();
             sendDebugMessage('&eSorting auctions...');
@@ -223,9 +191,7 @@ const updateAuctionSync = (page) => {
             });
             auctions = tempAuctions;
             tempAuctions = [];
-            sendDebugMessage(
-              `&eAuction sorted. Elapsed Time: ${Date.now() - sortStartTime}ms`
-            );
+            sendDebugMessage(`&eAuction sorted. Elapsed Time: ${Date.now() - sortStartTime}ms`);
           }
         });
       }, 5000);
@@ -262,7 +228,7 @@ const updateAuction = () => {
           }).then((r) => {
             resolve(r.data.auctions);
           });
-        })
+        }),
       );
     }
     return Promise.all(auctionsPromise)
@@ -289,9 +255,7 @@ const updateAuction = () => {
               formattedAuctions.push(a);
             }
           });
-          sendDebugMessage(
-            `&eFormatted all auctions. Elapsed time: ${Date.now() - processStart}ms`
-          );
+          sendDebugMessage(`&eFormatted all auctions. Elapsed time: ${Date.now() - processStart}ms`);
           sendDebugMessage('&eSorting auctions.');
           const sortStart = Date.now();
           auctions = formattedAuctions.sort((a, b) => {
@@ -299,9 +263,7 @@ const updateAuction = () => {
             else if (a.price > b.price) return 1;
             return 0;
           });
-          sendDebugMessage(
-            `&eSorted auctions. Elapsed time: ${Date.now() - sortStart}ms`
-          );
+          sendDebugMessage(`&eSorted auctions. Elapsed time: ${Date.now() - sortStart}ms`);
           auctionUpdateTime = Date.now();
           sendDebugMessage('&eUpdated auctions');
         }).start();
@@ -313,11 +275,18 @@ const checkHasAttributes = (itemName) => {
   let hasAttributes = false;
   attributeItems.forEach((ai) => {
     if (!hasAttributes) {
-      if (itemName.toLowerCase().includes(ai.toLowerCase()))
-        hasAttributes = true;
+      if (itemName.toLowerCase().includes(ai.toLowerCase())) hasAttributes = true;
     }
   });
   return hasAttributes;
+};
+
+export const checkExactAttribute = (auction, attributeId, attributeLevel) => {
+  let match = false;
+  auction.attributes.forEach((attribute) => {
+    if (attribute.id === attributeId && attribute.value === Number.parseInt(attributeLevel)) match = true;
+  });
+  return match;
 };
 
 const checkAttribute = (auction, attributeSearch) => {
@@ -370,8 +339,8 @@ export const getPureItemName = (itemId) => {
 
 export const getPriceData = (itemId, isArmor, attributeSearchQuery) => {
   if (isArmor) {
-    let typeResults = {},
-      exactMatchResults = {};
+    let typeResults = {};
+    let exactMatchResults = {};
     let armorType = '';
     if (itemId.includes('HELMET')) armorType = 'HELMET';
     else if (itemId.includes('CHESTPLATE')) armorType = 'CHESTPLATE';
@@ -379,9 +348,7 @@ export const getPriceData = (itemId, isArmor, attributeSearchQuery) => {
     else if (itemId.includes('BOOTS')) armorType = 'BOOTS';
     attributeSearchQuery.forEach((as) => {
       typeResults[as.id] = auctions.filter((a) => {
-        return (
-          KuudraItems[armorType].includes(a.itemId) && checkAttribute(a, as)
-        );
+        return KuudraItems[armorType].includes(a.itemId) && checkAttribute(a, as);
       });
       exactMatchResults[as.id] = auctions.filter((a) => {
         return a.itemId === itemId && checkAttribute(a, as);
@@ -428,10 +395,7 @@ export const getSingleAttributeAuctions = (attributeId) => {
   };
   armorKeys.forEach((armor) => {
     armorAuctions[armor] = auctions.filter((a) => {
-      return (
-        KuudraItems[armor].includes(a.itemId) &&
-        checkAttribute(a, { id: attributeId, value: 1 })
-      );
+      return KuudraItems[armor].includes(a.itemId) && checkAttribute(a, { id: attributeId, value: 1 });
     });
   });
 
@@ -445,10 +409,7 @@ export const getSingleAttributeAuctions = (attributeId) => {
   };
   equipmentKeys.forEach((piece) => {
     moltenAuctions[piece] = auctions.filter((a) => {
-      return (
-        KuudraItems[piece].includes(a.itemId) &&
-        checkAttribute(a, { id: attributeId, value: 1 })
-      );
+      return KuudraItems[piece].includes(a.itemId) && checkAttribute(a, { id: attributeId, value: 1 });
     });
   });
 
@@ -461,10 +422,7 @@ export const getSingleAttributeAuctions = (attributeId) => {
   };
   equipmentKeys.forEach((piece) => {
     vanqAuctions[piece] = auctions.filter((a) => {
-      return (
-        CrimsonSetItems[piece].includes(a.itemId) &&
-        checkAttribute(a, { id: attributeId, value: 1 })
-      );
+      return CrimsonSetItems[piece].includes(a.itemId) && checkAttribute(a, { id: attributeId, value: 1 });
     });
   });
 
@@ -477,10 +435,7 @@ export const getSingleAttributeAuctions = (attributeId) => {
   };
   armorKeys.forEach((piece) => {
     magmalordAuctions[piece] = auctions.filter((a) => {
-      return (
-        a.itemId === `MAGMALORD_${piece}` &&
-        checkAttribute(a, { id: attributeId, value: 1 })
-      );
+      return a.itemId === `MAGMALORD_${piece}` && checkAttribute(a, { id: attributeId, value: 1 });
     });
   });
 
@@ -493,19 +448,13 @@ export const getSingleAttributeAuctions = (attributeId) => {
   };
   rodKeys.forEach((rod) => {
     rodAuctions[rod] = auctions.filter((a) => {
-      return (
-        a.itemId === `${rod}_ROD` &&
-        checkAttribute(a, { id: attributeId, value: 1 })
-      );
+      return a.itemId === `${rod}_ROD` && checkAttribute(a, { id: attributeId, value: 1 });
     });
   });
 
   // shards
   const shardAuctions = auctions.filter((a) => {
-    return (
-      a.itemId === 'ATTRIBUTE_SHARD' &&
-      checkAttribute(a, { id: attributeId, value: 1 })
-    );
+    return a.itemId === 'ATTRIBUTE_SHARD' && checkAttribute(a, { id: attributeId, value: 1 });
   });
 
   return {
@@ -518,59 +467,54 @@ export const getSingleAttributeAuctions = (attributeId) => {
   };
 };
 
-register(
-  'command',
-  (itemId, attributeId1, attributeLevel1, attributeId2, attributeLevel2) => {
-    ChatLib.chat(
-      `${itemId}, ${attributeId1}, ${attributeLevel1}, ${attributeId2}, ${attributeLevel2}`
-    );
-    let isArmor = false;
-    if (
-      itemId.toLowerCase().includes('helmet') ||
-      itemId.toLowerCase().includes('chestplate') ||
-      itemId.toLowerCase().includes('leggings') ||
-      itemId.toLowerCase().includes('boots')
-    )
-      isArmor = true;
-    let attributeSearchQuery = [];
-    if (attributeId1) {
+register('command', (itemId, attributeId1, attributeLevel1, attributeId2, attributeLevel2) => {
+  ChatLib.chat(`${itemId}, ${attributeId1}, ${attributeLevel1}, ${attributeId2}, ${attributeLevel2}`);
+  let isArmor = false;
+  if (
+    itemId.toLowerCase().includes('helmet') ||
+    itemId.toLowerCase().includes('chestplate') ||
+    itemId.toLowerCase().includes('leggings') ||
+    itemId.toLowerCase().includes('boots')
+  )
+    isArmor = true;
+  let attributeSearchQuery = [];
+  if (attributeId1) {
+    attributeSearchQuery.push({
+      id: attributeId1,
+      value: attributeLevel1 ? attributeLevel1 : 1,
+    });
+    if (attributeId2) {
       attributeSearchQuery.push({
-        id: attributeId1,
-        value: attributeLevel1 ? attributeLevel1 : 1,
+        id: attributeId2,
+        value: attributeLevel2 ? attributeLevel2 : 1,
       });
-      if (attributeId2) {
-        attributeSearchQuery.push({
-          id: attributeId2,
-          value: attributeLevel2 ? attributeLevel2 : 1,
-        });
-      }
-    }
-    const results = getPriceData(itemId, isArmor, attributeSearchQuery);
-    if (isArmor) {
-      ChatLib.chat('Type match');
-      ChatLib.chat(` ${JSON.stringify(results[0][attributeId1][0])}`);
-
-      ChatLib.chat('Exact match');
-      ChatLib.chat(` ${JSON.stringify(results[1][attributeId1][0])}`);
-
-      if ('both' in results[1]) {
-        ChatLib.chat('Both');
-        ChatLib.chat(` ${JSON.stringify(results[1]['both'][0])}`);
-      }
-    } else {
-      ChatLib.chat('A1');
-      ChatLib.chat(` ${JSON.stringify(results[attributeId1][0])}`);
-
-      if (attributeId2) {
-        ChatLib.chat('A2');
-        ChatLib.chat(` ${JSON.stringify(results[attributeId2][0])}`);
-
-        ChatLib.chat('Both');
-        ChatLib.chat(` ${JSON.stringify(results['both'][0])}`);
-      }
     }
   }
-).setCommandName('debugatsearch');
+  const results = getPriceData(itemId, isArmor, attributeSearchQuery);
+  if (isArmor) {
+    ChatLib.chat('Type match');
+    ChatLib.chat(` ${JSON.stringify(results[0][attributeId1][0])}`);
+
+    ChatLib.chat('Exact match');
+    ChatLib.chat(` ${JSON.stringify(results[1][attributeId1][0])}`);
+
+    if ('both' in results[1]) {
+      ChatLib.chat('Both');
+      ChatLib.chat(` ${JSON.stringify(results[1]['both'][0])}`);
+    }
+  } else {
+    ChatLib.chat('A1');
+    ChatLib.chat(` ${JSON.stringify(results[attributeId1][0])}`);
+
+    if (attributeId2) {
+      ChatLib.chat('A2');
+      ChatLib.chat(` ${JSON.stringify(results[attributeId2][0])}`);
+
+      ChatLib.chat('Both');
+      ChatLib.chat(` ${JSON.stringify(results['both'][0])}`);
+    }
+  }
+}).setCommandName('debugatsearch');
 
 register('command', (uuid) => {
   const auction = auctions.find((a) => a.uuid === uuid);

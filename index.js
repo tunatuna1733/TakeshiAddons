@@ -1,20 +1,8 @@
 /// <reference types="../CTAutocomplete" />
 /// <reference lib="es2022" />
 
-import {
-  getCurrentVersion,
-  printChangelog,
-  printHelp,
-  update,
-} from './utils/update';
-import {
-  bestiaryData,
-  customHudsData,
-  data,
-  gardenData,
-  inventoryData,
-  resetData,
-} from './utils/data';
+import { getCurrentVersion, printChangelog, printHelp, update } from './utils/update';
+import { bestiaryData, customHudsData, data, gardenData, inventoryData, resetData } from './utils/data';
 import settings from './settings';
 import { setRegisters } from './utils/register';
 import hud_manager from './utils/hud_manager';
@@ -45,6 +33,7 @@ import './features/gui/fishing_timer';
 import './features/gui/remember_inv';
 import './features/gui/sea_creature_detector';
 import './features/gui/bestiary_box';
+import './features/gui/auction_list';
 
 import './features/dungeon/terminal';
 import './features/dungeon/relic';
@@ -82,11 +71,7 @@ import './utils/debug';
 import './features/gui/attribute_price';
 
 import { CHAT_PREFIX } from './data/chat';
-import {
-  addCustomHud,
-  loadHuds,
-  removeCustomHud,
-} from './features/hud/tablist';
+import { addCustomHud, loadHuds, removeCustomHud } from './features/hud/tablist';
 import { openFishingTimer } from './features/gui/fishing_timer';
 
 data.autosave();
@@ -158,28 +143,21 @@ register('command', (args) => {
         `${line
           .getName()
           .removeFormatting()
-          .replace(/[^\x00-\x7F]/g, '')}`
+          // biome-ignore lint/suspicious/noControlCharactersInRegex: <explanation>
+          .replace(/[^\x00-\x7F]/g, '')}`,
       );
     });
   } else if (args == 'copypurse' || args == 'cpp' || args == 'cp') {
     let copied = false;
     const lines = Scoreboard.getLines(false);
     lines.map((line) => {
-      if (
-        line.getName().includes('Piggy') ||
-        line.getName().includes('Purse')
-      ) {
+      if (line.getName().includes('Piggy') || line.getName().includes('Purse')) {
         const selection = new StringSelection(
-          ChatLib.removeFormatting(line.getName()).replace(/[^\x00-\x7F]/g, '')
+          // biome-ignore lint/suspicious/noControlCharactersInRegex: <explanation>
+          ChatLib.removeFormatting(line.getName()).replace(/[^\x00-\x7F]/g, ''),
         );
-        Toolkit.getDefaultToolkit()
-          .getSystemClipboard()
-          .setContents(selection, null);
-        EssentialNotifications.push(
-          'Purse copied!',
-          'Copied your purse to your clipboard.',
-          3
-        );
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, null);
+        EssentialNotifications.push('Purse copied!', 'Copied your purse to your clipboard.', 3);
         copied = true;
       }
     });

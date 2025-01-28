@@ -1,7 +1,6 @@
 import { CHAT_PREFIX } from '../data/chat';
 import settings from '../settings';
-import { getCurrentArea, getCurrentZone } from './area';
-import { bestiaryData } from './data';
+import {} from './area';
 import getItemId from './item_id';
 import { registerWhen } from './register';
 
@@ -12,13 +11,21 @@ export const sendDebugMessage = (msg) => {
 };
 
 export const createDebugCommand = (commandName, func) => {
-  registerWhen(
-    register('command', func).setCommandName(commandName),
-    () => settings.debugmode,
-    { type: 'command', name: `${commandName} command` }
-  );
+  registerWhen(register('command', func).setCommandName(commandName), () => settings.debugmode, {
+    type: 'command',
+    name: `${commandName} command`,
+  });
 };
 
+register('command', () => {
+  World.getAllEntitiesOfType(Java.type('net.minecraft.entity.item.EntityArmorStand').class).forEach((armorStand) => {
+    const entity = new EntityLivingBase(armorStand.getEntity());
+    const headNBT = entity.getItemInSlot(4)?.getRawNBT();
+    ChatLib.chat(headNBT);
+    const itemId = getItemId(entity.getItemInSlot(4));
+    ChatLib.chat(itemId);
+  });
+}).setCommandName('debugarmorstandheads');
 /*
 register("command", () => {
   const pestNames = [

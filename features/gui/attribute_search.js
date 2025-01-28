@@ -54,10 +54,7 @@ const createItemNameSuggestion = (currentText, parent) => {
         })
         .setChildOf(scroll);
 
-      new UIText(item.name)
-        .setX((2).pixels())
-        .setY(new CenterConstraint())
-        .setChildOf(itemContainer);
+      new UIText(item.name).setX((2).pixels()).setY(new CenterConstraint()).setChildOf(itemContainer);
     }
   });
 

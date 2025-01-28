@@ -9,15 +9,7 @@ export class Hud {
    * @param {boolean} [background=false]
    * @param {any} [color=null]
    */
-  constructor(
-    name,
-    defaultText,
-    hudManager,
-    data,
-    isCustom = false,
-    background = false,
-    color = null
-  ) {
+  constructor(name, defaultText, hudManager, data, isCustom = false, background = false, color = null) {
     this.name = name;
     this.defaultText = defaultText;
     this.hudManager = hudManager;
@@ -45,19 +37,14 @@ export class Hud {
       const [current_x, current_y] = this.getCoords();
       const width = this.currentText.getWidth();
       const height = this.currentText.getHeight();
-      if (
-        x >= current_x - 3 &&
-        x <= current_x + width + 3 &&
-        y >= current_y - 3 &&
-        y <= current_y + height + 3
-      ) {
+      if (x >= current_x - 3 && x <= current_x + width + 3 && y >= current_y - 3 && y <= current_y + height + 3) {
         const scale = this.getScale();
         if (d === 1 && scale < 10) this.setScale(scale + 0.1);
         else if (scale > 0.5) this.setScale(scale - 0.1);
       }
     });
     this.renderOverlayTrigger = register('renderOverlay', () => {
-      if (!this.hudManager.isEditing) return;
+      if (!this.hudManager || !this.hudManager.isEditing) return;
       const [current_x, current_y] = this.getCoords();
       const scale = this.getScale();
       const width = this.currentText.getWidth();
@@ -70,17 +57,12 @@ export class Hud {
         .draw();
       this.currentText.setX(current_x).setY(current_y).setScale(scale).draw();
     });
-    this.clickTrigger = register('clicked', (x, y, b, isDown) => {
+    this.clickTrigger = register('clicked', (x, y, _b, isDown) => {
       if (!this.hudManager.isEditing) return;
       const [current_x, current_y] = this.getCoords();
       const width = this.currentText.getWidth();
       const height = this.currentText.getHeight();
-      if (
-        x >= current_x - 3 &&
-        x <= current_x + width + 3 &&
-        y >= current_y - 3 &&
-        y <= current_y + height + 3
-      ) {
+      if (x >= current_x - 3 && x <= current_x + width + 3 && y >= current_y - 3 && y <= current_y + height + 3) {
         if (isDown && hudManager.selectedHudName === '') {
           hudManager.selectHud(this.name);
         } else {
@@ -187,15 +169,10 @@ export class Hud {
               x - 3,
               y - 3,
               this.currentText.getWidth() + 3,
-              this.currentText.getHeight() + 3
+              this.currentText.getHeight() + 3,
             );
           }
-          this.currentText
-            .setString(text)
-            .setX(x)
-            .setY(y)
-            .setScale(scale)
-            .draw();
+          this.currentText.setString(text).setX(x).setY(y).setScale(scale).draw();
           GlStateManager.func_179084_k();
         }
       } else {
@@ -208,7 +185,7 @@ export class Hud {
             x - 3,
             y - 3,
             this.currentText.getWidth() + 3,
-            this.currentText.getHeight() + 3
+            this.currentText.getHeight() + 3,
           );
         }
         this.currentText.setString(text).setX(x).setY(y).setScale(scale).draw();

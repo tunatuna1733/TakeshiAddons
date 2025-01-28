@@ -10,12 +10,8 @@ const FlowLayout = Java.type('java.awt.FlowLayout');
 const Font = Java.type('java.awt.Font');
 const Color = Java.type('java.awt.Color');
 
-const EntityArmorStandClass = Java.type(
-  'net.minecraft.entity.item.EntityArmorStand'
-).class;
-const EntityFishHookClass = Java.type(
-  'net.minecraft.entity.projectile.EntityFishHook'
-).class;
+const EntityArmorStandClass = Java.type('net.minecraft.entity.item.EntityArmorStand').class;
+const EntityFishHookClass = Java.type('net.minecraft.entity.projectile.EntityFishHook').class;
 
 JFrame.setDefaultLookAndFeelDecorated(true);
 UIManager.setLookAndFeel(new MetalLookAndFeel());
@@ -39,8 +35,8 @@ mainPanel.setBackground(
   new Color(
     settings.fishingtimercolor.getRed() / 255,
     settings.fishingtimercolor.getGreen() / 255,
-    settings.fishingtimercolor.getBlue() / 255
-  )
+    settings.fishingtimercolor.getBlue() / 255,
+  ),
 );
 
 jFrame.add(mainPanel, BorderLayout.CENTER);
@@ -55,15 +51,15 @@ register('renderWorld', () => {
       x = jFrame.getWidth();
       y = jFrame.getHeight();
       const baseSize = Math.min(x, y);
-      jLabel.setFont(new Font('Segoe UI', Font.PLAIN, parseInt(baseSize / 2)));
+      jLabel.setFont(new Font('Segoe UI', Font.PLAIN, Number.parseInt(baseSize / 2)));
     }
     jFrame.setOpacity(settings.fishingtimercolor.getAlpha() / 255);
     mainPanel.setBackground(
       new Color(
         settings.fishingtimercolor.getRed() / 255,
         settings.fishingtimercolor.getGreen() / 255,
-        settings.fishingtimercolor.getBlue() / 255
-      )
+        settings.fishingtimercolor.getBlue() / 255,
+      ),
     );
     let found = false;
     World.getAllEntitiesOfType(EntityArmorStandClass).forEach((armorStands) => {
@@ -81,9 +77,7 @@ register('renderWorld', () => {
     if (!found) {
       let hookFound = false;
       World.getAllEntitiesOfType(EntityFishHookClass).forEach((hook) => {
-        if (
-          hook.getEntity().field_146042_b.func_70005_c_() === Player.getName()
-        ) {
+        if (hook.getEntity().field_146042_b.func_70005_c_() === Player.getName()) {
           hookFound = true;
         }
       });

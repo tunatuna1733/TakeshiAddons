@@ -14,9 +14,9 @@ import {
   WindowScreen,
   animate,
 } from '../../../Elementa';
-import { getHour } from '../../utils/time';
-import formatNumToCoin from '../../utils/format_coin';
 import { getPriceData } from '../../utils/auction';
+import formatNumToCoin from '../../utils/format_coin';
+import { getHour } from '../../utils/time';
 const Color = Java.type('java.awt.Color');
 const Toolkit = Java.type('java.awt.Toolkit');
 const StringSelection = Java.type('java.awt.datatransfer.StringSelection');
@@ -32,13 +32,7 @@ let attributeLevel2 = '';
 const cardWidth = 150;
 const cardHeight = 100;
 
-export const openAuctionView = (
-  itemId,
-  attributeId1,
-  attributeLevel1,
-  attributeId2,
-  attributeLevel2
-) => {
+export const openAuctionView = (itemId, attributeId1, attributeLevel1, attributeId2, attributeLevel2) => {
   itemId = itemId;
   attributeId1 = attributeId1;
   attributeLevel1 = attributeLevel1;
@@ -74,11 +68,7 @@ const createAuctionCard = (auctionData) => {
     .setHeight(new SubtractiveConstraint((100).percent(), (4).pixels()))
     .setChildOf(card);
 
-  new UIText(name, false)
-    .setX((0).pixels())
-    .setY((0).pixels())
-    .setTextScale((1.5).pixels())
-    .setChildOf(textContainer);
+  new UIText(name, false).setX((0).pixels()).setY((0).pixels()).setTextScale((1.5).pixels()).setChildOf(textContainer);
 
   new UIText(`Price: ${price} coins`, false)
     .setX((2).pixels())
@@ -106,31 +96,19 @@ const createAuctionCard = (auctionData) => {
   const copyButton = new UIBlock(new Color(207 / 255, 207 / 255, 196 / 255))
     .setX((2).pixels(true))
     .setY((2).pixels(true))
-    .setWidth(
-      new AdditiveConstraint(new ChildBasedSizeConstraint(), (2).pixels())
-    )
-    .setHeight(
-      new AdditiveConstraint(new ChildBasedSizeConstraint(), (2).pixels())
-    )
+    .setWidth(new AdditiveConstraint(new ChildBasedSizeConstraint(), (2).pixels()))
+    .setHeight(new AdditiveConstraint(new ChildBasedSizeConstraint(), (2).pixels()))
     .onMouseClick(() => {
       const selection = new StringSelection(`/viewauction ${uuid}`);
-      Toolkit.getDefaultToolkit()
-        .getSystemClipboard()
-        .setContents(selection, null);
-      EssentialNotifications.push(
-        'Command copied!',
-        'Viewauction command was copied to your clipboard',
-        3
-      );
+      Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, null);
+      EssentialNotifications.push('Command copied!', 'Viewauction command was copied to your clipboard', 3);
     })
     .onMouseEnter((comp) => {
       animate(comp, (animation) => {
         animation.setColorAnimation(
           Animations.OUT_EXP,
           0.5,
-          new ConstantColorConstraint(
-            new Color(120 / 255, 120 / 255, 100 / 255)
-          )
+          new ConstantColorConstraint(new Color(120 / 255, 120 / 255, 100 / 255)),
         );
       });
     })
@@ -139,9 +117,7 @@ const createAuctionCard = (auctionData) => {
         animation.setColorAnimation(
           Animations.OUT_EXP,
           0.5,
-          new ConstantColorConstraint(
-            new Color(207 / 255, 207 / 255, 196 / 255)
-          )
+          new ConstantColorConstraint(new Color(207 / 255, 207 / 255, 196 / 255)),
         );
       });
     })
@@ -205,46 +181,31 @@ const createListPane = (window, auctionList) => {
   } else if (pane.getWidth() - cardWidth * 2 > 0) {
     horizontalCount = 2;
   }
-  const interval =
-    (pane.getWidth() - cardWidth * horizontalCount) / (horizontalCount + 1);
+  const interval = (pane.getWidth() - cardWidth * horizontalCount) / (horizontalCount + 1);
   let currentY = interval;
   auctionList.forEach((auction, index) => {
-    const x =
-      interval * ((index % horizontalCount) + 1) +
-      cardWidth * (index % horizontalCount);
+    const x = interval * ((index % horizontalCount) + 1) + cardWidth * (index % horizontalCount);
     const itemName =
-      'itemNameWithFormat' in auction
-        ? auction.itemNameWithFormat
-        : getRarityPrefix(auction.tier) + auction.itemName;
-    const priceText = formatNumToCoin(auction.price) + ' coins';
+      'itemNameWithFormat' in auction ? auction.itemNameWithFormat : getRarityPrefix(auction.tier) + auction.itemName;
+    const priceText = `${formatNumToCoin(auction.price)} coins`;
 
     const card = new UIRoundedRectangle(3)
       .setX(x.pixels())
       .setY(currentY.pixels())
       .setWidth(cardWidth.pixels())
       .setHeight(cardHeight.pixels())
-      .setColor(
-        new ConstantColorConstraint(new Color(70 / 255, 70 / 255, 70 / 255))
-      )
+      .setColor(new ConstantColorConstraint(new Color(70 / 255, 70 / 255, 70 / 255)))
       .onMouseClick(() => {
         const selection = new StringSelection(`/viewauction ${auction.uuid}`);
-        Toolkit.getDefaultToolkit()
-          .getSystemClipboard()
-          .setContents(selection, null);
-        EssentialNotifications.push(
-          'Command copied!',
-          'Viewauction command was copied to your clipboard',
-          3
-        );
+        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, null);
+        EssentialNotifications.push('Command copied!', 'Viewauction command was copied to your clipboard', 3);
       })
       .onMouseEnter((comp) => {
         animate(comp, (animation) => {
           animation.setColorAnimation(
             Animations.OUT_EXP,
             0.5,
-            new ConstantColorConstraint(
-              new Color(100 / 255, 100 / 255, 100 / 255)
-            )
+            new ConstantColorConstraint(new Color(100 / 255, 100 / 255, 100 / 255)),
           );
         });
       })
@@ -253,16 +214,13 @@ const createListPane = (window, auctionList) => {
           animation.setColorAnimation(
             Animations.OUT_EXP,
             0.5,
-            new ConstantColorConstraint(new Color(70 / 255, 70 / 255, 70 / 255))
+            new ConstantColorConstraint(new Color(70 / 255, 70 / 255, 70 / 255)),
           );
         });
       })
       .setChildOf(pane);
 
-    new UIText(itemName)
-      .setX((5).percent())
-      .setY((5).percent())
-      .setChildOf(card);
+    new UIText(itemName).setX((5).percent()).setY((5).percent()).setChildOf(card);
 
     if ('attributes' in auction) {
       auction.attributes.forEach((attribute) => {
@@ -279,8 +237,7 @@ const createListPane = (window, auctionList) => {
       .setColor(Color.YELLOW)
       .setChildOf(card);
 
-    if (index % horizontalCount === horizontalCount - 1)
-      currentY += cardHeight + interval;
+    if (index % horizontalCount === horizontalCount - 1) currentY += cardHeight + interval;
   });
 
   return pane;
@@ -372,6 +329,12 @@ export const AuctionView = new JavaAdapter(WindowScreen, {
 });
 
 register('command', (...args) => {
+  if (args.length !== 5) {
+    ChatLib.chat(
+      'Error: Invalid Arguments. Usage: /openaucview <ITEM_ID> <ATTRIBUTE_ID1> <ATTRIBUTE_LEVEL1> <ATTRIBUTE_ID2> <ATTRIBUTE_LEVEL2>',
+    );
+    return;
+  }
   itemId = args[0];
   attributeId1 = args[1];
   attributeLevel1 = args[2];

@@ -1,223 +1,228 @@
 {
-    "0.4.15": [
-        "# Bug Fixes & Improvements",
-        "- Improved Star Mob ESP performance.",
-        "- Hopefully fixed custom hud not shown on launch.",
-        "- Zed editor f**ked the formatting.",
-        "- Partially fixed kuudra price things, gonna rework though."
-    ],
-    "0.4.14": [
-        "# Bug Fixes & Improvements",
-        "- I don't remember.",
-        "- I forgot to release 0.4.13.",
-        "# New Features",
-        "- Added Star Mob ESP."
-    ],
-    "0.4.13": [
-        "# Bug Fixes & Improvements",
-        "- Changed the pest related things to use tablist info."
-    ],
-    "0.4.12": [
-        "# Bug Fixes & Improvements",
-        "- Made using attribute lbin keybind for normal items to open auction of the item.",
-        "- Gave up fixing PKXI issue."
-    ],
-    "0.4.11": [
-        "# Bug Fixes & Improvements",
-        "- Forgot to remove settings for auction fetch."
-    ],
-    "0.4.10": [
-        "# Bug Fixes & Improvements",
-        "- F**k auction fetcher."
-    ],
-    "0.4.9": [
-        "# Bug Fixes & Improvements",
-        "- Fixed auction related things sometimes show inaccurate info.",
-        "- Changed debug messages of the auction fetch feature to be more compact."
-    ],
-    "0.4.8": [
-        "# New Features",
-        "- Added option to remove revenants visually.",
-        "- Added Ping Display(Might be accurate than other mods).",
-        "# Bug Fixes & Improvements",
-        "- Fixed Chocolate Egg Waypoint not loading eggs immediately after world load.",
-        "- Decrease the lag while fetching auctions hopefully."
-    ],
-    "0.4.7": [
-        "# New Features",
-        "- Added Chocolate Egg Waypoint (Others -> Chocolate)",
-        "# Bug Fixes & Improvements",
-        "- Improved performance of the auction related things."
-    ],
-    "0.4.6": [
-        "# New Features",
-        "- Added Minechaft Notification.",
-        "- Added mineshaft mob box.",
-        "- Added corpse location display.",
-        "# Bug Fixes & Improvements",
-        "- Finally fixed updater.",
-        "- Added internal auction fetcher."
-    ],
-    "0.4.5": [
-        "# New Features",
-        "- Added Bonzo and Phoenix Timer.",
-        "- Added Troll command(!?)."
-    ],
-    "0.4.4": [
-        "# New Features",
-        "- Added Powder Chest Highlight.",
-        "- Finally added built-in updater.",
-        "# Bug Fixes & Improvements",
-        "- Added option to disable the 'ROD!!!' display."
-    ],
-    "0.4.3": [
-        "# Bug Fixes & Improvements",
-        "- Finally fixed Null Pointer Exception."
-    ],
-    "0.4.2": [
-        "# Bug Fixes & Improvements",
-        "- I forgot to test restarting minecraft bruh."
-    ],
-    "0.4.1": [
-        "# Bug Fixes & Improvements",
-        "- You can now see preview of the tablist hud while editing location.",
-        "- Fixed copy purse and scoreboard copy command output includes wierd characters."
-    ],
-    "0.4.0": [
-        "# New Features",
-        "- Added Tablist HUD which you can add tablist widget as a hud. You can use it by running '/addhud' and '/removehud'.",
-        "- Added Pest Map which shows garden plot map with pest amount in your inventory. You can warp to the plot by clicking the map."
-    ],
-    "0.3.9": [
-        "# Bug Fixes & Improvements",
-        "- Fixed Rend Count triggers on death.",
-        "- Improved Pest Hud to count pests more accurately."
-    ],
-    "0.3.8": [
-        "# New Features",
-        "- Added Rend Count.",
-        "# Bug Fixes & Improvements",
-        "- Fishing Timer now shows 'ROD!!!' when you do not cast fishing rod."
-    ],
-    "0.3.7": [
-        "# New Features",
-        "- Added Caducous Feeder Timer. (Might buggy cuz I dont have enough money to test :3 )",
-        "# Bug Fixes & Improvements",
-        "- Fixed Pest Box sometimes not shown.",
-        "- Fixed pest tp button unintendedly accessible outside of chat gui.",
-        "- Fixed pest tp feature sometimes not registering newly spawned pests.",
-        "- Fixed Inventory HUD always shown. (wtf)"
-    ],
-    "0.3.6": [
-        "# New Features",
-        "- Added Pest title which will be shown when your farming fortune is decreased by pests.",
-        "- Added spray area display.",
-        "# Bug Fixes & Improvements",
-        "- Fixed pest area display sometimes not working.",
-        "- Improved the accuracy of pest box feature."
-    ],
-    "0.3.5": [
-        "# Bug Fixes & Improvements",
-        "- Fixed clearing pest not clearing pest area display."
-    ],
-    "0.3.4": [
-        "# Bug Fixes & Improvements",
-        "- Changed pest area to be shown only when you have vacuums or spray."
-    ],
-    "0.3.3": [
-        "# New Features",
-        "- Added Spray Timer.",
-        "- Added Pest Area Display."
-    ],
-    "0.3.2": [
-        "# Bug Fixes & Improvements",
-        "- Significantly improved bestiary mob box perfomance."
-    ],
-    "0.3.1": [
-        "# Bug Fixes & Improvements",
-        "- Fixed Sea Creature Detector detects unintended mobs.",
-        "- Fixed Mooshrooms not detected by bestiary mob box."
-    ],
-    "0.3.0": [
-        "# New Features",
-        "- Added bestiary mob box.",
-        "# Bug Fixes & Improvements",
-        "- Changed default attribute search key to 'K' from none.",
-        "- Fixed area detector sometimes crashes.",
-        "- Changed Remember Inventory Hud movable."
-    ],
-    "0.2.9": [
-        "# New Features",
-        "- Added Sea Creature Box."
-    ],
-    "0.2.8": [
-        "# New Features",
-        "- Added Ashfang Helper.",
-        "# Bug Fixes & Improvements",
-        "- Fixed Master skulls not shown in Dungeon Chest Profit Display."
-    ],
-    "0.2.7": [
-        "# Bug Fixes & Improvements",
-        "- Hopefully fixed Dungeon Chest Profit Display not working for the player who uses something like convert roman to numeral feature."
-    ],
-    "0.2.6": [
-        "# Bug Fixes & Improvements",
-        "- Dungeon Chest Profit Display is now shown in Croesus chest selection gui."
-    ],
-    "0.2.5": [
-        "# New Features",
-        "- Added Inventory Saver. You can use it by running '/rememberinventory <inventory name>' or '/ri <inventory name>'.",
-        "- Added Dungeon Chest Profit Display that show profit of the reward chest calculated with the prices you set.",
-        "# Bug Fixes & Improvements",
-        "- Fixed area recognition feature sometimes throws exception when disconnecting.",
-        "- Fishing Timer's background color and transparency are now adjustable.",
-        "- This version might include some bugs or perfomance issues, so please report if you have them!"
-    ],
-    "0.2.4": [
-        "# New Features",
-        "- Added debuff broadcast feature that adds keybind to send party chat about your estimated debuff results on dragons.",
-        "- Added Pest Box.",
-        "# Bug Fixes & Improvements",
-        "- Fixed debug event registration message shown even if there is no registration / unregistration.",
-        "- Fixed kick timer shown when you re-login to hypixel.",
-        "- Fixed Chest Glitch HUD not working."
-    ],
-    "0.2.3": [
-        "# New Features",
-        "- Added Chest Glitch HUD that shows whether you can glitch through the floor with your current location.",
-        "- Added Kick Timer that shows how long have you been kicked.",
-        "- Added Ice Spray Notice that notifies you when you hit ice spray to dragons.",
-        "# Bug Fixes & Improvements",
-        "- Fixed huds shown outside skyblock."
-    ],
-    "0.2.2": [
-        "# Bug Fixes & Improvements",
-        "- Fixed terminal waypoints incorrectly removed when the player does additional terminals.",
-        "- Made relic waypoint shown when the Necron's health is below half, instead of Wither King's spawn.",
-        "- Refactored some codes for some performance improvements.",
-        "- Fixed incorrect command name for fishing timer window."
-    ],
-    "0.2.1": [
-        "Fixed terminal waypoints shown after completed them all.",
-        "Fixed changelogs not showing correctly.",
-        "Fixed relic waypoint not showing.",
-        "",
-        "Added Fishing Timer with external window.",
-        "  You can use it by running /fishingtimer or /fst."
-    ],
-    "0.2.0": [
-        "Fixed Dropship Timer warns specified seconds after launch instead of before explosion.",
-        "",
-        "Added 'Active' display to Ragnarock Axe HUD like Reaper Armor HUD.",
-        "Added Soulflow HUD.",
-        "Added Energized Chunk Warning in Kuudra T5."
-    ],
-    "0.1.9": [
-        "Added Terminal Beacons that are showed based on your class.",
-        "Added Flare timer.",
-        "Added Inventory HUD.",
-        "Added Composter timer HUD.",
-        "Added Dropship Warning HUD based on timer.",
-        "(WIP) Added auction viewer with attribute search function."
-    ]
+  "0.4.16": [
+    "# Bug Fixes & Improvements",
+    "- Fixed flare timers except alert one.",
+    "- Idk if this addon still works."
+  ],
+  "0.4.15": [
+    "# Bug Fixes & Improvements",
+    "- Improved Star Mob ESP performance.",
+    "- Hopefully fixed custom hud not shown on launch.",
+    "- Zed editor f**ked the formatting.",
+    "- Partially fixed kuudra price things, gonna rework though."
+  ],
+  "0.4.14": [
+    "# Bug Fixes & Improvements",
+    "- I don't remember.",
+    "- I forgot to release 0.4.13.",
+    "# New Features",
+    "- Added Star Mob ESP."
+  ],
+  "0.4.13": [
+    "# Bug Fixes & Improvements",
+    "- Changed the pest related things to use tablist info."
+  ],
+  "0.4.12": [
+    "# Bug Fixes & Improvements",
+    "- Made using attribute lbin keybind for normal items to open auction of the item.",
+    "- Gave up fixing PKXI issue."
+  ],
+  "0.4.11": [
+    "# Bug Fixes & Improvements",
+    "- Forgot to remove settings for auction fetch."
+  ],
+  "0.4.10": [
+    "# Bug Fixes & Improvements",
+    "- F**k auction fetcher."
+  ],
+  "0.4.9": [
+    "# Bug Fixes & Improvements",
+    "- Fixed auction related things sometimes show inaccurate info.",
+    "- Changed debug messages of the auction fetch feature to be more compact."
+  ],
+  "0.4.8": [
+    "# New Features",
+    "- Added option to remove revenants visually.",
+    "- Added Ping Display(Might be accurate than other mods).",
+    "# Bug Fixes & Improvements",
+    "- Fixed Chocolate Egg Waypoint not loading eggs immediately after world load.",
+    "- Decrease the lag while fetching auctions hopefully."
+  ],
+  "0.4.7": [
+    "# New Features",
+    "- Added Chocolate Egg Waypoint (Others -> Chocolate)",
+    "# Bug Fixes & Improvements",
+    "- Improved performance of the auction related things."
+  ],
+  "0.4.6": [
+    "# New Features",
+    "- Added Minechaft Notification.",
+    "- Added mineshaft mob box.",
+    "- Added corpse location display.",
+    "# Bug Fixes & Improvements",
+    "- Finally fixed updater.",
+    "- Added internal auction fetcher."
+  ],
+  "0.4.5": [
+    "# New Features",
+    "- Added Bonzo and Phoenix Timer.",
+    "- Added Troll command(!?)."
+  ],
+  "0.4.4": [
+    "# New Features",
+    "- Added Powder Chest Highlight.",
+    "- Finally added built-in updater.",
+    "# Bug Fixes & Improvements",
+    "- Added option to disable the 'ROD!!!' display."
+  ],
+  "0.4.3": [
+    "# Bug Fixes & Improvements",
+    "- Finally fixed Null Pointer Exception."
+  ],
+  "0.4.2": [
+    "# Bug Fixes & Improvements",
+    "- I forgot to test restarting minecraft bruh."
+  ],
+  "0.4.1": [
+    "# Bug Fixes & Improvements",
+    "- You can now see preview of the tablist hud while editing location.",
+    "- Fixed copy purse and scoreboard copy command output includes wierd characters."
+  ],
+  "0.4.0": [
+    "# New Features",
+    "- Added Tablist HUD which you can add tablist widget as a hud. You can use it by running '/addhud' and '/removehud'.",
+    "- Added Pest Map which shows garden plot map with pest amount in your inventory. You can warp to the plot by clicking the map."
+  ],
+  "0.3.9": [
+    "# Bug Fixes & Improvements",
+    "- Fixed Rend Count triggers on death.",
+    "- Improved Pest Hud to count pests more accurately."
+  ],
+  "0.3.8": [
+    "# New Features",
+    "- Added Rend Count.",
+    "# Bug Fixes & Improvements",
+    "- Fishing Timer now shows 'ROD!!!' when you do not cast fishing rod."
+  ],
+  "0.3.7": [
+    "# New Features",
+    "- Added Caducous Feeder Timer. (Might buggy cuz I dont have enough money to test :3 )",
+    "# Bug Fixes & Improvements",
+    "- Fixed Pest Box sometimes not shown.",
+    "- Fixed pest tp button unintendedly accessible outside of chat gui.",
+    "- Fixed pest tp feature sometimes not registering newly spawned pests.",
+    "- Fixed Inventory HUD always shown. (wtf)"
+  ],
+  "0.3.6": [
+    "# New Features",
+    "- Added Pest title which will be shown when your farming fortune is decreased by pests.",
+    "- Added spray area display.",
+    "# Bug Fixes & Improvements",
+    "- Fixed pest area display sometimes not working.",
+    "- Improved the accuracy of pest box feature."
+  ],
+  "0.3.5": [
+    "# Bug Fixes & Improvements",
+    "- Fixed clearing pest not clearing pest area display."
+  ],
+  "0.3.4": [
+    "# Bug Fixes & Improvements",
+    "- Changed pest area to be shown only when you have vacuums or spray."
+  ],
+  "0.3.3": [
+    "# New Features",
+    "- Added Spray Timer.",
+    "- Added Pest Area Display."
+  ],
+  "0.3.2": [
+    "# Bug Fixes & Improvements",
+    "- Significantly improved bestiary mob box perfomance."
+  ],
+  "0.3.1": [
+    "# Bug Fixes & Improvements",
+    "- Fixed Sea Creature Detector detects unintended mobs.",
+    "- Fixed Mooshrooms not detected by bestiary mob box."
+  ],
+  "0.3.0": [
+    "# New Features",
+    "- Added bestiary mob box.",
+    "# Bug Fixes & Improvements",
+    "- Changed default attribute search key to 'K' from none.",
+    "- Fixed area detector sometimes crashes.",
+    "- Changed Remember Inventory Hud movable."
+  ],
+  "0.2.9": [
+    "# New Features",
+    "- Added Sea Creature Box."
+  ],
+  "0.2.8": [
+    "# New Features",
+    "- Added Ashfang Helper.",
+    "# Bug Fixes & Improvements",
+    "- Fixed Master skulls not shown in Dungeon Chest Profit Display."
+  ],
+  "0.2.7": [
+    "# Bug Fixes & Improvements",
+    "- Hopefully fixed Dungeon Chest Profit Display not working for the player who uses something like convert roman to numeral feature."
+  ],
+  "0.2.6": [
+    "# Bug Fixes & Improvements",
+    "- Dungeon Chest Profit Display is now shown in Croesus chest selection gui."
+  ],
+  "0.2.5": [
+    "# New Features",
+    "- Added Inventory Saver. You can use it by running '/rememberinventory <inventory name>' or '/ri <inventory name>'.",
+    "- Added Dungeon Chest Profit Display that show profit of the reward chest calculated with the prices you set.",
+    "# Bug Fixes & Improvements",
+    "- Fixed area recognition feature sometimes throws exception when disconnecting.",
+    "- Fishing Timer's background color and transparency are now adjustable.",
+    "- This version might include some bugs or perfomance issues, so please report if you have them!"
+  ],
+  "0.2.4": [
+    "# New Features",
+    "- Added debuff broadcast feature that adds keybind to send party chat about your estimated debuff results on dragons.",
+    "- Added Pest Box.",
+    "# Bug Fixes & Improvements",
+    "- Fixed debug event registration message shown even if there is no registration / unregistration.",
+    "- Fixed kick timer shown when you re-login to hypixel.",
+    "- Fixed Chest Glitch HUD not working."
+  ],
+  "0.2.3": [
+    "# New Features",
+    "- Added Chest Glitch HUD that shows whether you can glitch through the floor with your current location.",
+    "- Added Kick Timer that shows how long have you been kicked.",
+    "- Added Ice Spray Notice that notifies you when you hit ice spray to dragons.",
+    "# Bug Fixes & Improvements",
+    "- Fixed huds shown outside skyblock."
+  ],
+  "0.2.2": [
+    "# Bug Fixes & Improvements",
+    "- Fixed terminal waypoints incorrectly removed when the player does additional terminals.",
+    "- Made relic waypoint shown when the Necron's health is below half, instead of Wither King's spawn.",
+    "- Refactored some codes for some performance improvements.",
+    "- Fixed incorrect command name for fishing timer window."
+  ],
+  "0.2.1": [
+    "Fixed terminal waypoints shown after completed them all.",
+    "Fixed changelogs not showing correctly.",
+    "Fixed relic waypoint not showing.",
+    "",
+    "Added Fishing Timer with external window.",
+    "  You can use it by running /fishingtimer or /fst."
+  ],
+  "0.2.0": [
+    "Fixed Dropship Timer warns specified seconds after launch instead of before explosion.",
+    "",
+    "Added 'Active' display to Ragnarock Axe HUD like Reaper Armor HUD.",
+    "Added Soulflow HUD.",
+    "Added Energized Chunk Warning in Kuudra T5."
+  ],
+  "0.1.9": [
+    "Added Terminal Beacons that are showed based on your class.",
+    "Added Flare timer.",
+    "Added Inventory HUD.",
+    "Added Composter timer HUD.",
+    "Added Dropship Warning HUD based on timer.",
+    "(WIP) Added auction viewer with attribute search function."
+  ]
 }

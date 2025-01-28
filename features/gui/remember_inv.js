@@ -11,21 +11,12 @@ import getItemId from '../../utils/item_id';
 const URL = Java.type('java.net.URL');
 const ImageIO = Java.type('javax.imageio.ImageIO');
 const GuiButton = Java.type('net.minecraft.client.gui.GuiButton');
-const GuiCheckBox = Java.type(
-  'net.minecraftforge.fml.client.config.GuiCheckBox'
-);
+const GuiCheckBox = Java.type('net.minecraftforge.fml.client.config.GuiCheckBox');
 
-const rememberInvHud = new Hud(
-  'reminv',
-  'Remember Inventory',
-  hud_manager,
-  data
-);
+const rememberInvHud = new Hud('reminv', 'Remember Inventory', hud_manager, data);
 
 const itemNameDisplay = new Display();
-itemNameDisplay
-  .setBackground(DisplayHandler.Background.FULL)
-  .setBackgroundColor(Renderer.color(20, 0, 40));
+itemNameDisplay.setBackground(DisplayHandler.Background.FULL).setBackgroundColor(Renderer.color(20, 0, 40));
 itemNameDisplay.setRegisterType('post gui render');
 
 let [x, y] = rememberInvHud.getCoords();
@@ -42,11 +33,9 @@ let selectedOption = '';
  * @returns
  */
 const getSkullTextureId = (nbt) => {
-  const encoded = nbt
-    .getCompoundTag('tag')
-    .getCompoundTag('SkullOwner')
-    .getCompoundTag('Properties')
-    .toObject()['textures']['0']['Value'];
+  const encoded = nbt.getCompoundTag('tag').getCompoundTag('SkullOwner').getCompoundTag('Properties').toObject()[
+    'textures'
+  ]['0']['Value'];
   const decoded = FileLib.decodeBase64(encoded);
   const decodedObject = JSON.parse(decoded);
   const url = decodedObject.textures.SKIN.url;
@@ -57,10 +46,7 @@ const getTexture = (textureId) => {
   if (!Object.keys(textures).includes(textureId)) {
     new Thread(() => {
       textures[textureId] = new Image(
-        ImageIO.read(
-          new URL(`https://mc-heads.net/head/${textureId}`).openConnection()
-            .inputStream
-        )
+        ImageIO.read(new URL(`https://mc-heads.net/head/${textureId}`).openConnection().inputStream),
       );
     }).start();
   }
@@ -76,9 +62,7 @@ const generateCheckBoxes = (options) => {
   [x, y] = rememberInvHud.getCoords();
   options.forEach((option, i) => {
     if (!Object.keys(checkBoxes).includes(option)) {
-      newCheckBoxes[option] = [
-        new GuiCheckBox(i, x, y + interval * i, option, false),
-      ];
+      newCheckBoxes[option] = [new GuiCheckBox(i, x, y + interval * i, option, false)];
       newCheckBoxes[option].push(
         new GuiButton(
           i + options.length,
@@ -86,8 +70,8 @@ const generateCheckBoxes = (options) => {
           y + interval * i - 3,
           20,
           20,
-          'X'
-        )
+          'X',
+        ),
       );
     } else {
       newCheckBoxes[option] = checkBoxes[option];
@@ -95,8 +79,7 @@ const generateCheckBoxes = (options) => {
   });
   Object.keys(newCheckBoxes).forEach((cb, i) => {
     newCheckBoxes[cb][0].field_146128_h = x;
-    newCheckBoxes[cb][1].field_146128_h =
-      x + newCheckBoxes[cb][0].func_146117_b() + 3;
+    newCheckBoxes[cb][1].field_146128_h = x + newCheckBoxes[cb][0].func_146117_b() + 3;
     newCheckBoxes[cb][0].field_146129_i = y + interval * i;
     newCheckBoxes[cb][1].field_146129_i = y + interval * i - 3;
   });
@@ -126,8 +109,7 @@ register('command', (...args) => {
           id: item.getID(),
           isEnchanted: item.isEnchanted(),
           isSkull: item.getID() === 397,
-          textureId:
-            item.getID() === 397 ? getSkullTextureId(item.getNBT()) : '', // https://mc-heads.net/head/${textureId}
+          textureId: item.getID() === 397 ? getSkullTextureId(item.getNBT()) : '', // https://mc-heads.net/head/${textureId}
         });
       }
     }
@@ -139,11 +121,7 @@ register('command', (...args) => {
   .setAliases(['ri']);
 
 register('postGuiRender', (x, y, gui) => {
-  if (
-    Java.type(
-      'net.minecraft.client.gui.inventory.GuiInventory'
-    ).class.isInstance(gui)
-  ) {
+  if (Java.type('net.minecraft.client.gui.inventory.GuiInventory').class.isInstance(gui)) {
     selectableOptions = Object.keys(inventoryData);
     generateCheckBoxes(selectableOptions);
     Object.keys(checkBoxes).forEach((cb) => {
@@ -184,11 +162,9 @@ register('guiClosed', () => {
   itemNameDisplay.hide();
 });
 
-register('renderSlot', (slot, gui, e) => {
+register('renderSlot', (slot, gui) => {
   if (
-    Java.type(
-      'net.minecraft.client.gui.inventory.GuiInventory'
-    ).class.isInstance(gui) &&
+    Java.type('net.minecraft.client.gui.inventory.GuiInventory').class.isInstance(gui) &&
     Object.keys(inventoryData).includes(selectedOption)
   ) {
     if (slot.getIndex() < 9) return;
@@ -221,7 +197,7 @@ register('renderSlot', (slot, gui, e) => {
   }
 });
 
-register('guiMouseClick', (x, y, mouseButton, gui) => {
+register('guiMouseClick', () => {
   let checkedIndex = -1;
   Object.keys(checkBoxes).forEach((cb, i) => {
     if (checkBoxes[cb][1].func_146115_a()) {

@@ -17,11 +17,12 @@ let flare = {
 let isFlareActive = false;
 
 const warningFlareNBT =
-  'ewogICJ0aW1lc3RhbXAiIDogMTY0NjY4NzMwNjIyMywKICAicHJvZmlsZUlkIiA6ICI0MWQzYWJjMmQ3NDk0MDBjOTA5MGQ1NDM0ZDAzODMxYiIsCiAgInByb2ZpbGVOYW1lIiA6ICJNZWdha2xvb24iLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjJlMmJmNmMxZWMzMzAyNDc5MjdiYTYzNDc5ZTU4NzJhYzY2YjA2OTAzYzg2YzgyYjUyZGFjOWYxYzk3MTQ1OCIKICAgIH0KICB9Cn0';
+  'ewogICJ0aW1lc3RhbXAiIDogMTY2MjY4Mjg0NTU4NiwKICAicHJvZmlsZUlkIiA6ICIwODFiZTAxZmZlMmU0ODMyODI3MDIwMjBlNmI1M2ExNyIsCiAgInByb2ZpbGVOYW1lIiA6ICJMeXJpY1BsYXRlMjUyNDIiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjJlMmJmNmMxZWMzMzAyNDc5MjdiYTYzNDc5ZTU4NzJhYzY2YjA2OTAzYzg2YzgyYjUyZGFjOWYxYzk3MTQ1OCIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9';
+// TODO
 const alertFlareNBT =
   'ewogICJ0aW1lc3RhbXAiIDogMTY0NjY4NzMyNjQzMiwKICAicHJvZmlsZUlkIiA6ICI0MWQzYWJjMmQ3NDk0MDBjOTA5MGQ1NDM0ZDAzODMxYiIsCiAgInByb2ZpbGVOYW1lIiA6ICJNZWdha2xvb24iLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWQyYmY5ODY0NzIwZDg3ZmQwNmI4NGVmYTgwYjc5NWM0OGVkNTM5YjE2NTIzYzNiMWYxOTkwYjQwYzAwM2Y2YiIKICAgIH0KICB9Cn0';
 const sosFlareNBT =
-  'ewogICJ0aW1lc3RhbXAiIDogMTY0NjY4NzM0NzQ4OSwKICAicHJvZmlsZUlkIiA6ICI0MWQzYWJjMmQ3NDk0MDBjOTA5MGQ1NDM0ZDAzODMxYiIsCiAgInByb2ZpbGVOYW1lIiA6ICJNZWdha2xvb24iLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzAwNjJjYzk4ZWJkYTcyYTZhNGI4OTc4M2FkY2VmMjgxNWI0ODNhMDFkNzNlYTg3YjNkZjc2MDcyYTg5ZDEzYiIKICAgIH0KICB9Cn0';
+  'ewogICJ0aW1lc3RhbXAiIDogMTY2MjY4Mjc3NjUxNiwKICAicHJvZmlsZUlkIiA6ICI4YjgyM2E1YmU0Njk0YjhiOTE0NmE5MWRhMjk4ZTViNSIsCiAgInByb2ZpbGVOYW1lIiA6ICJTZXBoaXRpcyIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9jMDA2MmNjOThlYmRhNzJhNmE0Yjg5NzgzYWRjZWYyODE1YjQ4M2EwMWQ3M2VhODdiM2RmNzYwNzJhODlkMTNiIiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0=';
 
 registerWhen(
   register('step', () => {
@@ -31,15 +32,11 @@ registerWhen(
     flare.time = 0;
     isFlareActive = false;
     armorStands.forEach((armorStand) => {
-      const entityLocation = [
-        armorStand.getX(),
-        armorStand.getY(),
-        armorStand.getZ(),
-      ];
+      const entityLocation = [armorStand.getX(), armorStand.getY(), armorStand.getZ()];
       const dist = Math.sqrt(
-        Math.pow(entityLocation[0] - playerLocation[0], 2) +
-          Math.pow(entityLocation[1] - playerLocation[1], 2) +
-          Math.pow(entityLocation[2] - playerLocation[2], 2)
+        (entityLocation[0] - playerLocation[0]) ** 2 +
+          (entityLocation[1] - playerLocation[1]) ** 2 +
+          (entityLocation[2] - playerLocation[2]) ** 2,
       );
       if (dist > 40 || armorStand.getTicksExisted() > 20 * 60 * 3) return;
       const entity = new EntityLivingBase(armorStand.getEntity());
@@ -51,20 +48,17 @@ registerWhen(
       else if (headNBT.includes(sosFlareNBT)) currentFlareType = 3;
       else return;
       isFlareActive = true;
-      let currentFlareTime = parseInt(180 - armorStand.getTicksExisted() / 20);
+      let currentFlareTime = Number.parseInt(180 - armorStand.getTicksExisted() / 20);
       if (currentFlareType > flare.type) {
         flare.type = currentFlareType;
         flare.time = currentFlareTime;
-      } else if (
-        currentFlareType === flare.type &&
-        currentFlareTime > flare.time
-      ) {
+      } else if (currentFlareType === flare.type && currentFlareTime > flare.time) {
         flare.time = currentFlareTime;
       }
     });
   }),
   () => settings.flaretimer,
-  { type: 'step', name: moduleName }
+  { type: 'step', name: moduleName },
 );
 
 registerWhen(
@@ -83,7 +77,7 @@ registerWhen(
     }
   }),
   () => settings.flaretimer,
-  { type: 'renderOverlay', name: moduleName }
+  { type: 'renderOverlay', name: moduleName },
 );
 
 register('worldUnload', () => {

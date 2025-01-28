@@ -1,6 +1,5 @@
 import RenderLib from '../../../RenderLib';
 import {
-  ArmorStandClass,
   BlazeClass,
   CaveSpiderClass,
   ChickenClass,
@@ -34,32 +33,20 @@ const EntitySkeleton = Java.type('net.minecraft.entity.monster.EntitySkeleton');
 const EntityCreeper = Java.type('net.minecraft.entity.monster.EntityCreeper');
 const EntityEnderman = Java.type('net.minecraft.entity.monster.EntityEnderman');
 const EntitySlime = Java.type('net.minecraft.entity.monster.EntitySlime');
-const EntityMagmaCube = Java.type(
-  'net.minecraft.entity.monster.EntityMagmaCube'
-);
+const EntityMagmaCube = Java.type('net.minecraft.entity.monster.EntityMagmaCube');
 const EntitySpider = Java.type('net.minecraft.entity.monster.EntitySpider');
-const EntityCaveSpider = Java.type(
-  'net.minecraft.entity.monster.EntityCaveSpider'
-);
+const EntityCaveSpider = Java.type('net.minecraft.entity.monster.EntityCaveSpider');
 const EntityWitch = Java.type('net.minecraft.entity.monster.EntityWitch');
-const EntitySilverfish = Java.type(
-  'net.minecraft.entity.monster.EntitySilverfish'
-);
+const EntitySilverfish = Java.type('net.minecraft.entity.monster.EntitySilverfish');
 const EntityBlaze = Java.type('net.minecraft.entity.monster.EntityBlaze');
-const EntityEndermite = Java.type(
-  'net.minecraft.entity.monster.EntityEndermite'
-);
+const EntityEndermite = Java.type('net.minecraft.entity.monster.EntityEndermite');
 const EntityPigman = Java.type('net.minecraft.entity.monster.EntityPigZombie');
-const EntityIronGolem = Java.type(
-  'net.minecraft.entity.monster.EntityIronGolem'
-);
+const EntityIronGolem = Java.type('net.minecraft.entity.monster.EntityIronGolem');
 
 const EntityWolf = Java.type('net.minecraft.entity.passive.EntityWolf');
 const EntityChicken = Java.type('net.minecraft.entity.passive.EntityChicken');
 const EntityCow = Java.type('net.minecraft.entity.passive.EntityCow');
-const EntityMooshroom = Java.type(
-  'net.minecraft.entity.passive.EntityMooshroom'
-);
+const EntityMooshroom = Java.type('net.minecraft.entity.passive.EntityMooshroom');
 const EntityPig = Java.type('net.minecraft.entity.passive.EntityPig');
 const EntityRabbit = Java.type('net.minecraft.entity.passive.EntityRabbit');
 const EntitySheep = Java.type('net.minecraft.entity.passive.EntitySheep');
@@ -88,7 +75,7 @@ const drawBox = (entity) => {
     settings.mobboxcolor.getGreen() / 255,
     settings.mobboxcolor.getBlue() / 255,
     settings.mobboxcolor.getAlpha() / 255,
-    settings.mobboxesp
+    settings.mobboxesp,
   );
 };
 
@@ -130,15 +117,12 @@ const checkEntities = () => {
   drawList = [];
   let islands = [];
   bestiaryData.data.forEach((b) => {
-    if (!islands.includes(islandNameMap[b.island]))
-      islands.push(islandNameMap[b.island]);
+    if (!islands.includes(islandNameMap[b.island])) islands.push(islandNameMap[b.island]);
   });
   if (!islands.includes(getCurrentArea())) return;
   World.getAllEntities().forEach((entity) => {
     if (entity.getEntity() instanceof EntityZombie) {
-      const filtered = bestiaryData.data.filter(
-        (m) => m.mcclass === ZombieClass
-      );
+      const filtered = bestiaryData.data.filter((m) => m.mcclass === ZombieClass);
       const livingEntity = new EntityLivingBase(entity.getEntity());
       filtered.forEach((m) => {
         if (checkIsland(m.island)) {
@@ -147,18 +131,9 @@ const checkEntities = () => {
             if ('armor' in m) {
               if (m.armor) {
                 if (
-                  m.chestplate ===
-                    livingEntity
-                      .getItemInSlot(3)
-                      ?.getName()
-                      ?.removeFormatting() &&
-                  m.leggings ===
-                    livingEntity
-                      .getItemInSlot(2)
-                      ?.getName()
-                      ?.removeFormatting() &&
-                  m.boots ===
-                    livingEntity.getItemInSlot(1)?.getName()?.removeFormatting()
+                  m.chestplate === livingEntity.getItemInSlot(3)?.getName()?.removeFormatting() &&
+                  m.leggings === livingEntity.getItemInSlot(2)?.getName()?.removeFormatting() &&
+                  m.boots === livingEntity.getItemInSlot(1)?.getName()?.removeFormatting()
                 ) {
                   drawList.push(entity);
                 }
@@ -178,9 +153,7 @@ const checkEntities = () => {
         }
       });
     } else if (entity.getEntity() instanceof EntitySkeleton) {
-      const filtered = bestiaryData.data.filter(
-        (m) => m.mcclass === SkeletonClass
-      );
+      const filtered = bestiaryData.data.filter((m) => m.mcclass === SkeletonClass);
       filtered.forEach((m) => {
         if (checkIsland(m.island)) {
           if (m.skeletonType === entity.getEntity().func_82202_m()) {
@@ -197,18 +170,14 @@ const checkEntities = () => {
         }
       });
     } else if (entity.getEntity() instanceof EntityCreeper) {
-      const filtered = bestiaryData.data.filter(
-        (m) => m.mcclass === CreeperClass
-      );
+      const filtered = bestiaryData.data.filter((m) => m.mcclass === CreeperClass);
       filtered.forEach((m) => {
         if (checkIsland(m.island)) {
           drawList.push(entity);
         }
       });
     } else if (entity.getEntity() instanceof EntityEnderman) {
-      const filtered = bestiaryData.data.filter(
-        (m) => m.mcclass === EndermanClass
-      );
+      const filtered = bestiaryData.data.filter((m) => m.mcclass === EndermanClass);
       filtered.forEach((m) => {
         if (checkIsland(m.island)) {
           if ('health' in m) {
@@ -220,22 +189,15 @@ const checkEntities = () => {
           }
         }
       });
-    } else if (
-      entity.getEntity() instanceof EntitySlime &&
-      !(entity.getEntity() instanceof EntityMagmaCube)
-    ) {
-      const filtered = bestiaryData.data.filter(
-        (m) => m.mcclass === SlimeClass
-      );
+    } else if (entity.getEntity() instanceof EntitySlime && !(entity.getEntity() instanceof EntityMagmaCube)) {
+      const filtered = bestiaryData.data.filter((m) => m.mcclass === SlimeClass);
       filtered.forEach((m) => {
         if (checkIsland(m.island)) {
           drawList.push(entity);
         }
       });
     } else if (entity.getEntity() instanceof EntityMagmaCube) {
-      const filtered = bestiaryData.data.filter(
-        (m) => m.mcclass === MagmaCubeClass
-      );
+      const filtered = bestiaryData.data.filter((m) => m.mcclass === MagmaCubeClass);
       filtered.forEach((m) => {
         if (checkIsland(m.island)) {
           if ('health' in m) {
@@ -247,22 +209,15 @@ const checkEntities = () => {
           }
         }
       });
-    } else if (
-      entity.getEntity() instanceof EntitySpider &&
-      !(entity.getEntity() instanceof EntityCaveSpider)
-    ) {
-      const filtered = bestiaryData.data.filter(
-        (m) => m.mcclass === SpiderClass
-      );
+    } else if (entity.getEntity() instanceof EntitySpider && !(entity.getEntity() instanceof EntityCaveSpider)) {
+      const filtered = bestiaryData.data.filter((m) => m.mcclass === SpiderClass);
       filtered.forEach((m) => {
         if (checkIsland(m.island)) {
           drawList.push(entity);
         }
       });
     } else if (entity.getEntity() instanceof EntityCaveSpider) {
-      const filtered = bestiaryData.data.filter(
-        (m) => m.mcclass === CaveSpiderClass
-      );
+      const filtered = bestiaryData.data.filter((m) => m.mcclass === CaveSpiderClass);
       filtered.forEach((m) => {
         if (checkIsland(m.island)) {
           if ('health' in m) {
@@ -275,27 +230,21 @@ const checkEntities = () => {
         }
       });
     } else if (entity.getEntity() instanceof EntityWitch) {
-      const filtered = bestiaryData.data.filter(
-        (m) => m.mcclass === WitchClass
-      );
+      const filtered = bestiaryData.data.filter((m) => m.mcclass === WitchClass);
       filtered.forEach((m) => {
         if (checkIsland(m.island)) {
           drawList.push(entity);
         }
       });
     } else if (entity.getEntity() instanceof EntitySilverfish) {
-      const filtered = bestiaryData.data.filter(
-        (m) => m.mcclass === SilverfishClass
-      );
+      const filtered = bestiaryData.data.filter((m) => m.mcclass === SilverfishClass);
       filtered.forEach((m) => {
         if (checkIsland(m.island)) {
           drawList.push(entity);
         }
       });
     } else if (entity.getEntity() instanceof EntityBlaze) {
-      const filtered = bestiaryData.data.filter(
-        (m) => m.mcclass === BlazeClass
-      );
+      const filtered = bestiaryData.data.filter((m) => m.mcclass === BlazeClass);
       filtered.forEach((m) => {
         if (checkIsland(m.island)) {
           if ('health' in m) {
@@ -308,27 +257,21 @@ const checkEntities = () => {
         }
       });
     } else if (entity.getEntity() instanceof EntityEndermite) {
-      const filtered = bestiaryData.data.filter(
-        (m) => m.mcclass === EndermiteClass
-      );
+      const filtered = bestiaryData.data.filter((m) => m.mcclass === EndermiteClass);
       filtered.forEach((m) => {
         if (checkIsland(m.island)) {
           drawList.push(entity);
         }
       });
     } else if (entity.getEntity() instanceof EntityPigman) {
-      const filtered = bestiaryData.data.filter(
-        (m) => m.mcclass === PigmanClass
-      );
+      const filtered = bestiaryData.data.filter((m) => m.mcclass === PigmanClass);
       filtered.forEach((m) => {
         if (checkIsland(m.island)) {
           drawList.push(entity);
         }
       });
     } else if (entity.getEntity() instanceof EntityIronGolem) {
-      const filtered = bestiaryData.data.filter(
-        (m) => m.mcclass === IronGolemClass
-      );
+      const filtered = bestiaryData.data.filter((m) => m.mcclass === IronGolemClass);
       filtered.forEach((m) => {
         if (checkIsland(m.island)) {
           drawList.push(entity);
@@ -348,18 +291,13 @@ const checkEntities = () => {
         }
       });
     } else if (entity.getEntity() instanceof EntityChicken) {
-      const filtered = bestiaryData.data.filter(
-        (m) => m.mcclass === ChickenClass
-      );
+      const filtered = bestiaryData.data.filter((m) => m.mcclass === ChickenClass);
       filtered.forEach((m) => {
         if (checkIsland(m.island)) {
           drawList.push(entity);
         }
       });
-    } else if (
-      entity.getEntity() instanceof EntityCow &&
-      !(entity.getEntity() instanceof EntityMooshroom)
-    ) {
+    } else if (entity.getEntity() instanceof EntityCow && !(entity.getEntity() instanceof EntityMooshroom)) {
       const filtered = bestiaryData.data.filter((m) => m.mcclass === CowClass);
       filtered.forEach((m) => {
         if (checkIsland(m.island)) {
@@ -367,14 +305,11 @@ const checkEntities = () => {
         }
       });
     } else if (entity.getEntity() instanceof EntityMooshroom) {
-      const filtered = bestiaryData.data.filter(
-        (m) => m.mcclass === MooshroomClass
-      );
+      const filtered = bestiaryData.data.filter((m) => m.mcclass === MooshroomClass);
       filtered.forEach((m) => {
         if (checkIsland(m.island)) {
           if (m.island === 'nether') {
-            if (entity.getX() > -285 && entity.getZ() < -660)
-              drawList.push(entity);
+            if (entity.getX() > -285 && entity.getZ() < -660) drawList.push(entity);
           } else drawList.push(entity);
         }
       });
@@ -386,27 +321,21 @@ const checkEntities = () => {
         }
       });
     } else if (entity.getEntity() instanceof EntityRabbit) {
-      const filtered = bestiaryData.data.filter(
-        (m) => m.mcclass === RabbitClass
-      );
+      const filtered = bestiaryData.data.filter((m) => m.mcclass === RabbitClass);
       filtered.forEach((m) => {
         if (checkIsland(m.island)) {
           drawList.push(entity);
         }
       });
     } else if (entity.getEntity() instanceof EntitySheep) {
-      const filtered = bestiaryData.data.filter(
-        (m) => m.mcclass === SheepClass
-      );
+      const filtered = bestiaryData.data.filter((m) => m.mcclass === SheepClass);
       filtered.forEach((m) => {
         if (checkIsland(m.island)) {
           drawList.push(entity);
         }
       });
     } else if (entity.getEntity() instanceof EntityPlayer) {
-      const filtered = bestiaryData.data.filter(
-        (m) => m.mcclass === PlayerClass
-      );
+      const filtered = bestiaryData.data.filter((m) => m.mcclass === PlayerClass);
       filtered.forEach((m) => {
         if (checkIsland(m.island)) {
           let drawn = false;
@@ -449,7 +378,7 @@ registerWhen(
     checkEntities();
   }).setFps(2),
   () => settings.mobbox,
-  { type: 'step', name: 'Mob Box' }
+  { type: 'step', name: 'Mob Box' },
 );
 
 registerWhen(
@@ -459,5 +388,5 @@ registerWhen(
     });
   }),
   () => settings.mobbox,
-  { type: 'renderWorld', name: 'Mob Box' }
+  { type: 'renderWorld', name: 'Mob Box' },
 );

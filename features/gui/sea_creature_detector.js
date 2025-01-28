@@ -1,20 +1,15 @@
-import RenderLib from '../../../RenderLib';
 import renderBeaconBeam from '../../../BeaconBeam';
+import RenderLib from '../../../RenderLib';
 import settings from '../../settings';
 import { getCurrentArea } from '../../utils/area';
-import { registerWhen } from '../../utils/register';
+import { data } from '../../utils/data';
 import { Hud } from '../../utils/hud';
 import hud_manager from '../../utils/hud_manager';
-import { data } from '../../utils/data';
+import { registerWhen } from '../../utils/register';
 
 const fireeelTexture =
   'ewogICJ0aW1lc3RhbXAiIDogMTY0MzgzMTA5NzU4NywKICAicHJvZmlsZUlkIiA6ICJmMjU5MTFiOTZkZDU0MjJhYTcwNzNiOTBmOGI4MTUyMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJmYXJsb3VjaDEwMCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9jNjM3MDRhN2ZjN2Q0MzdmN2I5MjNlMjNlOWEwOGFlM2JiZTI4OTM3ZGY0ZGFmYTllM2U4NzI1YjJjZTRhZmE1IgogICAgfQogIH0KfQ=';
-const seaCreatureCounterHud = new Hud(
-  'seacreature',
-  '&6Sea Creatures: &a0',
-  hud_manager,
-  data
-);
+const seaCreatureCounterHud = new Hud('seacreature', '&6Sea Creatures: &a0', hud_manager, data);
 
 let mobs = 0;
 let shouldRender = false;
@@ -35,7 +30,7 @@ const renderEntityBox = (entity, r, g, b, a, esp = false) => {
       g,
       b,
       a,
-      esp
+      esp,
     );
 };
 
@@ -44,15 +39,11 @@ registerWhen(
     const holdingItem = Player?.getHeldItem();
     shouldRender =
       !settings.fishingrodstoprender ||
-      (settings.fishingrodstoprender &&
-        !(holdingItem && holdingItem.getID() === 346));
+      (settings.fishingrodstoprender && !(holdingItem && holdingItem.getID() === 346));
     mobs = 0;
     World.getAllEntities().forEach((entity) => {
       // Moogma
-      if (
-        entity.getEntity() instanceof
-        Java.type('net.minecraft.entity.passive.EntityMooshroom')
-      ) {
+      if (entity.getEntity() instanceof Java.type('net.minecraft.entity.passive.EntityMooshroom')) {
         if (!(entity.getX() > -285 && entity.getZ() < -660)) {
           mobs++;
           renderEntityBox(entity, 0.2, 0.2, 1, 1, settings.seacreatureesp);
@@ -60,10 +51,7 @@ registerWhen(
       }
 
       // Magma cube mobs
-      if (
-        entity.getEntity() instanceof
-        Java.type('net.minecraft.entity.monster.EntityMagmaCube')
-      ) {
+      if (entity.getEntity() instanceof Java.type('net.minecraft.entity.monster.EntityMagmaCube')) {
         if (Math.round(entity.getWidth() * 100) / 100 === 1.53) {
           if (
             !(
@@ -90,26 +78,14 @@ registerWhen(
       }
 
       // Lava Leech
-      if (
-        entity.getEntity() instanceof
-        Java.type('net.minecraft.entity.monster.EntityEndermite')
-      ) {
+      if (entity.getEntity() instanceof Java.type('net.minecraft.entity.monster.EntityEndermite')) {
         mobs++;
         renderEntityBox(entity, 0.2, 0.2, 1, 1, settings.seacreatureesp);
       }
 
       // Taurus
-      if (
-        entity.getEntity() instanceof
-        Java.type('net.minecraft.entity.passive.EntityPig')
-      ) {
-        if (
-          !(
-            entity.getX() === -699.5 &&
-            entity.getY() === 131 &&
-            entity.getZ() === -887.5
-          )
-        ) {
+      if (entity.getEntity() instanceof Java.type('net.minecraft.entity.passive.EntityPig')) {
+        if (!(entity.getX() === -699.5 && entity.getY() === 131 && entity.getZ() === -887.5)) {
           // Sirih check
           if (
             !(
@@ -129,10 +105,7 @@ registerWhen(
       }
 
       // Thunder
-      if (
-        entity.getEntity() instanceof
-        Java.type('net.minecraft.entity.monster.EntityGuardian')
-      ) {
+      if (entity.getEntity() instanceof Java.type('net.minecraft.entity.monster.EntityGuardian')) {
         if (entity.getEntity().func_175461_cl()) {
           // isElder
           mobs++;
@@ -141,13 +114,10 @@ registerWhen(
       }
 
       // fire eel
-      if (
-        entity.getEntity() instanceof
-        Java.type('net.minecraft.entity.item.EntityArmorStand')
-      ) {
+      if (entity.getEntity() instanceof Java.type('net.minecraft.entity.item.EntityArmorStand')) {
         const armorStand = new EntityLivingBase(entity.getEntity());
         const headNbt = armorStand.getItemInSlot(4)?.getRawNBT();
-        if (headNbt && headNbt.includes(fireeelTexture)) {
+        if (headNbt?.includes(fireeelTexture)) {
           mobs++;
           renderEntityBox(entity, 0.2, 0.2, 1, 1, settings.seacreatureesp);
         }
@@ -155,7 +125,7 @@ registerWhen(
     });
   }),
   () => settings.seacreature && getCurrentArea() === 'Crimson Isle',
-  { type: 'renderWorld', name: 'SeaCreature Detect' }
+  { type: 'renderWorld', name: 'SeaCreature Detect' },
 );
 
 registerWhen(
@@ -163,7 +133,7 @@ registerWhen(
     mobs = 0;
   }),
   () => settings.seacreature,
-  { type: 'worldUnload', name: 'SeaCreature Detect' }
+  { type: 'worldUnload', name: 'SeaCreature Detect' },
 );
 
 registerWhen(
@@ -171,27 +141,15 @@ registerWhen(
     seaCreatureCounterHud.draw(`&6Sea Creatures: &a${mobs}`);
   }),
   () => settings.seacreaturecounter && getCurrentArea() === 'Crimson Isle',
-  { type: 'renderOverlay', name: 'SeaCreature Counter' }
+  { type: 'renderOverlay', name: 'SeaCreature Counter' },
 );
 
 registerWhen(
   register('renderWorld', () => {
-    World.getAllEntitiesOfType(
-      Java.type('net.minecraft.entity.monster.EntityIronGolem').class
-    ).forEach((irongolem) => {
-      renderBeaconBeam(
-        irongolem.getX(),
-        irongolem.getY(),
-        irongolem.getZ(),
-        1,
-        0.4,
-        1,
-        1,
-        false,
-        200
-      );
+    World.getAllEntitiesOfType(Java.type('net.minecraft.entity.monster.EntityIronGolem').class).forEach((irongolem) => {
+      renderBeaconBeam(irongolem.getX(), irongolem.getY(), irongolem.getZ(), 1, 0.4, 1, 1, false, 200);
     });
   }),
   () => settings.jawbuswaypoint && getCurrentArea() === 'Crimson Isle',
-  { type: 'renderWorld', name: 'Jawbus Waypoint' }
+  { type: 'renderWorld', name: 'Jawbus Waypoint' },
 );

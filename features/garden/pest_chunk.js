@@ -9,8 +9,8 @@ const GuiButton = Java.type('net.minecraft.client.gui.GuiButton');
 
 let guiOpen = false;
 let pestList = [];
-const baseX = -240,
-  baseY = -240;
+const baseX = -240;
+const baseY = -240;
 const plotSize = 96;
 const bottomY = 68;
 const topY = 100;
@@ -32,8 +32,8 @@ const plotNumberTable = [
 ];
 
 const convertPlotNumber = (rawPlotNum) => {
-  let x = 0,
-    y = 0;
+  let x = 0;
+  let y = 0;
   plotNumberTable.forEach((plots, i) => {
     plots.forEach((p, j) => {
       if (p === rawPlotNum) {
@@ -122,7 +122,7 @@ registerWhen(
             .replace(' ', '')
             .replace('Plots:', '')
             .split(',')
-            .map((p) => parseInt(p));
+            .map((p) => Number.parseInt(p));
           plotNums.forEach((rawPlotNum) => {
             const [x, y] = convertPlotNumber(rawPlotNum);
             const plotName = getPlotName(x, y);
@@ -141,7 +141,7 @@ registerWhen(
     }
   }).setDelay(1),
   () => getCurrentArea() === 'Garden',
-  { type: 'step', name: 'Pest Update' }
+  { type: 'step', name: 'Pest Update' },
 );
 
 // scan plot gui
@@ -285,7 +285,7 @@ registerWhen(
     });
   }),
   () => settings.pestarea && getCurrentArea() === 'Garden',
-  { type: 'renderWorld', name: 'Pest Area' }
+  { type: 'renderWorld', name: 'Pest Area' },
 );
 
 registerWhen(
@@ -333,16 +333,12 @@ registerWhen(
     if (pestList.length !== 0) pestHud.draw(lines);
   }),
   () => settings.pestarea && getCurrentArea() === 'Garden',
-  { type: 'renderOverlay', name: 'Pest Area' }
+  { type: 'renderOverlay', name: 'Pest Area' },
 );
 
 registerWhen(
   register('guiRender', (mx, my, gui) => {
-    if (
-      Java.type(
-        'net.minecraft.client.gui.inventory.GuiInventory'
-      ).class.isInstance(gui)
-    ) {
+    if (Java.type('net.minecraft.client.gui.inventory.GuiInventory').class.isInstance(gui)) {
       const [x, y] = pestHud.getCoords();
       const scale = 1.5;
       GlStateManager.func_179094_E();
@@ -374,20 +370,9 @@ registerWhen(
             Renderer.scale(1);
           }
         });
-        if (
-          absx < mx &&
-          mx < absx + 16 * scale &&
-          absy < my &&
-          my < absy + 16 * scale
-        ) {
+        if (absx < mx && mx < absx + 16 * scale && absy < my && my < absy + 16 * scale) {
           Renderer.translate(absx, absy, 700);
-          Renderer.drawRect(
-            Renderer.color(210, 210, 210, 150),
-            0,
-            0,
-            16 * scale,
-            16 * scale
-          );
+          Renderer.drawRect(Renderer.color(210, 210, 210, 150), 0, 0, 16 * scale, 16 * scale);
           Renderer.translate(0, 0, 0);
         }
         GlStateManager.func_179126_j();
@@ -396,7 +381,7 @@ registerWhen(
     }
   }),
   () => settings.pestmap && getCurrentArea() === 'Garden',
-  { type: 'guiRender', name: 'Pest Map' }
+  { type: 'guiRender', name: 'Pest Map' },
 );
 
 registerWhen(
@@ -422,7 +407,7 @@ registerWhen(
     }
   }),
   () => settings.pestarea && getCurrentArea() === 'Garden',
-  { type: 'postGuiRender', name: 'Pest Area' }
+  { type: 'postGuiRender', name: 'Pest Area' },
 );
 
 registerWhen(
@@ -437,24 +422,15 @@ registerWhen(
     }
   }),
   () => settings.pestarea && getCurrentArea() === 'Garden',
-  { type: 'guiMouseClick', name: 'Pest Area' }
+  { type: 'guiMouseClick', name: 'Pest Area' },
 );
 
 registerWhen(
   register('guiMouseClick', (mx, my, mb, gui) => {
-    if (
-      Java.type(
-        'net.minecraft.client.gui.inventory.GuiInventory'
-      ).class.isInstance(gui)
-    ) {
+    if (Java.type('net.minecraft.client.gui.inventory.GuiInventory').class.isInstance(gui)) {
       const scale = 1.5;
       plotButtons.forEach((pb) => {
-        if (
-          pb.absx < mx &&
-          mx < pb.absx + 16 * scale &&
-          pb.absy < my &&
-          my < pb.absy + 16 * scale
-        ) {
+        if (pb.absx < mx && mx < pb.absx + 16 * scale && pb.absy < my && my < pb.absy + 16 * scale) {
           if (Date.now() - lastCommand > 1000) {
             if (pb.name === 'The Barn') {
               ChatLib.command('plottp barn');
@@ -468,7 +444,7 @@ registerWhen(
     }
   }),
   () => settings.pestmap && getCurrentArea() === 'Garden',
-  { type: 'guiMouseClick', name: 'Pest Map' }
+  { type: 'guiMouseClick', name: 'Pest Map' },
 );
 
 registerWhen(
@@ -481,7 +457,7 @@ registerWhen(
     }
   }),
   () => settings.pestarea && getCurrentArea() === 'Garden',
-  { type: 'guiClosed', name: 'Pest Area' }
+  { type: 'guiClosed', name: 'Pest Area' },
 );
 
 register('command', () => {

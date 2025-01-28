@@ -1,31 +1,28 @@
 import numeral from 'numeraljs';
 import settings from '../../settings';
+import { getCurrentArea, getCurrentZone } from '../../utils/area';
 import { data, gardenData } from '../../utils/data';
 import { Hud } from '../../utils/hud';
 import hud_manager from '../../utils/hud_manager';
-import { registerWhen } from '../../utils/register';
-import { getCurrentArea, getCurrentZone } from '../../utils/area';
 import getItemId from '../../utils/item_id';
+import { registerWhen } from '../../utils/register';
 
 const sprayHud = new Hud('spray', '&6Spray: &a30m', hud_manager, data);
 
 let warned = false;
 let shouldWarn = false;
 
-const baseX = -240,
-  baseY = -240;
+const baseX = -240;
+const baseY = -240;
 const plotSize = 96;
 const bottomY = 68;
 const topY = 100;
 
 registerWhen(
   register('renderOverlay', () => {
-    const remainingTime =
-      (30 * 60 * 1000 - (Date.now() - gardenData.sprayTime)) / 1000;
+    const remainingTime = (30 * 60 * 1000 - (Date.now() - gardenData.sprayTime)) / 1000;
     if (remainingTime > 0) {
-      const formattedTime = numeral(remainingTime)
-        .format('00:00:00')
-        .replace('0:', '');
+      const formattedTime = numeral(remainingTime).format('00:00:00').replace('0:', '');
       sprayHud.draw(`&6Spray: &a${formattedTime}`);
       shouldWarn = false;
     } else {
@@ -34,8 +31,7 @@ registerWhen(
       if (
         !warned &&
         getCurrentArea() === 'Garden' &&
-        (getCurrentZone().includes('Plot - ') ||
-          getCurrentZone().includes('The Garden'))
+        (getCurrentZone().includes('Plot - ') || getCurrentZone().includes('The Garden'))
       ) {
         warned = true;
         World.playSound('note.pling', 4, 1.5);
@@ -45,7 +41,7 @@ registerWhen(
     }
   }),
   () => settings.spraytimer && getCurrentArea() === 'Garden',
-  { type: 'renderOverlay', name: 'Spray Timer' }
+  { type: 'renderOverlay', name: 'Spray Timer' },
 );
 
 registerWhen(
@@ -56,7 +52,7 @@ registerWhen(
     }
   }).setDelay(5),
   () => settings.spraytimer && getCurrentArea() === 'Garden',
-  { type: 'step', name: 'Spray Timer' }
+  { type: 'step', name: 'Spray Timer' },
 );
 
 registerWhen(
@@ -66,7 +62,7 @@ registerWhen(
     warned = false;
   }).setChatCriteria('SPRAYONATOR! This will expire in 30m!'),
   () => settings.spraytimer && getCurrentArea() === 'Garden',
-  { type: 'chat', name: 'Spray Timer' }
+  { type: 'chat', name: 'Spray Timer' },
 );
 
 registerWhen(
@@ -75,8 +71,8 @@ registerWhen(
     if (!heldItem) return;
     const heldItemId = getItemId(heldItem);
     if (heldItemId !== 'SPRAYONATOR') return;
-    const currentX = Player.getX(),
-      currentZ = Player.getZ();
+    const currentX = Player.getX();
+    const currentZ = Player.getZ();
     const ix = Math.trunc((currentX - baseX) / plotSize);
     const iz = Math.trunc((currentZ - baseY) / plotSize);
     const px = baseX + plotSize * ix;
@@ -158,5 +154,5 @@ registerWhen(
     GL11.glDisable(GL11.GL_BLEND);
   }),
   () => settings.sprayarea && getCurrentArea() === 'Garden',
-  { type: 'renderWorld', name: 'Spray Area' }
+  { type: 'renderWorld', name: 'Spray Area' },
 );

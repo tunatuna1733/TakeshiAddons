@@ -4,11 +4,8 @@ import { registerWhen } from '../../utils/register';
 
 registerWhen(
   register('step', () => {
-    if (
-      getCurrentZone().includes('The Garden') &&
-      getCurrentZone().includes('x')
-    ) {
-      const amount = parseInt(getCurrentZone().match(/\d/g)[0]);
+    if (getCurrentZone().includes('The Garden') && getCurrentZone().includes('x')) {
+      const amount = Number.parseInt(getCurrentZone().match(/\d/g)[0]);
       if (amount === 4) {
         Client.showTitle('&c-5%!!!', '', 0, 4 * 20, 0);
         Client.showTitle('&c-5%!!!', '', 0, 4 * 20, 0);
@@ -28,5 +25,5 @@ registerWhen(
     }
   }).setDelay(3),
   () => settings.pesttitle && getCurrentArea() === 'Garden',
-  { type: 'step', name: 'Pest Title' }
+  { type: 'step', name: 'Pest Title' },
 );

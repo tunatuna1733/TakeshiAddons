@@ -24,12 +24,7 @@ export class InventoryHud {
       const scale = this.getScale();
       const width = 298 * scale;
       const height = 100 * scale;
-      if (
-        x >= current_x - 3 &&
-        x <= current_x + width + 3 &&
-        y >= current_y - 3 &&
-        y <= current_y + height + 3
-      ) {
+      if (x >= current_x - 3 && x <= current_x + width + 3 && y >= current_y - 3 && y <= current_y + height + 3) {
         if (d === 1 && scale < 10) this.setScale(scale + 0.1);
         else if (scale > 0.5) this.setScale(scale - 0.1);
       }
@@ -48,18 +43,13 @@ export class InventoryHud {
         .draw();
       this.editText.setX(current_x).setY(current_y).draw();
     });
-    register('clicked', (x, y, b, isDown) => {
+    register('clicked', (x, y, _b, isDown) => {
       if (!this.hudManager.isEditing) return;
       const [current_x, current_y] = this.getCoords();
       const scale = this.getScale();
       const width = 298 * scale;
       const height = 100 * scale;
-      if (
-        x >= current_x - 3 &&
-        x <= current_x + width + 3 &&
-        y >= current_y - 3 &&
-        y <= current_y + height + 3
-      ) {
+      if (x >= current_x - 3 && x <= current_x + width + 3 && y >= current_y - 3 && y <= current_y + height + 3) {
         if (isDown && hudManager.selectedHudName === '') {
           hudManager.selectHud(this.name);
         } else {

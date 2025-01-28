@@ -1,19 +1,19 @@
 {
-    "name": "TakeshiAddons",
-    "description": "/takeshi for settings",
-    "creator": "tunatuna1733",
-    "entry": "index.js",
-    "version": "0.4.15",
-    "requires": [
-        "PogData",
-        "Vigilance",
-        "axios",
-        "Elementa",
-        "BeaconBeam",
-        "numeraljs",
-        "RenderLib",
-        "ServerUtilities",
-        "FileUtilities",
-        "PromiseV2"
-    ]
+  "name": "TakeshiAddons",
+  "description": "/takeshi for settings",
+  "creator": "tunatuna1733",
+  "entry": "index.js",
+  "version": "0.4.16",
+  "requires": [
+    "PogData",
+    "Vigilance",
+    "axios",
+    "Elementa",
+    "BeaconBeam",
+    "numeraljs",
+    "RenderLib",
+    "ServerUtilities",
+    "FileUtilities",
+    "PromiseV2"
+  ]
 }

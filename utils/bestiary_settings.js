@@ -5,28 +5,20 @@ import { bestiaryData } from './data';
 const server = new HTTPServer();
 const port = 8085;
 
-server.get('/staticmobdata', (req, res) => {
+server.get('/staticmobdata', (_req, res) => {
   const mobData = {
     data: mobs,
   };
   res.status(200).send(JSON.stringify(mobData));
 });
 
-server.get('/bestiary', (req, res) => {
-  const htmlContent = FileLib.read(
-    './config/ChatTriggers/modules/TakeshiAddons/static/bestiary.html'
-  );
-  res
-    .status(200)
-    .header('Content-Type', 'text/html; charset=UTF-8')
-    .send(htmlContent);
+server.get('/bestiary', (_req, res) => {
+  const htmlContent = FileLib.read('./config/ChatTriggers/modules/TakeshiAddons/static/bestiary.html');
+  res.status(200).header('Content-Type', 'text/html; charset=UTF-8').send(htmlContent);
 });
 
-server.get('/bestiarydata', (req, res) => {
-  res
-    .status(200)
-    .header('Content-Type', 'application/json')
-    .send(JSON.stringify(bestiaryData));
+server.get('/bestiarydata', (_req, res) => {
+  res.status(200).header('Content-Type', 'application/json').send(JSON.stringify(bestiaryData));
 });
 
 server.post('/bestiarydata', (req, res) => {
